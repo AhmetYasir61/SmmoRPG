@@ -7,7 +7,10 @@ import com.smmorpg.config.CombatConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -17,15 +20,30 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
  * Renders the local player's real body while in first person.
  *
  * <p>Vanilla draws a floating pair of hands. This draws the actual player model — the same
- * model everyone else sees — with the head pushed behind the near plane so it never
- * occludes the view. Because both views read {@link PoseState}, your arms in FPS and your
+ * model everyone else sees — minus the head, which the camera is inside of and which would
+ * otherwise fill the screen. Because both views read {@link PoseState}, your arms in FPS and your
  * body in someone else's TPS are the same animation, not two approximations of one.
  */
 @EventBusSubscriber(modid = SmmoRPG.MOD_ID, value = Dist.CLIENT)
+@SuppressWarnings("unchecked")
 public final class FirstPersonBodyRenderer {
 
     /** Set while we are drawing the body, so the mixin knows not to hide the player. */
     public static boolean renderingFirstPersonBody = false;
+
+    /**
+     * Hides vanilla's floating hand while the real body is on screen.
+     *
+     * <p>The body already carries the held item through its own in-hand layer, so leaving
+     * vanilla's hand renderer running would draw the weapon twice, in two places, moving to
+     * two different animations.
+     */
+    @SubscribeEvent
+    public static void onRenderHand(net.neoforged.neoforge.client.event.RenderHandEvent event) {
+        if (!CombatConfig.CFG.renderFirstPersonBody.get()) return;
+        if (!ClientState.viewMode.isFirstPerson()) return;
+        event.setCanceled(true);
+    }
 
     @SubscribeEvent
     public static void onRenderLevel(RenderLevelStageEvent event) {
@@ -53,16 +71,37 @@ public final class FirstPersonBodyRenderer {
         EntityRenderDispatcher dispatcher = mc.getEntityRenderDispatcher();
         MultiBufferSource.BufferSource buffers = mc.renderBuffers().bufferSource();
 
+        EntityRenderer<? super AbstractClientPlayer> renderer = dispatcher.getRenderer(player);
+        PlayerModel<AbstractClientPlayer> model =
+                renderer instanceof LivingEntityRenderer<?, ?> living
+                        && living.getModel() instanceof PlayerModel<?> playerModel
+                        ? (PlayerModel<AbstractClientPlayer>) playerModel : null;
+
+        // The camera sits inside the head. Drawing it fills the screen with the back of your
+        // own skull, so the head and everything worn on it comes off for this pass only —
+        // what the player should see is their neck down.
+        boolean headWasVisible = model != null && model.head.visible;
+        boolean hatWasVisible = model != null && model.hat.visible;
+        if (model != null) {
+            model.head.visible = false;
+            model.hat.visible = false;
+        }
+
         renderingFirstPersonBody = true;
         dispatcher.setRenderShadow(false);
         try {
-            // The head is drawn too, but the camera sits inside it, so only the neck and
-            // shoulders ever reach the near plane — which is what selling a real body needs.
+            // Real light, not full-bright: a body lit differently from the world it stands
+            // in reads as a decal pasted over the screen.
+            int light = dispatcher.getPackedLightCoords(player, partial);
             dispatcher.render(player, 0.0D, 0.0D, 0.0D, player.getYRot(), partial, poses, buffers,
-                    net.minecraft.client.renderer.LightTexture.pack(15, 15));
+                    light);
         } finally {
             dispatcher.setRenderShadow(true);
             renderingFirstPersonBody = false;
+            if (model != null) {
+                model.head.visible = headWasVisible;
+                model.hat.visible = hatWasVisible;
+            }
         }
 
         buffers.endBatch();
