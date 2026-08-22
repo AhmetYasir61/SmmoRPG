@@ -51,6 +51,12 @@ public final class Net {
                 (payload, ctx) -> ctx.enqueueWork(() -> movement(ctx.player(), payload)));
         r.playToServer(C2SLearnSkill.TYPE, C2SLearnSkill.CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> learnSkill(ctx.player(), payload)));
+        r.playToServer(C2SAttack.TYPE, C2SAttack.CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> attack(ctx.player(), payload)));
+        r.playToClient(S2CPlayAnimation.TYPE, S2CPlayAnimation.CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() ->
+                        com.smmorpg.client.ClientPacketHandler.onPlayAnimation(payload)));
+
         r.playToServer(C2SStudioEdit.TYPE, C2SStudioEdit.CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> studioEdit(ctx.player(), payload)));
 
@@ -149,6 +155,33 @@ public final class Net {
         var sync = new S2CAnimationSync(com.smmorpg.studio.AnimationLibrary.revision(),
                 List.copyOf(com.smmorpg.studio.AnimationLibrary.all().values()));
         for (ServerPlayer other : sp.server.getPlayerList().getPlayers()) sendTo(other, sync);
+    }
+
+    /**
+     * Starts a swing. The server owns the animation clock from here: the damage window and
+     * every hit come off the clip it starts, so the client can only ask to swing, never
+     * claim to have connected.
+     */
+    private static void attack(net.minecraft.world.entity.player.Player player, C2SAttack payload) {
+        if (!(player instanceof ServerPlayer sp)) return;
+
+        var state = com.smmorpg.anim.AnimationHooks.of(sp);
+        if (state.animator.clip() != null && !state.animator.cancellable()) {
+            // Still committed to the previous swing; the state machine buffers it for us.
+            state.attack(payload.heavy());
+            return;
+        }
+
+        var clip = state.attack(payload.heavy());
+        if (clip == null) return;
+        broadcastAnimation(sp, clip.id(), 2.0F);
+    }
+
+    /** Sends a clip start to everyone who can see the entity, the entity itself included. */
+    public static void broadcastAnimation(net.minecraft.world.entity.LivingEntity entity,
+                                          String clipId, float blendTicks) {
+        var payload = new S2CPlayAnimation(entity.getId(), clipId, blendTicks);
+        PacketDistributor.sendToPlayersTrackingEntityAndSelf(entity, payload);
     }
 
     // --- helpers ---

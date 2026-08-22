@@ -41,6 +41,20 @@ public final class ClientPacketHandler {
         payload.profiles().forEach(com.smmorpg.studio.AnimationLibrary::put);
     }
 
+    public static void onPlayAnimation(com.smmorpg.network.S2CPlayAnimation payload) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.level == null) return;
+        var entity = mc.level.getEntity(payload.entityId());
+        if (!(entity instanceof net.minecraft.world.entity.LivingEntity living)) return;
+
+        // The local player already started this clip on the input frame; replaying it here
+        // would restart the swing a round-trip late and visibly stutter it.
+        if (mc.player != null && payload.entityId() == mc.player.getId()) return;
+
+        com.smmorpg.anim.AnimationHooks.of(living)
+                .play(payload.clipId(), payload.blendTicks());
+    }
+
     public static void onImpact(S2CImpactFeedback payload) {
         CameraShake.addTrauma(payload.shake());
         CameraShake.addRecoil(payload.recoil());

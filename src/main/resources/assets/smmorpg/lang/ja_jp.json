@@ -236,5 +236,6 @@
   "update.smmorpg.wait": "待つ",
   "update.smmorpg.restarting": "再起動中...",
   "update.smmorpg.manual_restart": "取得しました。適用するにはゲームを再起動してください。",
-  "update.smmorpg.pending_button": "SmmoRPG の更新があります"
+  "update.smmorpg.pending_button": "SmmoRPG の更新があります",
+  "key.smmorpg.battle_mode": "戦闘 / 採掘モード"
 }

@@ -236,5 +236,6 @@
   "update.smmorpg.wait": "Attendi",
   "update.smmorpg.restarting": "Riavvio...",
   "update.smmorpg.manual_restart": "Scaricato. Riavvia il gioco per applicare.",
-  "update.smmorpg.pending_button": "Aggiornamento SmmoRPG disponibile"
+  "update.smmorpg.pending_button": "Aggiornamento SmmoRPG disponibile",
+  "key.smmorpg.battle_mode": "Modalità combattimento / scavo"
 }

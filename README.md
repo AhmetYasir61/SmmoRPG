@@ -121,6 +121,42 @@ partial translation is still a valid, shippable file.
 
 ## What is in here
 
+### Animation — the thing that makes combat feel like combat
+
+Every attack is a real keyframed clip on the vanilla humanoid rig: `anim/Animations.java`
+holds 21 of them, authored as joint tracks in radians. The shape of an attack is always the
+same three beats — wind-up, strike, recovery — and the timing is what separates the weapons.
+A dagger's wind-up is two ticks; a kanabo's is nine. That difference is the entire reason
+the two feel different to hold.
+
+**Damage happens when the blade arrives, not when you click.** Vanilla resolves an attack
+on the button press, which is why vanilla combat has no weight — the wind-up is decoration
+and the hit is already over before the arm has moved. Here each clip carries its own damage
+window, `AttackSweeper` sweeps the blade's swept volume against nearby entities for exactly
+as long as that window is open, and vanilla's click-attack is cancelled outright in battle
+mode. A heavy weapon can genuinely be walked out of. A fast one genuinely lands first.
+
+**Movesets** (`anim/Moveset.java`) are why swapping weapons changes everything rather than a
+damage number. Each weapon class owns a combo chain, and chaining is just walking down it:
+an attack pressed inside the previous clip's cancel window advances the index, one pressed
+too early is buffered and replayed the moment it can be. Katanas run a three-hit chain
+ending in an iai draw; long swords run four; daggers alternate hands; polearms thrust then
+sweep with the butt end; two-handers have almost no light chain but their heavies land like
+a truck.
+
+**The hitbox follows the animation.** `AnimatedCollider` rebuilds the animated arm as a
+transform and hangs the weapon off the end of it, in the vanilla rig's own rotation order.
+That result feeds the blade trace, so retiming or reshaping a swing moves its hitbox with
+it — there is nothing to keep in sync by hand.
+
+**Mobs use all of it.** The joints are the vanilla humanoid ones, so one clip plays on a
+player, a zombie and a piglin without a per-entity skeleton. Every mob in the world animates
+its swings, and the training bots run the same movesets you do — their wind-ups are readable
+and their damage lands on the frame yours would. Nothing is AI-only.
+
+**Battle mode** (`R`) switches between an over-the-shoulder combat stance and plain
+first-person for mining, the way the genre expects.
+
 ### Combat — the cut is never pre-planned
 
 `combat/BladeTrace.java` samples the weapon edge's base and tip every tick while a swing is
@@ -257,7 +293,9 @@ be written later without touching internals.
 | K | Character screen |
 | N | Skill tree |
 | Left Ctrl | Dash |
-| R | Sheathe |
+| R | Battle / mining mode |
+| Left click | Light attack (advances the combo) |
+| Shift + right click | Heavy attack |
 | F9 | Animation studio (operators) |
 | Space (airborne) | Wall kick, or air jump if nothing to kick off |
 

@@ -236,5 +236,6 @@
   "update.smmorpg.wait": "Warten",
   "update.smmorpg.restarting": "Neustart...",
   "update.smmorpg.manual_restart": "Heruntergeladen. Bitte starte das Spiel neu.",
-  "update.smmorpg.pending_button": "SmmoRPG-Update verfügbar"
+  "update.smmorpg.pending_button": "SmmoRPG-Update verfügbar",
+  "key.smmorpg.battle_mode": "Kampf- / Abbaumodus"
 }

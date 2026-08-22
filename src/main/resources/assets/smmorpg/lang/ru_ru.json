@@ -236,5 +236,6 @@
   "update.smmorpg.wait": "Подождать",
   "update.smmorpg.restarting": "Перезапуск...",
   "update.smmorpg.manual_restart": "Загружено. Перезапустите игру, чтобы применить.",
-  "update.smmorpg.pending_button": "Доступно обновление SmmoRPG"
+  "update.smmorpg.pending_button": "Доступно обновление SmmoRPG",
+  "key.smmorpg.battle_mode": "Боевой режим / добыча"
 }

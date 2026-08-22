@@ -3,6 +3,7 @@ package com.smmorpg.core;
 import com.smmorpg.SmmoRPG;
 import com.smmorpg.capability.PlayerProgress;
 import com.smmorpg.combat.CombatState;
+import com.smmorpg.anim.AnimationState;
 import com.smmorpg.movement.MovementState;
 import com.smmorpg.skill.SkillData;
 import com.smmorpg.wound.WoundData;
@@ -31,6 +32,10 @@ public final class ModAttachments {
     /** Live combat state (posture, stamina, parry timers). Not saved — rebuilt each session. */
     public static final Supplier<AttachmentType<CombatState>> COMBAT = REGISTRY.register(
             "combat", () -> AttachmentType.builder(CombatState::new).build());
+
+    /** Animation and combo state. Transient: a combo should not survive a relog. */
+    public static final Supplier<AttachmentType<AnimationState>> ANIMATION = REGISTRY.register(
+            "animation", () -> AttachmentType.builder(AnimationState::new).build());
 
     /** Traversal state: air jumps, dashes, wall contacts. Transient by design. */
     public static final Supplier<AttachmentType<MovementState>> MOVEMENT = REGISTRY.register(

@@ -222,7 +222,8 @@
    "update_wait": "Wait",
    "update_restarting": "Restarting...",
    "update_manual_restart": "Downloaded. Please restart the game to apply.",
-   "update_pending_button": "SmmoRPG update available"
+   "update_pending_button": "SmmoRPG update available",
+   "key_battle_mode": "Battle / Mining Mode"
   }
  },
  "tr_tr": {
@@ -448,7 +449,8 @@
    "update_wait": "Bekle",
    "update_restarting": "Yeniden başlatılıyor...",
    "update_manual_restart": "İndirildi. Uygulamak için oyunu yeniden başlatın.",
-   "update_pending_button": "SmmoRPG güncellemesi var"
+   "update_pending_button": "SmmoRPG güncellemesi var",
+   "key_battle_mode": "Savaş / Kazma Modu"
   }
  },
  "de_de": {
@@ -578,7 +580,8 @@
    "update_wait": "Warten",
    "update_restarting": "Neustart...",
    "update_manual_restart": "Heruntergeladen. Bitte starte das Spiel neu.",
-   "update_pending_button": "SmmoRPG-Update verfügbar"
+   "update_pending_button": "SmmoRPG-Update verfügbar",
+   "key_battle_mode": "Kampf- / Abbaumodus"
   }
  },
  "fr_fr": {
@@ -708,7 +711,8 @@
    "update_wait": "Attendre",
    "update_restarting": "Redémarrage...",
    "update_manual_restart": "Téléchargé. Redémarre le jeu pour appliquer.",
-   "update_pending_button": "Mise à jour SmmoRPG disponible"
+   "update_pending_button": "Mise à jour SmmoRPG disponible",
+   "key_battle_mode": "Mode combat / minage"
   }
  },
  "es_es": {
@@ -838,7 +842,8 @@
    "update_wait": "Esperar",
    "update_restarting": "Reiniciando...",
    "update_manual_restart": "Descargado. Reinicia el juego para aplicarlo.",
-   "update_pending_button": "Actualización de SmmoRPG disponible"
+   "update_pending_button": "Actualización de SmmoRPG disponible",
+   "key_battle_mode": "Modo combate / minería"
   }
  },
  "it_it": {
@@ -968,7 +973,8 @@
    "update_wait": "Attendi",
    "update_restarting": "Riavvio...",
    "update_manual_restart": "Scaricato. Riavvia il gioco per applicare.",
-   "update_pending_button": "Aggiornamento SmmoRPG disponibile"
+   "update_pending_button": "Aggiornamento SmmoRPG disponibile",
+   "key_battle_mode": "Modalità combattimento / scavo"
   }
  },
  "pt_br": {
@@ -1098,7 +1104,8 @@
    "update_wait": "Esperar",
    "update_restarting": "Reiniciando...",
    "update_manual_restart": "Baixado. Reinicie o jogo para aplicar.",
-   "update_pending_button": "Atualização do SmmoRPG disponível"
+   "update_pending_button": "Atualização do SmmoRPG disponível",
+   "key_battle_mode": "Modo combate / mineração"
   }
  },
  "ru_ru": {
@@ -1228,7 +1235,8 @@
    "update_wait": "Подождать",
    "update_restarting": "Перезапуск...",
    "update_manual_restart": "Загружено. Перезапустите игру, чтобы применить.",
-   "update_pending_button": "Доступно обновление SmmoRPG"
+   "update_pending_button": "Доступно обновление SmmoRPG",
+   "key_battle_mode": "Боевой режим / добыча"
   }
  },
  "ja_jp": {
@@ -1358,7 +1366,8 @@
    "update_wait": "待つ",
    "update_restarting": "再起動中...",
    "update_manual_restart": "取得しました。適用するにはゲームを再起動してください。",
-   "update_pending_button": "SmmoRPG の更新があります"
+   "update_pending_button": "SmmoRPG の更新があります",
+   "key_battle_mode": "戦闘 / 採掘モード"
   }
  },
  "zh_cn": {
@@ -1488,7 +1497,8 @@
    "update_wait": "稍等",
    "update_restarting": "正在重启...",
    "update_manual_restart": "已下载。请重启游戏以应用。",
-   "update_pending_button": "SmmoRPG 有可用更新"
+   "update_pending_button": "SmmoRPG 有可用更新",
+   "key_battle_mode": "战斗 / 挖掘模式"
   }
  },
  "ko_kr": {
@@ -1618,7 +1628,8 @@
    "update_wait": "기다리기",
    "update_restarting": "재시작 중...",
    "update_manual_restart": "내려받았습니다. 적용하려면 게임을 재시작하세요.",
-   "update_pending_button": "SmmoRPG 업데이트 있음"
+   "update_pending_button": "SmmoRPG 업데이트 있음",
+   "key_battle_mode": "전투 / 채굴 모드"
   }
  },
  "pl_pl": {
@@ -1748,7 +1759,8 @@
    "update_wait": "Poczekaj",
    "update_restarting": "Ponowne uruchamianie...",
    "update_manual_restart": "Pobrano. Uruchom grę ponownie, aby zastosować.",
-   "update_pending_button": "Dostępna aktualizacja SmmoRPG"
+   "update_pending_button": "Dostępna aktualizacja SmmoRPG",
+   "key_battle_mode": "Tryb walki / kopania"
   }
  },
  "uk_ua": {
@@ -1878,7 +1890,8 @@
    "update_wait": "Зачекати",
    "update_restarting": "Перезапуск...",
    "update_manual_restart": "Завантажено. Перезапустіть гру, щоб застосувати.",
-   "update_pending_button": "Доступне оновлення SmmoRPG"
+   "update_pending_button": "Доступне оновлення SmmoRPG",
+   "key_battle_mode": "Бойовий режим / видобуток"
   }
  },
  "nl_nl": {
@@ -2008,7 +2021,8 @@
    "update_wait": "Wachten",
    "update_restarting": "Opnieuw opstarten...",
    "update_manual_restart": "Gedownload. Herstart het spel om toe te passen.",
-   "update_pending_button": "SmmoRPG-update beschikbaar"
+   "update_pending_button": "SmmoRPG-update beschikbaar",
+   "key_battle_mode": "Gevechts- / mijnmodus"
   }
  }
 }

@@ -66,9 +66,16 @@ public class CombatBotBrain {
         boolean targetRecovering = target.swinging && target.swingTime > 2;
         float attackChance = aggression * (targetRecovering ? 1.6F : 1.0F);
         if (dist <= style.preferredRange() * 1.1D && rng.nextFloat() < attackChance) {
-            self.swing(net.minecraft.world.InteractionHand.MAIN_HAND);
-            self.doHurtTarget(target);
-            commitTimer = Math.max(2, difficulty.reactionTicks() * 2);
+            // The bot runs the same moveset the player does, so its wind-up is readable and
+            // its damage lands on the same frame yours would. Nothing here is AI-only.
+            var animation = com.smmorpg.anim.AnimationHooks.of(self);
+            boolean heavy = rng.nextFloat() < 0.28F;
+            var clip = animation.attack(heavy);
+            if (clip != null) {
+                self.swing(net.minecraft.world.InteractionHand.MAIN_HAND);
+                com.smmorpg.network.Net.broadcastAnimation(self, clip.id(), 2.0F);
+                commitTimer = (int) clip.durationTicks();
+            }
         }
 
         // --- decide whether to guard ---

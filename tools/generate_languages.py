@@ -136,6 +136,7 @@ UI_KEYS = {
     "key_dash": "key.smmorpg.dash",
     "key_skills": "key.smmorpg.skills",
     "key_studio": "key.smmorpg.studio",
+    "key_battle_mode": "key.smmorpg.battle_mode",
     "training_title": "training.smmorpg.title",
     "training_button": "training.smmorpg.button",
     "training_button_short": "training.smmorpg.button_short",

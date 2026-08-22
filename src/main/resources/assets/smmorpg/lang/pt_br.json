@@ -236,5 +236,6 @@
   "update.smmorpg.wait": "Esperar",
   "update.smmorpg.restarting": "Reiniciando...",
   "update.smmorpg.manual_restart": "Baixado. Reinicie o jogo para aplicar.",
-  "update.smmorpg.pending_button": "Atualização do SmmoRPG disponível"
+  "update.smmorpg.pending_button": "Atualização do SmmoRPG disponível",
+  "key.smmorpg.battle_mode": "Modo combate / mineração"
 }

@@ -236,5 +236,6 @@
   "update.smmorpg.wait": "기다리기",
   "update.smmorpg.restarting": "재시작 중...",
   "update.smmorpg.manual_restart": "내려받았습니다. 적용하려면 게임을 재시작하세요.",
-  "update.smmorpg.pending_button": "SmmoRPG 업데이트 있음"
+  "update.smmorpg.pending_button": "SmmoRPG 업데이트 있음",
+  "key.smmorpg.battle_mode": "전투 / 채굴 모드"
 }

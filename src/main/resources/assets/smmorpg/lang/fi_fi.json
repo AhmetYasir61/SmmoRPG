@@ -236,5 +236,6 @@
   "update.smmorpg.wait": "Wait",
   "update.smmorpg.restarting": "Restarting...",
   "update.smmorpg.manual_restart": "Downloaded. Please restart the game to apply.",
-  "update.smmorpg.pending_button": "SmmoRPG update available"
+  "update.smmorpg.pending_button": "SmmoRPG update available",
+  "key.smmorpg.battle_mode": "Battle / Mining Mode"
 }

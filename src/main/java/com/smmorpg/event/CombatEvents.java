@@ -48,19 +48,19 @@ public final class CombatEvents {
         event.setAmount(blow.damage());
     }
 
-    /** Swinging costs stamina; swinging on empty is a feeble hit. */
+    /**
+     * Cancels vanilla's attack outright while battle mode is on.
+     *
+     * <p>Vanilla resolves a hit on the click, before the arm has moved. Damage here comes
+     * from {@link com.smmorpg.combat.AttackSweeper} during the animation's damage window
+     * instead, and letting both run would deal every blow twice, at two different moments.
+     */
     @SubscribeEvent
     public static void onAttack(AttackEntityEvent event) {
         Player player = event.getEntity();
         if (player.level().isClientSide) return;
-
-        CombatState state = player.getData(ModAttachments.COMBAT.get());
-        WeaponClass wc = RpgWeaponItem.classOf(player.getMainHandItem());
-        float cost = wc == null ? 12.0F : wc.staminaCost();
-
-        if (!state.spendStamina(cost)) {
-            // Not enough left in the tank: the swing goes through, but weakly.
-            state.stamina = 0.0F;
+        if (com.smmorpg.anim.AnimationHooks.of(player).battleMode()) {
+            event.setCanceled(true);
         }
     }
 
@@ -92,6 +92,7 @@ public final class CombatEvents {
         state.postureMax = (float) e.getAttributeValue(ModAttributes.POSTURE.getDelegate());
         state.tick(regen, 8.0F);
 
+        com.smmorpg.combat.AttackSweeper.tick(e);
         com.smmorpg.movement.MovementSystem.tick(e);
         com.smmorpg.combat.SwingTracker.tick(e);
         WoundSystem.tick(e);

@@ -236,5 +236,6 @@
   "update.smmorpg.wait": "Poczekaj",
   "update.smmorpg.restarting": "Ponowne uruchamianie...",
   "update.smmorpg.manual_restart": "Pobrano. Uruchom grę ponownie, aby zastosować.",
-  "update.smmorpg.pending_button": "Dostępna aktualizacja SmmoRPG"
+  "update.smmorpg.pending_button": "Dostępna aktualizacja SmmoRPG",
+  "key.smmorpg.battle_mode": "Tryb walki / kopania"
 }

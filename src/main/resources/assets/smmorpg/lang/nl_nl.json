@@ -236,5 +236,6 @@
   "update.smmorpg.wait": "Wachten",
   "update.smmorpg.restarting": "Opnieuw opstarten...",
   "update.smmorpg.manual_restart": "Gedownload. Herstart het spel om toe te passen.",
-  "update.smmorpg.pending_button": "SmmoRPG-update beschikbaar"
+  "update.smmorpg.pending_button": "SmmoRPG-update beschikbaar",
+  "key.smmorpg.battle_mode": "Gevechts- / mijnmodus"
 }

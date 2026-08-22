@@ -236,5 +236,6 @@
   "update.smmorpg.wait": "稍等",
   "update.smmorpg.restarting": "正在重启...",
   "update.smmorpg.manual_restart": "已下载。请重启游戏以应用。",
-  "update.smmorpg.pending_button": "SmmoRPG 有可用更新"
+  "update.smmorpg.pending_button": "SmmoRPG 有可用更新",
+  "key.smmorpg.battle_mode": "战斗 / 挖掘模式"
 }

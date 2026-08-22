@@ -26,11 +26,14 @@ public final class Keybinds {
             "key.smmorpg.dash", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_CONTROL, CATEGORY);
     public static final KeyMapping SKILLS = new KeyMapping(
             "key.smmorpg.skills", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_N, CATEGORY);
+    public static final KeyMapping BATTLE_MODE = new KeyMapping(
+            "key.smmorpg.battle_mode", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_R, CATEGORY);
     public static final KeyMapping STUDIO = new KeyMapping(
             "key.smmorpg.studio", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_F9, CATEGORY);
 
     @SubscribeEvent
     public static void register(RegisterKeyMappingsEvent event) {
+        event.register(BATTLE_MODE);
         event.register(DASH);
         event.register(SKILLS);
         event.register(STUDIO);

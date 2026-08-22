@@ -44,8 +44,9 @@ public final class ClientEvents {
             mc.setScreen(new ClassSelectScreen());
         }
 
+        // Lean and aim still ride on PoseState; the limbs come from the animation system.
         PoseState pose = ClientState.pose(player.getId());
-        authorLocalPose(player, pose);
+        authorLean(player, pose);
         pose.tick();
 
         // Mirror our own animation state out to everyone else at 10 Hz.
@@ -79,7 +80,44 @@ public final class ClientEvents {
         }
 
         handleTraversal(player);
+        handleAttackInput(player, mc);
         applyMotionFeedback(player);
+
+        if (Keybinds.BATTLE_MODE.consumeClick()) {
+            var state = com.smmorpg.anim.AnimationHooks.of(player);
+            state.setBattleMode(!state.battleMode());
+            // Battle mode is an over-the-shoulder stance; mining mode is plain first person.
+            ClientState.viewMode = state.battleMode() && CombatConfig.CFG.allowTpsToggle.get()
+                    ? ViewMode.THIRD_PERSON_BACK : ViewMode.FIRST_PERSON;
+            mc.options.setCameraType(ClientState.viewMode.toVanilla());
+        }
+    }
+
+    /**
+     * Turns the attack buttons into moveset input.
+     *
+     * <p>The swing starts locally the moment the button goes down, so it feels immediate,
+     * and the same request goes to the server, which runs its own copy of the clip and owns
+     * every hit that comes out of it. Vanilla's click-resolves-instantly attack is
+     * suppressed separately, in the combat events.
+     */
+    private static void handleAttackInput(LocalPlayer player, Minecraft mc) {
+        var state = com.smmorpg.anim.AnimationHooks.of(player);
+        if (!state.battleMode()) return;
+
+        boolean light = mc.options.keyAttack.consumeClick();
+        boolean heavy = mc.options.keyUse.consumeClick() && player.isCrouching();
+
+        if (!light && !heavy) return;
+
+        var clip = state.attack(heavy);
+        ClientNet.sendToServer(new com.smmorpg.network.C2SAttack(heavy));
+
+        if (clip != null) {
+            // The kick is authored on the clip, so retuning the swing retunes the feel.
+            CameraShake.addRecoil(clip.cameraKick()
+                    * CombatConfig.CFG.recoilScale.get().floatValue());
+        }
     }
 
     /**
@@ -122,40 +160,17 @@ public final class ClientEvents {
 
     private static float lastFallDistance = 0.0F;
 
-    /**
-     * Turns raw local input into an animation state. This is authored once, on the owning
-     * client, and then shipped everywhere — which is why your first-person arms and the
-     * body other players see are guaranteed to agree.
-     */
-    private static void authorLocalPose(LocalPlayer player, PoseState pose) {
+    /** Body lean from strafe and turn rate. The animation clips own everything else. */
+    private static void authorLean(LocalPlayer player, PoseState pose) {
         WeaponClass wc = RpgWeaponItem.classOf(player.getMainHandItem());
-
         pose.aiming = player.isUsingItem() && wc == WeaponClass.BOW;
         pose.blocking = player.isUsingItem() && wc != null && wc != WeaponClass.BOW;
 
-        // Lean comes from strafe and turn rate, so the body banks into movement.
         float strafe = (float) (player.getDeltaMovement().x * Math.cos(Math.toRadians(player.getYRot()))
                 + player.getDeltaMovement().z * Math.sin(Math.toRadians(player.getYRot())));
         pose.leanX = strafe * 12.0F;
         pose.leanZ = (player.getYRot() - player.yRotO) * 0.6F;
         pose.aimPitch = player.getXRot();
-
-        if (player.swinging && !pose.swinging()) {
-            int anim = switch (wc == null ? WeaponClass.JIAN : wc) {
-                case SPEAR, BOW -> PoseState.ANIM_THRUST;
-                case KANABO, ODACHI -> PoseState.ANIM_SLASH_DOWN;
-                default -> (player.tickCount / 7) % 2 == 0
-                        ? PoseState.ANIM_SLASH_HORIZONTAL : PoseState.ANIM_SLASH_DOWN;
-            };
-            pose.animation = anim;
-            pose.frame = 1;
-            // Every swing kicks the view a little, before anything is even hit.
-            CameraShake.addRecoil((wc == null ? 0.2F : wc.recoil()) * 0.35F
-                    * CombatConfig.CFG.recoilScale.get().floatValue());
-        } else if (!player.swinging && pose.progress(0.0F) >= 1.0F) {
-            pose.animation = pose.blocking ? PoseState.ANIM_GUARD : PoseState.ANIM_IDLE;
-            pose.frame = 0;
-        }
     }
 
     /** The actual camera displacement. Applied every frame, independent of tick rate. */

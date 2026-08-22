@@ -26,20 +26,22 @@ public final class SwingTracker {
         return TRACES.computeIfAbsent(e, k -> new BladeTrace());
     }
 
-    /** Called every tick for every living entity. Samples only while a swing is in flight. */
+    /**
+     * Called every tick for every living entity. Samples only while the animation says the
+     * weapon is actually live, so the blade leaves a trace through exactly the arc the
+     * player watched it travel — not through a curve invented next to the animation.
+     */
     public static void tick(LivingEntity e) {
         BladeTrace trace = trace(e);
-        if (!e.swinging) {
-            if (!trace.isEmpty()) trace.clear();
+        var animation = com.smmorpg.anim.AnimationHooks.of(e);
+
+        if (!animation.animator.damaging()) {
+            if (!trace.isEmpty() && !animation.attacking()) trace.clear();
             return;
         }
 
-        WeaponClass wc = RpgWeaponItem.classOf(e.getMainHandItem());
-        float reach = wc == null ? 2.0F : wc.reach();
-
-        Vec3 hand = handPosition(e);
-        Vec3 edge = edgeDirection(e, wc);
-        trace.sample(hand, hand.add(edge.scale(reach * 0.5D)));
+        var blade = com.smmorpg.anim.AnimatedCollider.resolve(e, 0.0F);
+        trace.sample(blade.base(), blade.tip());
     }
 
     /** Approximate world position of the weapon hand, offset to the correct side. */
