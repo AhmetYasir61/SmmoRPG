@@ -231,5 +231,10 @@
   "update.smmorpg.failed": "Update failed",
   "update.smmorpg.version_line": "%s  ->  %s",
   "update.smmorpg.available_ingame": "SmmoRPG %s is available. Please update when convenient.",
-  "update.smmorpg.mandatory": "This update is required by the server."
+  "update.smmorpg.mandatory": "This update is required by the server.",
+  "update.smmorpg.update_and_restart": "업데이트 후 재시작",
+  "update.smmorpg.wait": "기다리기",
+  "update.smmorpg.restarting": "재시작 중...",
+  "update.smmorpg.manual_restart": "내려받았습니다. 적용하려면 게임을 재시작하세요.",
+  "update.smmorpg.pending_button": "SmmoRPG 업데이트 있음"
 }

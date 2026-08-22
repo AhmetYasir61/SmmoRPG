@@ -41,7 +41,8 @@ public final class UpdateClient {
     private static void announce(UpdateManifest manifest) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player != null) {
-            // Already playing: a note, not an interruption. The player finishes their fight.
+            // Already playing: a note, not an interruption. The player finishes their fight
+            // and applies it from the pause menu whenever they are ready.
             mc.player.sendSystemMessage(Component.translatable(
                     "update.smmorpg.available_ingame", manifest.version())
                     .withStyle(ChatFormatting.GOLD));

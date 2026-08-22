@@ -231,5 +231,10 @@
   "update.smmorpg.failed": "Update failed",
   "update.smmorpg.version_line": "%s  ->  %s",
   "update.smmorpg.available_ingame": "SmmoRPG %s is available. Please update when convenient.",
-  "update.smmorpg.mandatory": "This update is required by the server."
+  "update.smmorpg.mandatory": "This update is required by the server.",
+  "update.smmorpg.update_and_restart": "更新して再起動",
+  "update.smmorpg.wait": "待つ",
+  "update.smmorpg.restarting": "再起動中...",
+  "update.smmorpg.manual_restart": "取得しました。適用するにはゲームを再起動してください。",
+  "update.smmorpg.pending_button": "SmmoRPG の更新があります"
 }

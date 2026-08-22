@@ -21,11 +21,13 @@ import java.util.concurrent.CompletableFuture;
 /**
  * Keeps the installed jar current against a remote manifest.
  *
- * <p>Deliberately conservative about what it does on its own. It checks, it downloads to a
- * staging file, and it verifies the hash — but it never swaps a jar under a running game
- * and never restarts anything without the player saying yes. Minecraft loads its mods once,
- * at launch; replacing the jar in place mid-session cannot take effect and can corrupt the
- * run, so the applied update is always staged for the next start.
+ * <p>The player decides, always. The service checks, downloads to a staging file and
+ * verifies the hash on its own, but the last step — apply and restart, or wait — is a
+ * button, never something that happens to you mid-fight.
+ *
+ * <p>Minecraft loads its mods once, at launch, so the staged jar cannot take effect in the
+ * running process. "Apply and restart" therefore relaunches the game: it spawns a fresh
+ * process from this one's own command line, then shuts this one down.
  */
 public final class UpdateService {
 
@@ -121,6 +123,55 @@ public final class UpdateService {
                 return false;
             }
         });
+    }
+
+    /**
+     * Relaunches the game so the staged jar is picked up, then returns true if the new
+     * process actually started.
+     *
+     * <p>The command line is taken from this very process, so the relaunch inherits the
+     * exact JVM arguments, classpath and game arguments the launcher used — there is no
+     * second, guessed invocation that might come up wrong.
+     *
+     * <p>Returns false when the platform will not hand back a full command line (some
+     * launchers and some JVM configurations hide it). The caller falls back to asking the
+     * player to restart by hand rather than exiting into nothing.
+     */
+    public static boolean relaunch() {
+        try {
+            Optional<String[]> command = commandLine();
+            if (command.isEmpty()) {
+                SmmoRPG.LOGGER.warn("Cannot relaunch: this process does not expose its command line.");
+                return false;
+            }
+
+            ProcessBuilder builder = new ProcessBuilder(command.get());
+            builder.directory(new java.io.File(System.getProperty("user.dir")));
+            // Detached: the new game must outlive the one that spawned it.
+            builder.redirectOutput(ProcessBuilder.Redirect.DISCARD);
+            builder.redirectError(ProcessBuilder.Redirect.DISCARD);
+            builder.start();
+
+            SmmoRPG.LOGGER.info("Relaunching for update {}", pending == null ? "?" : pending.version());
+            return true;
+        } catch (Exception e) {
+            SmmoRPG.LOGGER.error("Relaunch failed", e);
+            return false;
+        }
+    }
+
+    /** This process's full command line, if the platform exposes it. */
+    private static Optional<String[]> commandLine() {
+        var info = ProcessHandle.current().info();
+        Optional<String> executable = info.command();
+        Optional<String[]> arguments = info.arguments();
+        if (executable.isEmpty() || arguments.isEmpty()) return Optional.empty();
+
+        String[] argv = arguments.get();
+        String[] full = new String[argv.length + 1];
+        full[0] = executable.get();
+        System.arraycopy(argv, 0, full, 1, argv.length);
+        return Optional.of(full);
     }
 
     private static String sha256(Path path) throws Exception {

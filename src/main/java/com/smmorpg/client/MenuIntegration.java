@@ -25,6 +25,16 @@ public final class MenuIntegration {
     public static void onScreenInit(ScreenEvent.Init.Post event) {
         if (event.getScreen() instanceof TitleScreen title) {
             addTitleButtons(event, title);
+        } else if (event.getScreen() instanceof net.minecraft.client.gui.screens.PauseScreen pause) {
+            // Only appears when there is actually something to apply, so the pause menu
+            // stays clean the rest of the time.
+            com.smmorpg.update.UpdateService.pending().ifPresent(manifest ->
+                    event.addListener(Button.builder(
+                                    Component.translatable("update.smmorpg.pending_button"),
+                                    b -> net.minecraft.client.Minecraft.getInstance().setScreen(
+                                            new com.smmorpg.client.screen.UpdateScreen(manifest, pause)))
+                            .bounds(pause.width / 2 - 102, pause.height / 4 + 144, 204, 20)
+                            .build()));
         } else if (event.getScreen() instanceof SelectWorldScreen world) {
             // Also reachable from the world list, for a player already mid-session.
             event.addListener(Button.builder(Component.translatable("training.smmorpg.button"),

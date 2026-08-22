@@ -231,5 +231,10 @@
   "update.smmorpg.failed": "Update failed",
   "update.smmorpg.version_line": "%s  ->  %s",
   "update.smmorpg.available_ingame": "SmmoRPG %s is available. Please update when convenient.",
-  "update.smmorpg.mandatory": "This update is required by the server."
+  "update.smmorpg.mandatory": "This update is required by the server.",
+  "update.smmorpg.update_and_restart": "Aggiorna e riavvia",
+  "update.smmorpg.wait": "Attendi",
+  "update.smmorpg.restarting": "Riavvio...",
+  "update.smmorpg.manual_restart": "Scaricato. Riavvia il gioco per applicare.",
+  "update.smmorpg.pending_button": "Aggiornamento SmmoRPG disponibile"
 }

@@ -169,10 +169,16 @@ camera kick.
 verifies SHA-256 before anything is installed. If you are already playing it posts a chat
 note and lets you finish your fight; on the title screen it offers the choice directly.
 
-**One honest limitation:** Minecraft loads its mods once, at launch. A jar cannot be swapped
-under a running game — so an applied update is always staged for the next start, and the
-screen offers "Quit to Apply" rather than pretending it can hot-swap or relaunch for you.
-Everything up to that point is automatic.
+The screen is two buttons and the player picks: **Update and Restart**, or **Wait**.
+"Update and Restart" is one action — download, verify, relaunch — so nobody has to come back
+and finish the job. "Wait" changes nothing; the update stays pending and a button appears in
+the pause menu to apply it whenever they are ready.
+
+The relaunch spawns a fresh process from this one's own command line, so it inherits the
+exact JVM arguments and classpath the launcher used. Minecraft loads its mods once at launch,
+so this restart is what makes the staged jar take effect — there is no hot-swap. If a
+launcher or JVM will not expose its command line, the screen says so and offers a plain
+quit instead; the staged jar still loads on the next start either way.
 
 Configure it by setting `UpdateService.manifestUrl`. The manifest is:
 

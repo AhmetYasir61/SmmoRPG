@@ -167,6 +167,11 @@ UI_KEYS = {
     "update_version_line": "update.smmorpg.version_line",
     "update_ingame": "update.smmorpg.available_ingame",
     "update_mandatory": "update.smmorpg.mandatory",
+    "update_and_restart": "update.smmorpg.update_and_restart",
+    "update_wait": "update.smmorpg.wait",
+    "update_restarting": "update.smmorpg.restarting",
+    "update_manual_restart": "update.smmorpg.manual_restart",
+    "update_pending_button": "update.smmorpg.pending_button",
 }
 
 

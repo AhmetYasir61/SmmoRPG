@@ -217,7 +217,12 @@
    "update_failed": "Update failed",
    "update_version_line": "%s  ->  %s",
    "update_ingame": "SmmoRPG %s is available. Please update when convenient.",
-   "update_mandatory": "This update is required by the server."
+   "update_mandatory": "This update is required by the server.",
+   "update_and_restart": "Update and Restart",
+   "update_wait": "Wait",
+   "update_restarting": "Restarting...",
+   "update_manual_restart": "Downloaded. Please restart the game to apply.",
+   "update_pending_button": "SmmoRPG update available"
   }
  },
  "tr_tr": {
@@ -438,7 +443,12 @@
    "update_failed": "Güncelleme başarısız",
    "update_version_line": "%s  ->  %s",
    "update_ingame": "SmmoRPG %s yayınlandı. Uygun olduğunuzda lütfen güncelleyin.",
-   "update_mandatory": "Bu güncelleme sunucu tarafından zorunlu tutuluyor."
+   "update_mandatory": "Bu güncelleme sunucu tarafından zorunlu tutuluyor.",
+   "update_and_restart": "Güncelle ve Yeniden Başlat",
+   "update_wait": "Bekle",
+   "update_restarting": "Yeniden başlatılıyor...",
+   "update_manual_restart": "İndirildi. Uygulamak için oyunu yeniden başlatın.",
+   "update_pending_button": "SmmoRPG güncellemesi var"
   }
  },
  "de_de": {
@@ -563,7 +573,12 @@
    "studio_title": "Animationsstudio",
    "update_title": "Update verfügbar",
    "update_now": "Jetzt aktualisieren",
-   "update_later": "Später"
+   "update_later": "Später",
+   "update_and_restart": "Aktualisieren und neu starten",
+   "update_wait": "Warten",
+   "update_restarting": "Neustart...",
+   "update_manual_restart": "Heruntergeladen. Bitte starte das Spiel neu.",
+   "update_pending_button": "SmmoRPG-Update verfügbar"
   }
  },
  "fr_fr": {
@@ -688,7 +703,12 @@
    "studio_title": "Studio d'animation",
    "update_title": "Mise à jour disponible",
    "update_now": "Mettre à jour",
-   "update_later": "Plus tard"
+   "update_later": "Plus tard",
+   "update_and_restart": "Mettre à jour et redémarrer",
+   "update_wait": "Attendre",
+   "update_restarting": "Redémarrage...",
+   "update_manual_restart": "Téléchargé. Redémarre le jeu pour appliquer.",
+   "update_pending_button": "Mise à jour SmmoRPG disponible"
   }
  },
  "es_es": {
@@ -813,7 +833,12 @@
    "studio_title": "Estudio de animación",
    "update_title": "Actualización disponible",
    "update_now": "Actualizar ahora",
-   "update_later": "Más tarde"
+   "update_later": "Más tarde",
+   "update_and_restart": "Actualizar y reiniciar",
+   "update_wait": "Esperar",
+   "update_restarting": "Reiniciando...",
+   "update_manual_restart": "Descargado. Reinicia el juego para aplicarlo.",
+   "update_pending_button": "Actualización de SmmoRPG disponible"
   }
  },
  "it_it": {
@@ -938,7 +963,12 @@
    "studio_title": "Studio animazioni",
    "update_title": "Aggiornamento disponibile",
    "update_now": "Aggiorna ora",
-   "update_later": "Più tardi"
+   "update_later": "Più tardi",
+   "update_and_restart": "Aggiorna e riavvia",
+   "update_wait": "Attendi",
+   "update_restarting": "Riavvio...",
+   "update_manual_restart": "Scaricato. Riavvia il gioco per applicare.",
+   "update_pending_button": "Aggiornamento SmmoRPG disponibile"
   }
  },
  "pt_br": {
@@ -1063,7 +1093,12 @@
    "studio_title": "Estúdio de animação",
    "update_title": "Atualização disponível",
    "update_now": "Atualizar agora",
-   "update_later": "Depois"
+   "update_later": "Depois",
+   "update_and_restart": "Atualizar e reiniciar",
+   "update_wait": "Esperar",
+   "update_restarting": "Reiniciando...",
+   "update_manual_restart": "Baixado. Reinicie o jogo para aplicar.",
+   "update_pending_button": "Atualização do SmmoRPG disponível"
   }
  },
  "ru_ru": {
@@ -1188,7 +1223,12 @@
    "studio_title": "Студия анимации",
    "update_title": "Доступно обновление",
    "update_now": "Обновить",
-   "update_later": "Позже"
+   "update_later": "Позже",
+   "update_and_restart": "Обновить и перезапустить",
+   "update_wait": "Подождать",
+   "update_restarting": "Перезапуск...",
+   "update_manual_restart": "Загружено. Перезапустите игру, чтобы применить.",
+   "update_pending_button": "Доступно обновление SmmoRPG"
   }
  },
  "ja_jp": {
@@ -1313,7 +1353,12 @@
    "studio_title": "動作編集",
    "update_title": "更新があります",
    "update_now": "今すぐ更新",
-   "update_later": "後で"
+   "update_later": "後で",
+   "update_and_restart": "更新して再起動",
+   "update_wait": "待つ",
+   "update_restarting": "再起動中...",
+   "update_manual_restart": "取得しました。適用するにはゲームを再起動してください。",
+   "update_pending_button": "SmmoRPG の更新があります"
   }
  },
  "zh_cn": {
@@ -1438,7 +1483,12 @@
    "studio_title": "动作工作室",
    "update_title": "有可用更新",
    "update_now": "立即更新",
-   "update_later": "稍后"
+   "update_later": "稍后",
+   "update_and_restart": "更新并重启",
+   "update_wait": "稍等",
+   "update_restarting": "正在重启...",
+   "update_manual_restart": "已下载。请重启游戏以应用。",
+   "update_pending_button": "SmmoRPG 有可用更新"
   }
  },
  "ko_kr": {
@@ -1563,7 +1613,12 @@
    "studio_title": "애니메이션 스튜디오",
    "update_title": "업데이트 있음",
    "update_now": "지금 업데이트",
-   "update_later": "나중에"
+   "update_later": "나중에",
+   "update_and_restart": "업데이트 후 재시작",
+   "update_wait": "기다리기",
+   "update_restarting": "재시작 중...",
+   "update_manual_restart": "내려받았습니다. 적용하려면 게임을 재시작하세요.",
+   "update_pending_button": "SmmoRPG 업데이트 있음"
   }
  },
  "pl_pl": {
@@ -1688,7 +1743,12 @@
    "studio_title": "Studio animacji",
    "update_title": "Dostępna aktualizacja",
    "update_now": "Aktualizuj teraz",
-   "update_later": "Później"
+   "update_later": "Później",
+   "update_and_restart": "Zaktualizuj i uruchom ponownie",
+   "update_wait": "Poczekaj",
+   "update_restarting": "Ponowne uruchamianie...",
+   "update_manual_restart": "Pobrano. Uruchom grę ponownie, aby zastosować.",
+   "update_pending_button": "Dostępna aktualizacja SmmoRPG"
   }
  },
  "uk_ua": {
@@ -1813,7 +1873,12 @@
    "studio_title": "Студія анімації",
    "update_title": "Доступне оновлення",
    "update_now": "Оновити",
-   "update_later": "Пізніше"
+   "update_later": "Пізніше",
+   "update_and_restart": "Оновити та перезапустити",
+   "update_wait": "Зачекати",
+   "update_restarting": "Перезапуск...",
+   "update_manual_restart": "Завантажено. Перезапустіть гру, щоб застосувати.",
+   "update_pending_button": "Доступне оновлення SmmoRPG"
   }
  },
  "nl_nl": {
@@ -1938,7 +2003,12 @@
    "studio_title": "Animatiestudio",
    "update_title": "Update beschikbaar",
    "update_now": "Nu bijwerken",
-   "update_later": "Later"
+   "update_later": "Later",
+   "update_and_restart": "Bijwerken en herstarten",
+   "update_wait": "Wachten",
+   "update_restarting": "Opnieuw opstarten...",
+   "update_manual_restart": "Gedownload. Herstart het spel om toe te passen.",
+   "update_pending_button": "SmmoRPG-update beschikbaar"
   }
  }
 }

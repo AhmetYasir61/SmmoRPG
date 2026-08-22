@@ -231,5 +231,10 @@
   "update.smmorpg.failed": "Güncelleme başarısız",
   "update.smmorpg.version_line": "%s  ->  %s",
   "update.smmorpg.available_ingame": "SmmoRPG %s yayınlandı. Uygun olduğunuzda lütfen güncelleyin.",
-  "update.smmorpg.mandatory": "Bu güncelleme sunucu tarafından zorunlu tutuluyor."
+  "update.smmorpg.mandatory": "Bu güncelleme sunucu tarafından zorunlu tutuluyor.",
+  "update.smmorpg.update_and_restart": "Güncelle ve Yeniden Başlat",
+  "update.smmorpg.wait": "Bekle",
+  "update.smmorpg.restarting": "Yeniden başlatılıyor...",
+  "update.smmorpg.manual_restart": "İndirildi. Uygulamak için oyunu yeniden başlatın.",
+  "update.smmorpg.pending_button": "SmmoRPG güncellemesi var"
 }
