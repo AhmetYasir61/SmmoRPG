@@ -3,6 +3,7 @@ package com.smmorpg.client.render;
 import com.smmorpg.SmmoRPG;
 import com.smmorpg.client.ClientState;
 import com.smmorpg.client.render.AnimationApplier;
+import com.smmorpg.client.render.FirstPersonBodyRenderer;
 import com.smmorpg.combat.HitLocation;
 import com.smmorpg.wound.WoundData;
 import net.minecraft.client.model.HumanoidModel;
@@ -39,9 +40,52 @@ public final class ClientRenderEvents {
     @SubscribeEvent
     public static void onRenderPlayer(net.neoforged.neoforge.client.event.RenderPlayerEvent.Pre event) {
         var player = event.getEntity();
-        AnimationApplier.apply(player, event.getRenderer().getModel(), event.getPartialTick(),
+        var model = event.getRenderer().getModel();
+
+        AnimationApplier.apply(player, model, event.getPartialTick(),
                 AnimationApplier.weightFor(player, event.getPartialTick()));
+
+        // PlayerRenderer#render calls setAllVisible(true) before firing this event, so the
+        // head has to be taken off here — anywhere earlier is simply overwritten.
+        if (FirstPersonBodyRenderer.renderingFirstPersonBody) {
+            headVisible = model.head.visible;
+            hatVisible = model.hat.visible;
+            model.head.visible = false;
+            model.hat.visible = false;
+            // Collapsing the scale as well takes out anything drawn *onto* the head —
+            // a worn block, a helmet — which the visibility flag alone does not reach.
+            model.head.xScale = model.head.yScale = model.head.zScale = 0.0F;
+            headHidden = true;
+        }
     }
+
+    /** Puts the head back the moment the first-person pass is done with it. */
+    @SubscribeEvent
+    public static void onRenderPlayerPost(net.neoforged.neoforge.client.event.RenderPlayerEvent.Post event) {
+        if (!headHidden) return;
+        headHidden = false;
+
+        var model = event.getRenderer().getModel();
+        model.head.visible = headVisible;
+        model.hat.visible = hatVisible;
+        model.head.xScale = model.head.yScale = model.head.zScale = 1.0F;
+    }
+
+    /**
+     * Restores the head if the Post event never arrived — another mod cancelling the Pre
+     * event would otherwise leave the player permanently decapitated for everyone.
+     */
+    public static void restoreHeadIfHidden(net.minecraft.client.model.PlayerModel<?> model) {
+        if (!headHidden || model == null) return;
+        headHidden = false;
+        model.head.visible = headVisible;
+        model.hat.visible = hatVisible;
+        model.head.xScale = model.head.yScale = model.head.zScale = 1.0F;
+    }
+
+    private static boolean headHidden;
+    private static boolean headVisible;
+    private static boolean hatVisible;
 
     /** Mobs animate through the very same clips; nothing here is player-only. */
     @SubscribeEvent

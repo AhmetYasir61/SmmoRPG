@@ -7,10 +7,7 @@ import com.smmorpg.config.CombatConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -20,12 +17,12 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
  * Renders the local player's real body while in first person.
  *
  * <p>Vanilla draws a floating pair of hands. This draws the actual player model — the same
- * model everyone else sees — minus the head, which the camera is inside of and which would
- * otherwise fill the screen. Because both views read {@link PoseState}, your arms in FPS and your
+ * model everyone else sees. The head is stripped out for this pass by
+ * {@code ClientRenderEvents}, because the camera is inside it and drawing it would fill the
+ * screen with the back of your own skull. Because both views read {@link PoseState}, your arms in FPS and your
  * body in someone else's TPS are the same animation, not two approximations of one.
  */
 @EventBusSubscriber(modid = SmmoRPG.MOD_ID, value = Dist.CLIENT)
-@SuppressWarnings("unchecked")
 public final class FirstPersonBodyRenderer {
 
     /** Set while we are drawing the body, so the mixin knows not to hide the player. */
@@ -71,22 +68,6 @@ public final class FirstPersonBodyRenderer {
         EntityRenderDispatcher dispatcher = mc.getEntityRenderDispatcher();
         MultiBufferSource.BufferSource buffers = mc.renderBuffers().bufferSource();
 
-        EntityRenderer<? super AbstractClientPlayer> renderer = dispatcher.getRenderer(player);
-        PlayerModel<AbstractClientPlayer> model =
-                renderer instanceof LivingEntityRenderer<?, ?> living
-                        && living.getModel() instanceof PlayerModel<?> playerModel
-                        ? (PlayerModel<AbstractClientPlayer>) playerModel : null;
-
-        // The camera sits inside the head. Drawing it fills the screen with the back of your
-        // own skull, so the head and everything worn on it comes off for this pass only —
-        // what the player should see is their neck down.
-        boolean headWasVisible = model != null && model.head.visible;
-        boolean hatWasVisible = model != null && model.hat.visible;
-        if (model != null) {
-            model.head.visible = false;
-            model.hat.visible = false;
-        }
-
         renderingFirstPersonBody = true;
         dispatcher.setRenderShadow(false);
         try {
@@ -98,9 +79,10 @@ public final class FirstPersonBodyRenderer {
         } finally {
             dispatcher.setRenderShadow(true);
             renderingFirstPersonBody = false;
-            if (model != null) {
-                model.head.visible = headWasVisible;
-                model.hat.visible = hatWasVisible;
+            if (dispatcher.getRenderer(player) instanceof
+                    net.minecraft.client.renderer.entity.LivingEntityRenderer<?, ?> living
+                    && living.getModel() instanceof net.minecraft.client.model.PlayerModel<?> model) {
+                ClientRenderEvents.restoreHeadIfHidden(model);
             }
         }
 
