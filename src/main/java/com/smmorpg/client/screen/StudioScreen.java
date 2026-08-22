@@ -7,8 +7,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
+import com.smmorpg.client.ClientNet;
 import net.minecraft.network.chat.Component;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +75,7 @@ public class StudioScreen extends Screen {
 
                 @Override
                 protected void applyValue() {
-                    PacketDistributor.sendToServer(new C2SStudioEdit(
+                    ClientNet.sendToServer(new C2SStudioEdit(
                             current().id(), field.key(), denorm(this.value, field)));
                 }
             });

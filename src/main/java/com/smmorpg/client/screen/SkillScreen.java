@@ -8,8 +8,8 @@ import com.smmorpg.skill.Skills;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
+import com.smmorpg.client.ClientNet;
 import net.minecraft.network.chat.Component;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ public class SkillScreen extends Screen {
                 Skill skill = inCategory.get(i);
                 addRenderableWidget(Button.builder(
                                 Component.translatable(skill.translationKey()),
-                                b -> PacketDistributor.sendToServer(new C2SLearnSkill(skill.id().toString())))
+                                b -> ClientNet.sendToServer(new C2SLearnSkill(skill.id().toString())))
                         .bounds(startX + c * columnWidth, 60 + i * 22, columnWidth - 6, 20).build());
             }
         }

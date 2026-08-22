@@ -6,8 +6,8 @@ import com.smmorpg.network.C2SSpendPoint;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
+import com.smmorpg.client.ClientNet;
 import net.minecraft.network.chat.Component;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 /** Level, experience bar and the four stats you spend points into. */
 public class CharacterScreen extends Screen {
@@ -25,7 +25,7 @@ public class CharacterScreen extends Screen {
         for (int i = 0; i < STATS.length; i++) {
             String stat = STATS[i];
             addRenderableWidget(Button.builder(Component.literal("+"),
-                            b -> PacketDistributor.sendToServer(new C2SSpendPoint(stat)))
+                            b -> ClientNet.sendToServer(new C2SSpendPoint(stat)))
                     .bounds(x, y + i * 20, 18, 18).build());
         }
     }

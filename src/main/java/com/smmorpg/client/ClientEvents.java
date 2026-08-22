@@ -18,7 +18,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 /** Per-frame and per-tick client work: camera, pose authoring, keybinds. */
 @EventBusSubscriber(modid = SmmoRPG.MOD_ID, value = Dist.CLIENT)
@@ -30,6 +29,8 @@ public final class ClientEvents {
     @SubscribeEvent
     public static void onClientTick(ClientTickEvent.Post event) {
         Minecraft mc = Minecraft.getInstance();
+        TrainingLauncher.tick();
+
         LocalPlayer player = mc.player;
         if (player == null) {
             CameraShake.reset();
@@ -50,12 +51,12 @@ public final class ClientEvents {
         // Mirror our own animation state out to everyone else at 10 Hz.
         if (--poseSendCooldown <= 0) {
             poseSendCooldown = 2;
-            PacketDistributor.sendToServer(new C2SPoseUpdate(pose.animation, pose.frame,
+            ClientNet.sendToServer(new C2SPoseUpdate(pose.animation, pose.frame,
                     pose.aimPitch, pose.leanX, pose.leanZ, pose.aiming, pose.blocking));
         }
 
         if (Keybinds.PARRY.consumeClick()) {
-            PacketDistributor.sendToServer(C2SParry.INSTANCE);
+            ClientNet.sendToServer(C2SParry.INSTANCE);
             pose.set(PoseState.ANIM_PARRY, 1, pose.aimPitch, pose.leanX, pose.leanZ, false, true);
         }
         if (Keybinds.TOGGLE_VIEW.consumeClick() && CombatConfig.CFG.allowTpsToggle.get()) {
@@ -72,7 +73,7 @@ public final class ClientEvents {
             mc.setScreen(new com.smmorpg.client.screen.StudioScreen());
         }
         if (Keybinds.DASH.consumeClick()) {
-            PacketDistributor.sendToServer(new C2SMovementAction(C2SMovementAction.DASH,
+            ClientNet.sendToServer(new C2SMovementAction(C2SMovementAction.DASH,
                     player.input.forwardImpulse, player.input.leftImpulse));
             CameraShake.addTrauma(0.18F);
         }
@@ -91,8 +92,8 @@ public final class ClientEvents {
         if (!mc.options.keyJump.consumeClick()) return;
         if (player.onGround()) return;                 // vanilla already handled this one
 
-        PacketDistributor.sendToServer(new C2SMovementAction(C2SMovementAction.WALL_KICK, 0.0F, 0.0F));
-        PacketDistributor.sendToServer(new C2SMovementAction(C2SMovementAction.AIR_JUMP, 0.0F, 0.0F));
+        ClientNet.sendToServer(new C2SMovementAction(C2SMovementAction.WALL_KICK, 0.0F, 0.0F));
+        ClientNet.sendToServer(new C2SMovementAction(C2SMovementAction.AIR_JUMP, 0.0F, 0.0F));
         CameraShake.addTrauma(0.12F);
         ClientState.pose(player.getId()).set(PoseState.ANIM_IDLE, 1,
                 player.getXRot(), 0.0F, 0.0F, false, false);

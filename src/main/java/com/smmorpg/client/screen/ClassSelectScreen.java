@@ -6,8 +6,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
+import com.smmorpg.client.ClientNet;
 import net.minecraft.network.chat.Component;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
  * The first thing a new character sees. Deliberately unskippable: the class is the run,
@@ -40,7 +40,7 @@ public class ClassSelectScreen extends Screen {
         }
 
         addRenderableWidget(Button.builder(Component.translatable("screen.smmorpg.confirm"), b -> {
-            PacketDistributor.sendToServer(new C2SChooseClass(selected.key()));
+            ClientNet.sendToServer(new C2SChooseClass(selected.key()));
             onClose();
         }).bounds(this.width / 2 - 60, startY + 2 * (cellH + 6) + 46, 120, 22).build());
     }

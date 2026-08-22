@@ -1,6 +1,5 @@
 package com.smmorpg.client.screen;
 
-import com.smmorpg.network.C2SStartTraining;
 import com.smmorpg.training.Difficulty;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSliderButton;
@@ -8,7 +7,6 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
  * Picks the training difficulty before dropping into the arena.
@@ -59,7 +57,9 @@ public class TrainingScreen extends Screen {
         addRenderableWidget(exact);
 
         addRenderableWidget(Button.builder(Component.translatable("training.smmorpg.enter"), b -> {
-            PacketDistributor.sendToServer(new C2SStartTraining(percent));
+            // The launcher handles both cases: send it now if we are in a world, or open
+            // the arena world first and hold the request until the player is actually in it.
+            com.smmorpg.client.TrainingLauncher.enter(percent);
             onClose();
         }).bounds(cx - 100, y + 52, 96, 20).build());
 

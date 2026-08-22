@@ -176,7 +176,13 @@ client, but the server re-checks every condition before granting them.
 ### Training arena
 
 A square **T** button beside Singleplayer on the title screen. Pick a difficulty from 1% to
-100000% on a logarithmic slider (or type it exactly). 100% is a fair fight; past that every
+100000% on a logarithmic slider (or type it exactly).
+
+Pressed from inside a world it starts the arena where you stand. Pressed from the title
+screen there is no server to ask, so a dedicated singleplayer world (`smmorpg_training`)
+is created on the first visit and reused after, and the request is held until the player
+is actually in it. Keep-inventory is on and the day, weather and natural spawns are frozen
+— the arena is for practising fights, not for losing your gear to one. 100% is a fair fight; past that every
 100 points is another band, and damage compounds per band rather than adding, so each band
 really is more lethal instead of just spongier.
 
