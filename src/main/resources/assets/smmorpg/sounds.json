@@ -1,0 +1,662 @@
+{
+  "impact_flesh_head": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_flesh_head",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_flesh_head",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_flesh_neck": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_flesh_neck",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_flesh_neck",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_flesh_torso": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_flesh_torso",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_flesh_torso",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_flesh_left_arm": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_flesh_left_arm",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_flesh_left_arm",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_flesh_right_arm": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_flesh_right_arm",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_flesh_right_arm",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_flesh_left_leg": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_flesh_left_leg",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_flesh_left_leg",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_flesh_right_leg": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_flesh_right_leg",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_flesh_right_leg",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_bone_head": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_bone_head",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_bone_head",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_bone_neck": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_bone_neck",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_bone_neck",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_bone_torso": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_bone_torso",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_bone_torso",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_bone_left_arm": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_bone_left_arm",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_bone_left_arm",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_bone_right_arm": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_bone_right_arm",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_bone_right_arm",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_bone_left_leg": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_bone_left_leg",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_bone_left_leg",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_bone_right_leg": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_bone_right_leg",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_bone_right_leg",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_leather_head": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_leather_head",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_leather_head",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_leather_neck": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_leather_neck",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_leather_neck",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_leather_torso": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_leather_torso",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_leather_torso",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_leather_left_arm": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_leather_left_arm",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_leather_left_arm",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_leather_right_arm": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_leather_right_arm",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_leather_right_arm",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_leather_left_leg": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_leather_left_leg",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_leather_left_leg",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_leather_right_leg": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_leather_right_leg",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_leather_right_leg",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_chain_head": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_chain_head",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_chain_head",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_chain_neck": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_chain_neck",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_chain_neck",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_chain_torso": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_chain_torso",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_chain_torso",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_chain_left_arm": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_chain_left_arm",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_chain_left_arm",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_chain_right_arm": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_chain_right_arm",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_chain_right_arm",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_chain_left_leg": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_chain_left_leg",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_chain_left_leg",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_chain_right_leg": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_chain_right_leg",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_chain_right_leg",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_plate_head": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_plate_head",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_plate_head",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_plate_neck": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_plate_neck",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_plate_neck",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_plate_torso": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_plate_torso",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_plate_torso",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_plate_left_arm": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_plate_left_arm",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_plate_left_arm",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_plate_right_arm": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_plate_right_arm",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_plate_right_arm",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_plate_left_leg": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_plate_left_leg",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_plate_left_leg",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_plate_right_leg": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_plate_right_leg",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_plate_right_leg",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_shield_head": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_shield_head",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_shield_head",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_shield_neck": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_shield_neck",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_shield_neck",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_shield_torso": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_shield_torso",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_shield_torso",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_shield_left_arm": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_shield_left_arm",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_shield_left_arm",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_shield_right_arm": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_shield_right_arm",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_shield_right_arm",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_shield_left_leg": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_shield_left_leg",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_shield_left_leg",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_shield_right_leg": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_shield_right_leg",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_shield_right_leg",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_stone_head": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_stone_head",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_stone_head",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_stone_neck": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_stone_neck",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_stone_neck",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_stone_torso": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_stone_torso",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_stone_torso",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_stone_left_arm": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_stone_left_arm",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_stone_left_arm",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_stone_right_arm": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_stone_right_arm",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_stone_right_arm",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_stone_left_leg": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_stone_left_leg",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_stone_left_leg",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_stone_right_leg": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_stone_right_leg",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_stone_right_leg",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_undead_head": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_undead_head",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_undead_head",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_undead_neck": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_undead_neck",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_undead_neck",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_undead_torso": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_undead_torso",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_undead_torso",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_undead_left_arm": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_undead_left_arm",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_undead_left_arm",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_undead_right_arm": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_undead_right_arm",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_undead_right_arm",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_undead_left_leg": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_undead_left_leg",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_undead_left_leg",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_undead_right_leg": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_undead_right_leg",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_undead_right_leg",
+        "stream": false,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "impact_parry": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_parry",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_parry",
+        "stream": false,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "impact_whiff": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_whiff",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_whiff",
+        "stream": false,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "impact_decapitate": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_decapitate",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_decapitate",
+        "stream": false,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "impact_dismember": {
+    "category": "player",
+    "subtitle": "subtitles.smmorpg.impact_dismember",
+    "sounds": [
+      {
+        "name": "smmorpg:impact_dismember",
+        "stream": false,
+        "attenuation_distance": 32
+      }
+    ]
+  }
+}

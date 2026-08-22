@@ -1,0 +1,20 @@
+# Gradle / build
+build/
+.gradle/
+run/
+runs/
+src/generated/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.eclipse/
+bin/
+.settings/
+.classpath
+.project
+
+# Generated impact sounds — produced by tools/generate_impact_sounds.py, not committed
+src/main/resources/assets/smmorpg/sounds/*.ogg
+src/main/resources/assets/smmorpg/sounds/*.wav
