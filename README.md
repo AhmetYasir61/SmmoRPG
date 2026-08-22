@@ -27,12 +27,33 @@ The ten built-in weapon ids are:
 katana  odachi  dao  jian  dagger  tanto  spear  naginata  kanabo  yumi
 ```
 
-So a katana you draw goes at `.../textures/item/katana.png`, and it replaces the
-placeholder immediately — nothing else to change. The placeholders currently in the repo
-are 16×16 and deliberately plain; overwrite them with whatever resolution you like.
+So a katana you draw goes at `.../textures/item/katana.png`, and it replaces what is there
+immediately — nothing else to change.
 
 Accessories and consumables use the same folder: `ring`, `amulet`, `omamori`, `talisman`,
 `bandage`, `cautery_iron`, `blood_vial`.
+
+### The demo designs already in the repo
+
+`tools/generate_weapon_textures.py` produces a 128×128 demo icon for all seventeen. They
+are reference designs, not final art — they exist so the mod has something coherent to look
+at now, and so every weapon that arrives later (loot drops, server-pushed weapons, whatever
+the training arena hands out) has one silhouette language to follow.
+
+That language is: **every weapon lies on the same bottom-left-to-top-right diagonal**,
+pommel at the low corner and point at the high one, hilt and tip both drawn. A blade
+standing straight up and down reads as a stick in the hand, so nothing here is vertical.
+Each weapon is a curved spine plus a width profile plus a run of segments (pommel, grip,
+guard, blade, tip), which is why a katana and a spear differ in their numbers rather than
+in their drawing code.
+
+```bash
+python3 tools/generate_weapon_textures.py              # 128x128, the default
+python3 tools/generate_weapon_textures.py --size 256   # same designs, bigger
+```
+
+Pure standard library — no Pillow, no numpy, nothing to install. When your own art lands,
+just overwrite the PNGs; the mod reads the files, not the generator.
 
 For a **handheld** weapon the model should stay `item/handheld` (already set), which is
 what makes it sit in the fist correctly. Only change the parent if you author a full 3D
