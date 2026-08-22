@@ -25,6 +25,71 @@ public final class ClientRenderEvents {
     /** Remembers what we hid so we can restore it after the entity is drawn. */
     private static final java.util.Map<ModelPart, Boolean> HIDDEN = new java.util.IdentityHashMap<>();
 
+    /**
+     * Drives the third-person rig from the same {@link PoseState} the owning client wrote
+     * for its own first-person view — the "what I do is what they see" half of the mod.
+     *
+     * <p>This runs off NeoForge's own event rather than a mixin into PlayerRenderer#render:
+     * the event fires at exactly the point a mixin would have injected, and the loader
+     * guarantees it across versions where a method signature might not survive.
+     */
+    @SubscribeEvent
+    public static void onRenderPlayer(net.neoforged.neoforge.client.event.RenderPlayerEvent.Pre event) {
+        var player = event.getEntity();
+        PoseState pose = ClientState.pose(player.getId());
+        var model = event.getRenderer().getModel();
+        float partialTick = event.getPartialTick();
+
+        float t = pose.progress(partialTick);
+        // A cut is a fast strike and a slow recovery, so the curve is deliberately skewed.
+        float strike = t < 0.35F ? t / 0.35F : 1.0F - (t - 0.35F) / 0.65F;
+
+        switch (pose.animation) {
+            case PoseState.ANIM_SLASH_DOWN -> {
+                model.rightArm.xRot = -2.6F + strike * 3.4F;
+                model.rightArm.zRot = -0.35F + strike * 0.5F;
+            }
+            case PoseState.ANIM_SLASH_RISING -> {
+                model.rightArm.xRot = 0.9F - strike * 3.1F;
+                model.rightArm.zRot = 0.4F - strike * 0.7F;
+            }
+            case PoseState.ANIM_SLASH_HORIZONTAL -> {
+                model.rightArm.yRot = -1.5F + strike * 3.0F;
+                model.rightArm.xRot = -1.4F;
+                model.body.yRot = -0.35F + strike * 0.7F;
+            }
+            case PoseState.ANIM_THRUST -> {
+                model.rightArm.xRot = -1.55F;
+                model.rightArm.zRot = -0.1F;
+                model.body.yRot = -0.2F * strike;
+            }
+            case PoseState.ANIM_PARRY -> {
+                model.rightArm.xRot = -2.2F;
+                model.leftArm.xRot = -1.9F;
+                model.rightArm.zRot = 0.6F;
+            }
+            case PoseState.ANIM_GUARD -> {
+                model.rightArm.xRot = -1.7F;
+                model.leftArm.xRot = -1.5F;
+            }
+            case PoseState.ANIM_STAGGER -> {
+                model.body.xRot = 0.35F * (1.0F - t);
+                model.rightArm.xRot = 0.6F;
+                model.leftArm.xRot = 0.6F;
+            }
+            case PoseState.ANIM_DRAW_BOW -> {
+                model.rightArm.xRot = -1.4F;
+                model.leftArm.xRot = -1.5F;
+                model.rightArm.yRot = -0.5F;
+            }
+            default -> { }
+        }
+
+        // The head follows the real aim pitch rather than the smoothed network value.
+        model.head.xRot = net.minecraft.util.Mth.clamp(
+                pose.aimPitch(partialTick) * net.minecraft.util.Mth.DEG_TO_RAD, -1.5F, 1.5F);
+    }
+
     @SubscribeEvent
     public static void onRenderPre(RenderLivingEvent.Pre<?, ?> event) {
         LivingEntity entity = event.getEntity();

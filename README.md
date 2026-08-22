@@ -88,6 +88,20 @@ The 60 are: every combination of 8 impact materials × 7 body locations (56), pl
 whiff, decapitate and dismember. A katana skimming a chainmail shoulder and the same katana
 splitting a bare skull are genuinely different sounds.
 
+### Verifying the mixins before you ship
+
+A mixin whose target signature has drifted does not fail at build time — it fails on the
+loading screen, which is the worst place to find out. `tools/verify_mixins.py` reads the
+targets straight out of the mixin sources and checks each one against the Minecraft jar the
+mod was compiled against:
+
+```bash
+gradle build && python3 tools/verify_mixins.py
+```
+
+It exits non-zero if anything is missing, so it can gate a release. Run it after any
+Minecraft or NeoForge version bump.
+
 ### Languages
 
 36 locales ship in `assets/smmorpg/lang/`. There is **no in-mod language menu on purpose**:

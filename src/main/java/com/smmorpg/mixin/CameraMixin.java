@@ -22,6 +22,7 @@ public abstract class CameraMixin {
         float time = (System.nanoTime() % 1_000_000_000_000L) / 1.0E9F;
         float offset = CameraShake.positionalOffset(time);
         if (Math.abs(offset) < 1.0E-4F) return;
+        // Camera-local: forward, up, left. A blow should rock the head on all three.
         ((CameraAccessor) this).smmorpg$move(offset * 0.6F, offset, offset * 0.4F);
     }
 }
