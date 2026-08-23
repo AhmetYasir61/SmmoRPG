@@ -48,7 +48,15 @@ public class TrainingSession {
     public int kills() { return kills; }
     public Vec3 centre() { return centre; }
 
+    /** Lays the arena down the first time this session ticks in a world. */
+    private boolean built;
+
     public void tick(ServerLevel level, ServerPlayer player) {
+        if (!built) {
+            built = true;
+            TrainingArena.build(level, centre);
+        }
+
         // Retire anything that died and count it.
         Iterator<Map.Entry<Mob, CombatBotBrain>> it = bots.entrySet().iterator();
         while (it.hasNext()) {

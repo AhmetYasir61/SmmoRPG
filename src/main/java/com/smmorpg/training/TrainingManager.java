@@ -46,8 +46,10 @@ public final class TrainingManager {
             if (session == null) continue;
             if (!(player.level() instanceof ServerLevel level)) continue;
 
-            // Wander too far and the arena releases you rather than following you home.
-            if (player.position().distanceToSqr(session.centre()) > 90.0D * 90.0D) {
+            // Step outside the walls and the arena releases you rather than following you
+            // home. The threshold sits just beyond the 32x32 floor, so walking out is an
+            // unambiguous way to end a session without a command.
+            if (player.position().distanceToSqr(session.centre()) > 26.0D * 26.0D) {
                 stop(player);
                 continue;
             }

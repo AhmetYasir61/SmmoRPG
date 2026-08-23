@@ -230,7 +230,21 @@ Pressed from inside a world it starts the arena where you stand. Pressed from th
 screen there is no server to ask, so a dedicated singleplayer world (`smmorpg_training`)
 is created on the first visit and reused after, and the request is held until the player
 is actually in it. Keep-inventory is on and the day, weather and natural spawns are frozen
-— the arena is for practising fights, not for losing your gear to one. 100% is a fair fight; past that every
+— the arena is for practising fights, not for losing your gear to one.
+
+The training world is a **superflat**: bedrock, a little stone, a smooth-stone surface, and
+nothing else. Decoration, structures and lakes are all off, so there is no terrain to fight
+around and **no water anywhere**.
+
+Inside it the session lays down a **32×32 arena** — a polished floor with a grid line every
+eight blocks so you can read your own footwork, a four-high wall so a bot cannot back you
+into open ground without you knowing, lanterns above it for a session started at midnight,
+and 24 blocks of cleared headroom for air jumps and wall runs. 32 across is deliberate:
+small enough that a fight stays a fight rather than a chase, wide enough that a dash still
+means something. Walking out past the wall ends the session.
+
+The arena is only ever built in that dedicated world — pressing the button inside your own
+survival world will never rearrange it. 100% is a fair fight; past that every
 100 points is another band, and damage compounds per band rather than adding, so each band
 really is more lethal instead of just spongier.
 
