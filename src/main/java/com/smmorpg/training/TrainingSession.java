@@ -5,7 +5,11 @@ import com.smmorpg.npc.FightingStyle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.EntityType;
+import com.smmorpg.SmmoRPG;
+import com.smmorpg.mob.MobArchetype;
+import com.smmorpg.mob.MobRoster;
+import com.smmorpg.mob.MobScaling;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -81,31 +85,52 @@ public class TrainingSession {
         }
     }
 
-    /** Spawns one opponent at the edge of the arena, with a style picked at random. */
+    /**
+     * Spawns one opponent at the edge of the arena.
+     *
+     * <p>What arrives comes from {@link MobRoster}, chosen by the difficulty band — so
+     * raising the percentage does not only inflate numbers, it changes what walks in. Low
+     * bands send soldiers and raiders; high ones send things out of a bestiary, and the
+     * top of the table is where the dragons are.
+     */
     private void spawnOne(ServerLevel level, ServerPlayer player) {
         var rng = level.random;
         double angle = rng.nextDouble() * Math.PI * 2.0D;
-        double radius = 8.0D + rng.nextDouble() * 6.0D;
+        double radius = 8.0D + rng.nextDouble() * 5.0D;
         BlockPos pos = BlockPos.containing(
                 centre.x + Math.cos(angle) * radius,
                 centre.y + 1.0D,
                 centre.z + Math.sin(angle) * radius);
 
-        Mob mob = EntityType.ZOMBIE.create(level);
-        if (mob == null) return;
+        MobArchetype archetype = MobRoster.roll(rng, difficulty.band());
+
+        Entity spawned = archetype.type().create(level);
+        if (!(spawned instanceof Mob mob)) {
+            if (spawned != null) spawned.discard();
+            return;
+        }
+
         mob.moveTo(pos, (float) Math.toDegrees(-angle), 0.0F);
-        mob.finalizeSpawn(level, level.getCurrentDifficultyAt(pos), MobSpawnType.EVENT, null);
+        try {
+            mob.finalizeSpawn(level, level.getCurrentDifficultyAt(pos), MobSpawnType.EVENT, null);
+        } catch (Exception e) {
+            // Bosses and other unusual types can object to being finalised outside their
+            // own structure. Their stats are set below regardless, so this is survivable.
+            SmmoRPG.LOGGER.debug("finalizeSpawn refused for {}", archetype.key());
+        }
 
+        int level_ = 1 + difficulty.band() * 4 + rng.nextInt(5);
+        MobScaling.apply(mob, archetype, level_);
         applyDifficulty(mob);
-        mob.setCustomName(net.minecraft.network.chat.Component.translatable(
-                "training.smmorpg.opponent", difficulty.percent()));
-        mob.setCustomNameVisible(true);
-        mob.setPersistenceRequired();
 
-        level.addFreshEntity(mob);
+        if (!level.addFreshEntity(mob)) {
+            mob.discard();
+            return;
+        }
         bots.put(mob, new CombatBotBrain(FightingStyle.random(rng), difficulty, rng));
     }
 
+    /** The chosen percentage on top of whatever the archetype and level already gave it. */
     private void applyDifficulty(Mob mob) {
         var health = mob.getAttribute(Attributes.MAX_HEALTH);
         if (health != null) {
@@ -115,13 +140,6 @@ public class TrainingSession {
         var damage = mob.getAttribute(Attributes.ATTACK_DAMAGE);
         if (damage != null) damage.setBaseValue(damage.getBaseValue() * difficulty.damageMultiplier());
 
-        var speed = mob.getAttribute(Attributes.MOVEMENT_SPEED);
-        if (speed != null) speed.setBaseValue(speed.getBaseValue() * difficulty.speedMultiplier());
-
-        var knockbackRes = mob.getAttribute(Attributes.KNOCKBACK_RESISTANCE);
-        if (knockbackRes != null) {
-            knockbackRes.setBaseValue(Math.min(1.0D, difficulty.scalar() * 0.3D));
-        }
         var followRange = mob.getAttribute(Attributes.FOLLOW_RANGE);
         if (followRange != null) followRange.setBaseValue(96.0D);
 

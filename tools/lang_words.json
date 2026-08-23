@@ -198,7 +198,44 @@
    "update_restarting": "Restarting...",
    "update_manual_restart": "Downloaded. Please restart the game to apply.",
    "update_pending_button": "SmmoRPG update available",
-   "key_training": "Training Arena"
+   "key_training": "Training Arena",
+   "lord_prefix": "Lord %s",
+   "msg_lord_born": "%s has devoured its way to lordship."
+  },
+  "mobs": {
+   "conscript": "Conscript",
+   "soldier": "Soldier",
+   "raider": "Raider",
+   "marauder": "Marauder",
+   "bone_archer": "Bone Archer",
+   "legionary": "Legionary",
+   "berserker": "Berserker",
+   "brute": "Brute",
+   "witch_hunter": "Witch Hunter",
+   "dread_knight": "Dread Knight",
+   "siege_beast": "Siege Beast",
+   "emberling": "Emberling",
+   "warden_of_ash": "Warden of Ash",
+   "iron_colossus": "Iron Colossus",
+   "revenant_lord": "Revenant Lord",
+   "shade": "Shade",
+   "hollow_king": "Hollow King",
+   "wither_sovereign": "Wither Sovereign",
+   "deep_warden": "Deep Warden",
+   "titan_of_iron": "Titan of Iron",
+   "god_slayer": "God Slayer",
+   "elder_dragon": "Elder Dragon",
+   "world_ender": "World Ender",
+   "first_warden": "First Warden",
+   "eternal_sovereign": "Eternal Sovereign"
+  },
+  "mob_tiers": {
+   "mortal": "Mortal",
+   "veteran": "Veteran",
+   "champion": "Champion",
+   "ascendant": "Ascendant",
+   "divine": "Divine",
+   "primordial": "Primordial"
   }
  },
  "tr_tr": {
@@ -400,7 +437,44 @@
    "update_restarting": "Yeniden başlatılıyor...",
    "update_manual_restart": "İndirildi. Uygulamak için oyunu yeniden başlatın.",
    "update_pending_button": "SmmoRPG güncellemesi var",
-   "key_training": "Eğitim Alanı"
+   "key_training": "Eğitim Alanı",
+   "lord_prefix": "Lord %s",
+   "msg_lord_born": "%s yiye yiye lordluğa ulaştı."
+  },
+  "mobs": {
+   "conscript": "Acemi Er",
+   "soldier": "Asker",
+   "raider": "Akıncı",
+   "marauder": "Yağmacı",
+   "bone_archer": "Kemik Okçu",
+   "legionary": "Lejyoner",
+   "berserker": "Cengâver",
+   "brute": "Zorba",
+   "witch_hunter": "Cadı Avcısı",
+   "dread_knight": "Dehşet Şövalye",
+   "siege_beast": "Kuşatma Canavarı",
+   "emberling": "Köz Yavrusu",
+   "warden_of_ash": "Kül Bekçisi",
+   "iron_colossus": "Demir Devi",
+   "revenant_lord": "Hortlak Lordu",
+   "shade": "Gölge",
+   "hollow_king": "Boş Kral",
+   "wither_sovereign": "Wither Hükümdarı",
+   "deep_warden": "Derin Bekçi",
+   "titan_of_iron": "Demir Titan",
+   "god_slayer": "Tanrı Katili",
+   "elder_dragon": "Kadim Ejderha",
+   "world_ender": "Dünya Sonu",
+   "first_warden": "İlk Bekçi",
+   "eternal_sovereign": "Ebedî Hükümdar"
+  },
+  "mob_tiers": {
+   "mortal": "Ölümlü",
+   "veteran": "Kıdemli",
+   "champion": "Şampiyon",
+   "ascendant": "Yükselen",
+   "divine": "İlahi",
+   "primordial": "Kadim"
   }
  },
  "de_de": {
@@ -523,7 +597,17 @@
    "update_restarting": "Neustart...",
    "update_manual_restart": "Heruntergeladen. Bitte starte das Spiel neu.",
    "update_pending_button": "SmmoRPG-Update verfügbar",
-   "key_training": "Trainingsarena"
+   "key_training": "Trainingsarena",
+   "lord_prefix": "Lord %s",
+   "msg_lord_born": "%s hat sich zur Lordschaft gefressen."
+  },
+  "mob_tiers": {
+   "mortal": "Sterblich",
+   "veteran": "Veteran",
+   "champion": "Champion",
+   "ascendant": "Aufsteigend",
+   "divine": "Göttlich",
+   "primordial": "Urzeitlich"
   }
  },
  "fr_fr": {
@@ -646,7 +730,17 @@
    "update_restarting": "Redémarrage...",
    "update_manual_restart": "Téléchargé. Redémarre le jeu pour appliquer.",
    "update_pending_button": "Mise à jour SmmoRPG disponible",
-   "key_training": "Arène d'entraînement"
+   "key_training": "Arène d'entraînement",
+   "lord_prefix": "Seigneur %s",
+   "msg_lord_born": "%s a dévoré son chemin jusqu'à la seigneurie."
+  },
+  "mob_tiers": {
+   "mortal": "Mortel",
+   "veteran": "Vétéran",
+   "champion": "Champion",
+   "ascendant": "Ascendant",
+   "divine": "Divin",
+   "primordial": "Primordial"
   }
  },
  "es_es": {
@@ -769,7 +863,17 @@
    "update_restarting": "Reiniciando...",
    "update_manual_restart": "Descargado. Reinicia el juego para aplicarlo.",
    "update_pending_button": "Actualización de SmmoRPG disponible",
-   "key_training": "Arena de entrenamiento"
+   "key_training": "Arena de entrenamiento",
+   "lord_prefix": "Señor %s",
+   "msg_lord_born": "%s ha devorado su camino hasta el señorío."
+  },
+  "mob_tiers": {
+   "mortal": "Mortal",
+   "veteran": "Veterano",
+   "champion": "Campeón",
+   "ascendant": "Ascendente",
+   "divine": "Divino",
+   "primordial": "Primordial"
   }
  },
  "it_it": {
@@ -892,7 +996,17 @@
    "update_restarting": "Riavvio...",
    "update_manual_restart": "Scaricato. Riavvia il gioco per applicare.",
    "update_pending_button": "Aggiornamento SmmoRPG disponibile",
-   "key_training": "Arena di addestramento"
+   "key_training": "Arena di addestramento",
+   "lord_prefix": "Signore %s",
+   "msg_lord_born": "%s ha divorato la sua strada fino al dominio."
+  },
+  "mob_tiers": {
+   "mortal": "Mortale",
+   "veteran": "Veterano",
+   "champion": "Campione",
+   "ascendant": "Ascendente",
+   "divine": "Divino",
+   "primordial": "Primordiale"
   }
  },
  "pt_br": {
@@ -1015,7 +1129,17 @@
    "update_restarting": "Reiniciando...",
    "update_manual_restart": "Baixado. Reinicie o jogo para aplicar.",
    "update_pending_button": "Atualização do SmmoRPG disponível",
-   "key_training": "Arena de treino"
+   "key_training": "Arena de treino",
+   "lord_prefix": "Lorde %s",
+   "msg_lord_born": "%s devorou seu caminho até o senhorio."
+  },
+  "mob_tiers": {
+   "mortal": "Mortal",
+   "veteran": "Veterano",
+   "champion": "Campeão",
+   "ascendant": "Ascendente",
+   "divine": "Divino",
+   "primordial": "Primordial"
   }
  },
  "ru_ru": {
@@ -1138,7 +1262,17 @@
    "update_restarting": "Перезапуск...",
    "update_manual_restart": "Загружено. Перезапустите игру, чтобы применить.",
    "update_pending_button": "Доступно обновление SmmoRPG",
-   "key_training": "Тренировочная арена"
+   "key_training": "Тренировочная арена",
+   "lord_prefix": "Лорд %s",
+   "msg_lord_born": "%s прожрал себе путь к власти."
+  },
+  "mob_tiers": {
+   "mortal": "Смертный",
+   "veteran": "Ветеран",
+   "champion": "Чемпион",
+   "ascendant": "Восходящий",
+   "divine": "Божественный",
+   "primordial": "Изначальный"
   }
  },
  "ja_jp": {
@@ -1261,7 +1395,17 @@
    "update_restarting": "再起動中...",
    "update_manual_restart": "取得しました。適用するにはゲームを再起動してください。",
    "update_pending_button": "SmmoRPG の更新があります",
-   "key_training": "修練場"
+   "key_training": "修練場",
+   "lord_prefix": "君主 %s",
+   "msg_lord_born": "%s は喰らい尽くして君主となった。"
+  },
+  "mob_tiers": {
+   "mortal": "人の域",
+   "veteran": "歴戦",
+   "champion": "闘将",
+   "ascendant": "超越",
+   "divine": "神域",
+   "primordial": "原初"
   }
  },
  "zh_cn": {
@@ -1384,7 +1528,17 @@
    "update_restarting": "正在重启...",
    "update_manual_restart": "已下载。请重启游戏以应用。",
    "update_pending_button": "SmmoRPG 有可用更新",
-   "key_training": "试炼场"
+   "key_training": "试炼场",
+   "lord_prefix": "领主 %s",
+   "msg_lord_born": "%s 吞噬同类，登上领主之位。"
+  },
+  "mob_tiers": {
+   "mortal": "凡人",
+   "veteran": "老兵",
+   "champion": "勇者",
+   "ascendant": "超凡",
+   "divine": "神级",
+   "primordial": "太古"
   }
  },
  "ko_kr": {
@@ -1507,7 +1661,17 @@
    "update_restarting": "재시작 중...",
    "update_manual_restart": "내려받았습니다. 적용하려면 게임을 재시작하세요.",
    "update_pending_button": "SmmoRPG 업데이트 있음",
-   "key_training": "수련장"
+   "key_training": "수련장",
+   "lord_prefix": "군주 %s",
+   "msg_lord_born": "%s 이(가) 동족을 삼키며 군주가 되었다."
+  },
+  "mob_tiers": {
+   "mortal": "필멸",
+   "veteran": "역전의",
+   "champion": "챔피언",
+   "ascendant": "초월",
+   "divine": "신격",
+   "primordial": "태초"
   }
  },
  "pl_pl": {
@@ -1630,7 +1794,17 @@
    "update_restarting": "Ponowne uruchamianie...",
    "update_manual_restart": "Pobrano. Uruchom grę ponownie, aby zastosować.",
    "update_pending_button": "Dostępna aktualizacja SmmoRPG",
-   "key_training": "Arena treningowa"
+   "key_training": "Arena treningowa",
+   "lord_prefix": "Władca %s",
+   "msg_lord_born": "%s pożarł sobie drogę do władzy."
+  },
+  "mob_tiers": {
+   "mortal": "Śmiertelnik",
+   "veteran": "Weteran",
+   "champion": "Czempion",
+   "ascendant": "Wstępujący",
+   "divine": "Boski",
+   "primordial": "Pradawny"
   }
  },
  "uk_ua": {
@@ -1753,7 +1927,17 @@
    "update_restarting": "Перезапуск...",
    "update_manual_restart": "Завантажено. Перезапустіть гру, щоб застосувати.",
    "update_pending_button": "Доступне оновлення SmmoRPG",
-   "key_training": "Тренувальна арена"
+   "key_training": "Тренувальна арена",
+   "lord_prefix": "Лорд %s",
+   "msg_lord_born": "%s прожер собі шлях до влади."
+  },
+  "mob_tiers": {
+   "mortal": "Смертний",
+   "veteran": "Ветеран",
+   "champion": "Чемпіон",
+   "ascendant": "Висхідний",
+   "divine": "Божественний",
+   "primordial": "Первинний"
   }
  },
  "nl_nl": {
@@ -1876,7 +2060,17 @@
    "update_restarting": "Opnieuw opstarten...",
    "update_manual_restart": "Gedownload. Herstart het spel om toe te passen.",
    "update_pending_button": "SmmoRPG-update beschikbaar",
-   "key_training": "Trainingsarena"
+   "key_training": "Trainingsarena",
+   "lord_prefix": "Heer %s",
+   "msg_lord_born": "%s heeft zich een weg gevreten naar de heerschappij."
+  },
+  "mob_tiers": {
+   "mortal": "Sterfelijk",
+   "veteran": "Veteraan",
+   "champion": "Kampioen",
+   "ascendant": "Opstijgend",
+   "divine": "Goddelijk",
+   "primordial": "Oerachtig"
   }
  }
 }

@@ -33,6 +33,12 @@ ITEM_KEYS = ["katana", "odachi", "dao", "jian", "dagger", "tanto", "spear", "nag
 SKILL_KEYS = ["deep_cut", "bleed_mastery", "executioner", "combo_flow", "wide_parry",
               "iron_posture", "deflect_riposte", "wall_kick", "air_step", "shadow_dash",
               "wall_run", "field_surgery", "thick_skin", "second_wind"]
+MOB_KEYS = ["conscript", "soldier", "raider", "marauder", "bone_archer", "legionary",
+            "berserker", "brute", "witch_hunter", "dread_knight", "siege_beast", "emberling",
+            "warden_of_ash", "iron_colossus", "revenant_lord", "shade", "hollow_king",
+            "wither_sovereign", "deep_warden", "titan_of_iron", "god_slayer", "elder_dragon",
+            "world_ender", "first_warden", "eternal_sovereign"]
+MOB_TIER_KEYS = ["mortal", "veteran", "champion", "ascendant", "divine", "primordial"]
 TIER_KEYS = ["novice", "adept", "master", "ascendant", "divine", "celestial", "absolute"]
 
 # Locales that get a hand-written translation. Anything not listed falls back to en_us,
@@ -75,6 +81,10 @@ def build(locale):
         d[f"skill.smmorpg.{k}"] = t("skills", k)
     for k in TIER_KEYS:
         d[f"training.smmorpg.tier.{k}"] = t("tiers", k)
+    for k in MOB_KEYS:
+        d[f"mob.smmorpg.{k}"] = t("mobs", k)
+    for k in MOB_TIER_KEYS:
+        d[f"tier.smmorpg.{k}"] = t("mob_tiers", k)
     for k in ["offense", "defense", "movement", "survival"]:
         d[f"skill.smmorpg.category.{k}"] = t("categories", k)
 
@@ -159,6 +169,8 @@ UI_KEYS = {
     "update_restarting": "update.smmorpg.restarting",
     "update_manual_restart": "update.smmorpg.manual_restart",
     "update_pending_button": "update.smmorpg.pending_button",
+    "lord_prefix": "mob.smmorpg.lord_prefix",
+    "msg_lord_born": "msg.smmorpg.lord_born",
 }
 
 

@@ -243,6 +243,49 @@ and 24 blocks of cleared headroom for air jumps and wall runs. 32 across is deli
 small enough that a fight stays a fight rather than a chase, wide enough that a dash still
 means something. Walking out past the wall ends the session.
 
+### What comes at you
+
+Opponents come from a tiered roster (`mob/MobRoster.java`), and two rules govern all of it.
+**Nothing in it burns in daylight**, because a fight decided by the sunrise is a fight you
+did not win. And **nothing in it removes itself** — no creepers, nothing that ends the
+exchange by ceasing to exist, because there is nothing to learn from that.
+
+The table climbs with the difficulty band, and the band decides what walks in rather than
+just how much health it has:
+
+| Tier | From band | What you fight |
+|---|---|---|
+| Mortal | 0 | Conscripts, soldiers, raiders, marauders |
+| Veteran | 2 | Legionaries in plate, berserkers, brutes |
+| Champion | 5 | Dread knights, siege beasts, wardens of ash |
+| Ascendant | 9 | Iron colossi, revenant lords, shades, hollow kings |
+| Divine | 14 | Wither sovereigns, deep wardens, god slayers |
+| Primordial | 20 | Elder dragons, world enders, eternal sovereigns |
+
+A band still fields the ranks below it, just half as often per step down — a wave of nothing
+but Primordials is a spectacle, a wave of champions with a dragon in it is a fight.
+
+Each opponent carries a **level** and a tier, shown in its name, and gear is most of what
+makes a husk read as a soldier rather than a husk: leather and stone for conscripts,
+chainmail and a shield for soldiers, netherite and an axe for warlords.
+
+### Gluttony — monsters that grow by eating
+
+A monster that kills another monster eats it, and what it eats it becomes. Devouring **its
+own kind counts double**: a thing that turns on its own is the one that gets somewhere.
+Enough of it and it levels; enough levels and it climbs a tier; past level 24 it becomes a
+**Lord** — renamed, bolded, and a genuinely different fight from the thing that walked in.
+Evolving heals proportionally rather than fully, so growing stronger mid-fight does not undo
+the fight you have already won.
+
+This runs everywhere, not only in the arena. Naturally spawned monsters are given a tier and
+a level from how far out they spawned, so the map has a gradient instead of one flat threat.
+Leave a field of monsters alone long enough and something in it will have eaten the rest by
+the time you come back — the world does not wait politely at the difficulty you left it.
+
+All three parts are switchable under `[monsters]` in the config: `enableDevouring`,
+`levelWorldMobs` and `preventDaylightBurning`.
+
 The arena is only ever built in that dedicated world — pressing the button inside your own
 survival world will never rearrange it. 100% is a fair fight; past that every
 100 points is another band, and damage compounds per band rather than adding, so each band

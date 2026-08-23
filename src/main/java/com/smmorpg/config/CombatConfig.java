@@ -39,6 +39,11 @@ public final class CombatConfig {
     // --- textures ---
     public final ModConfigSpec.IntValue decalResolution;
 
+    // --- monsters ---
+    public final ModConfigSpec.BooleanValue enableDevouring;
+    public final ModConfigSpec.BooleanValue levelWorldMobs;
+    public final ModConfigSpec.BooleanValue preventDaylightBurning;
+
     // --- compatibility ---
     public final ModConfigSpec.BooleanValue enforceModSettings;
     public final ModConfigSpec.BooleanValue disableEpicFightComputeShader;
@@ -74,6 +79,20 @@ public final class CombatConfig {
         holyChance = b.defineInRange("holyChance", 0.045D, 0.0D, 1.0D);
         cursedChance = b.defineInRange("cursedChance", 0.055D, 0.0D, 1.0D);
         maxAffixesPerItem = b.defineInRange("maxAffixesPerItem", 4, 0, 8);
+        b.pop();
+
+        b.push("monsters");
+        enableDevouring = b.comment("Monsters that kill monsters grow from it, and eating",
+                        "their own kind counts double. Enough of it and they evolve,",
+                        "climb a tier, and eventually become Lords.")
+                .define("enableDevouring", true);
+        levelWorldMobs = b.comment("Give naturally spawned mobs a tier and a level too,",
+                        "scaled to how far from spawn they are. Off means only the",
+                        "training arena's opponents are managed.")
+                .define("levelWorldMobs", true);
+        preventDaylightBurning = b.comment("Stop managed monsters burning up at dawn.",
+                        "A fight decided by the sunrise is a fight you did not win.")
+                .define("preventDaylightBurning", true);
         b.pop();
 
         b.push("compatibility");

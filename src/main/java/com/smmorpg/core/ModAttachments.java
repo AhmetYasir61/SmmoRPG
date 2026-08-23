@@ -3,6 +3,7 @@ package com.smmorpg.core;
 import com.smmorpg.SmmoRPG;
 import com.smmorpg.capability.PlayerProgress;
 import com.smmorpg.combat.CombatState;
+import com.smmorpg.mob.MobData;
 import com.smmorpg.skill.SkillData;
 import com.smmorpg.wound.WoundData;
 import net.neoforged.neoforge.attachment.AttachmentType;
@@ -30,6 +31,15 @@ public final class ModAttachments {
     /** Live combat state (posture, stamina, parry timers). Not saved — rebuilt each session. */
     public static final Supplier<AttachmentType<CombatState>> COMBAT = REGISTRY.register(
             "combat", () -> AttachmentType.builder(CombatState::new).build());
+
+    /**
+     * What a mob has become: its archetype, tier, level and how much it has devoured.
+     * Saved, because an evolved Lord that reverts on chunk reload is not an evolution.
+     */
+    public static final Supplier<AttachmentType<MobData>> MOB = REGISTRY.register(
+            "mob", () -> AttachmentType.builder(() -> MobData.NONE)
+                    .serialize(MobData.CODEC)
+                    .build());
 
     /** Unlocked skills and their ranks. Persists and survives death. */
     public static final Supplier<AttachmentType<SkillData>> SKILLS = REGISTRY.register(
