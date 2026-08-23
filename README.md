@@ -128,11 +128,30 @@ Built and working: accounts, the offline queue and local mirror, Elo, ranks, que
 2v2 match flow with forfeits and timeouts, coin rewards, the Tebex delivery pipeline, manual
 pickup, durability and repair rules, and the server↔client account sync.
 
-**Not built yet:** the main-menu screens for the market, the vault, the leaderboard and the
-queue. The systems underneath them all work and are reachable by command today; the screens
-are a display layer on top of flows that already run, which is a much smaller piece of work
-than building both at once. Also still to come: the vault's trash and deposit slots as an
-actual container UI, and kit loadouts drawn from the vault.
+### The hub
+
+A full page on the title screen, before you have loaded anything: **Profile**, **Vault**,
+**Store**, **Ranked** and **Play**. It is where an account lives — rank, rating, record,
+currency, what the vault is holding — somewhere you can read it without first joining a
+world.
+
+The hub opens whether a server is reachable or not. Without one it shows the last account a
+server sent, marked as remembered rather than live, because a menu that refuses to open when
+the network is down is a menu you cannot rely on. The cache is stored in
+`config/smmorpg/profile-cache.json` and is never trusted by anything: editing it changes
+what your own title screen says and nothing else, since the server has never read it.
+
+Actions that are server-side by definition say so instead of pretending. A queue cannot pair
+you with anyone from a menu that is not connected to anything, so the queue buttons tell you
+to join a server rather than failing silently.
+
+The vault page draws wear on every slot, which is the point of a vault that preserves
+damage — you can see what came back worn and decide what to repair before taking it out.
+
+**Not built yet:** the vault's trash and deposit slots as an in-game container, kit loadouts
+drawn from the vault, and buying with coins from the store page (the currency and the
+delivery pipeline both work; the purchase button needs a packet). Real-money purchases
+already work end to end through Tebex.
 
 ## Settings this pack holds for you
 

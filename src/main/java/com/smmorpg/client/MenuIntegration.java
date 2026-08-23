@@ -59,6 +59,14 @@ public final class MenuIntegration {
             }
         }
 
+        // The hub is the mod's front door, so it gets a full-width button in the stack
+        // rather than a square icon off to the side.
+        event.addListener(Button.builder(Component.translatable("hub.smmorpg.title"),
+                        b -> net.minecraft.client.Minecraft.getInstance()
+                                .setScreen(new com.smmorpg.client.menu.HubScreen(title)))
+                .bounds(anchorX, anchorY + 72, 200, 20)
+                .build());
+
         // A square button, deliberately the same height as the row it sits on.
         event.addListener(Button.builder(Component.translatable("training.smmorpg.button_short"),
                         b -> net.minecraft.client.Minecraft.getInstance()

@@ -21,6 +21,8 @@ public final class ClientPacketHandler {
 
     public static void onAccountSync(com.smmorpg.network.S2CAccountSync payload) {
         ClientState.account = payload.account();
+        // Remember it, so the hub has something real to show before the next world loads.
+        com.smmorpg.client.menu.ProfileCache.accept(payload.account());
     }
 
     public static void onSkillSync(com.smmorpg.network.S2CSkillSync payload) {
