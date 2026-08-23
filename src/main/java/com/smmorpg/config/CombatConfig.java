@@ -3,16 +3,16 @@ package com.smmorpg.config;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 
-/** Every knob of the combat overhaul. Tuned for "realistic" out of the box. */
+/**
+ * SmmoRPG's own knobs.
+ *
+ * <p>Nothing here touches how combat plays or where the camera sits — those belong to Epic
+ * Fight and Real Camera and are configured in their own files. What is tunable here is the
+ * layer this mod adds: how hard a blow is felt, how badly it bleeds, and how loot rolls.
+ */
 public final class CombatConfig {
     public static final ModConfigSpec SPEC;
     public static final CombatConfig CFG;
-
-    // --- view ---
-    public final ModConfigSpec.BooleanValue fpsIsDefault;
-    public final ModConfigSpec.BooleanValue allowTpsToggle;
-    public final ModConfigSpec.BooleanValue renderFirstPersonBody;
-    public final ModConfigSpec.DoubleValue baseFov;
 
     // --- feedback ---
     public final ModConfigSpec.DoubleValue cameraShakeScale;
@@ -40,15 +40,6 @@ public final class CombatConfig {
     public final ModConfigSpec.IntValue decalResolution;
 
     private CombatConfig(ModConfigSpec.Builder b) {
-        b.push("view");
-        fpsIsDefault = b.comment("First-person is the primary mode; TPS is only a toggle.")
-                .define("fpsIsDefault", true);
-        allowTpsToggle = b.define("allowTpsToggle", true);
-        renderFirstPersonBody = b.comment("Render the full player body in first person (arms, torso, legs).")
-                .define("renderFirstPersonBody", true);
-        baseFov = b.defineInRange("baseFov", 78.0D, 30.0D, 130.0D);
-        b.pop();
-
         b.push("feedback");
         cameraShakeScale = b.comment("0 disables shake, 1 is realistic, >1 is cinematic.")
                 .defineInRange("cameraShakeScale", 1.0D, 0.0D, 4.0D);

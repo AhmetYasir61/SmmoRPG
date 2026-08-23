@@ -39,18 +39,8 @@ public class AccessoryItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> lines, TooltipFlag flag) {
-        GearData data = stack.get(ModDataComponents.GEAR.get());
+        // Only the slot; the rolled affixes are added for every stack by GearTooltip.
         lines.add(Component.translatable("tooltip.smmorpg.slot." + slot.name().toLowerCase())
                 .withStyle(ChatFormatting.DARK_AQUA));
-        if (data == null) return;
-        lines.add(Component.translatable(data.tier().translationKey()).withStyle(data.tier().color()));
-        for (RolledAffix r : data.affixes()) {
-            lines.add(Component.translatable(r.type().translationKey(), r.percent())
-                    .withStyle(switch (r.type().alignment()) {
-                        case HOLY -> ChatFormatting.YELLOW;
-                        case CURSED -> ChatFormatting.DARK_RED;
-                        case NEUTRAL -> ChatFormatting.GRAY;
-                    }));
-        }
     }
 }

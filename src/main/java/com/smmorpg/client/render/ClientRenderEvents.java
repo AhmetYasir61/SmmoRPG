@@ -2,8 +2,6 @@ package com.smmorpg.client.render;
 
 import com.smmorpg.SmmoRPG;
 import com.smmorpg.client.ClientState;
-import com.smmorpg.client.render.AnimationApplier;
-import com.smmorpg.client.render.FirstPersonBodyRenderer;
 import com.smmorpg.combat.HitLocation;
 import com.smmorpg.wound.WoundData;
 import net.minecraft.client.model.HumanoidModel;
@@ -26,75 +24,6 @@ public final class ClientRenderEvents {
 
     /** Remembers what we hid so we can restore it after the entity is drawn. */
     private static final java.util.Map<ModelPart, Boolean> HIDDEN = new java.util.IdentityHashMap<>();
-
-    /**
-     * Drives the third-person rig from the keyframed animation the entity is actually
-     * playing — the same clip, at the same time index, that the server used to decide when
-     * the blade was live. What you see and what hits cannot drift apart, because they are
-     * reading one timeline.
-     *
-     * <p>This runs off NeoForge's own event rather than a mixin into PlayerRenderer#render:
-     * the event fires at exactly the point a mixin would have injected, and the loader
-     * guarantees it across versions where a method signature might not survive.
-     */
-    @SubscribeEvent
-    public static void onRenderPlayer(net.neoforged.neoforge.client.event.RenderPlayerEvent.Pre event) {
-        var player = event.getEntity();
-        var model = event.getRenderer().getModel();
-
-        AnimationApplier.apply(player, model, event.getPartialTick(),
-                AnimationApplier.weightFor(player, event.getPartialTick()));
-
-        // PlayerRenderer#render calls setAllVisible(true) before firing this event, so the
-        // head has to be taken off here — anywhere earlier is simply overwritten.
-        if (FirstPersonBodyRenderer.renderingFirstPersonBody) {
-            headVisible = model.head.visible;
-            hatVisible = model.hat.visible;
-            model.head.visible = false;
-            model.hat.visible = false;
-            // Collapsing the scale as well takes out anything drawn *onto* the head —
-            // a worn block, a helmet — which the visibility flag alone does not reach.
-            model.head.xScale = model.head.yScale = model.head.zScale = 0.0F;
-            headHidden = true;
-        }
-    }
-
-    /** Puts the head back the moment the first-person pass is done with it. */
-    @SubscribeEvent
-    public static void onRenderPlayerPost(net.neoforged.neoforge.client.event.RenderPlayerEvent.Post event) {
-        if (!headHidden) return;
-        headHidden = false;
-
-        var model = event.getRenderer().getModel();
-        model.head.visible = headVisible;
-        model.hat.visible = hatVisible;
-        model.head.xScale = model.head.yScale = model.head.zScale = 1.0F;
-    }
-
-    /**
-     * Restores the head if the Post event never arrived — another mod cancelling the Pre
-     * event would otherwise leave the player permanently decapitated for everyone.
-     */
-    public static void restoreHeadIfHidden(net.minecraft.client.model.PlayerModel<?> model) {
-        if (!headHidden || model == null) return;
-        headHidden = false;
-        model.head.visible = headVisible;
-        model.hat.visible = hatVisible;
-        model.head.xScale = model.head.yScale = model.head.zScale = 1.0F;
-    }
-
-    private static boolean headHidden;
-    private static boolean headVisible;
-    private static boolean hatVisible;
-
-    /** Mobs animate through the very same clips; nothing here is player-only. */
-    @SubscribeEvent
-    public static void onRenderLivingPose(RenderLivingEvent.Pre<?, ?> event) {
-        if (event.getEntity() instanceof net.minecraft.world.entity.player.Player) return;
-        if (!(event.getRenderer().getModel() instanceof HumanoidModel<?> model)) return;
-        AnimationApplier.apply(event.getEntity(), model, event.getPartialTick(),
-                AnimationApplier.weightFor(event.getEntity(), event.getPartialTick()));
-    }
 
     @SubscribeEvent
     public static void onRenderPre(RenderLivingEvent.Pre<?, ?> event) {

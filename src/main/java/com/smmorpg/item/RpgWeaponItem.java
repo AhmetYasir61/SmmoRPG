@@ -35,30 +35,4 @@ public class RpgWeaponItem extends Item {
         return Component.empty().append(base).withStyle(data.tier().color());
     }
 
-    @Override
-    public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> lines, TooltipFlag flag) {
-        GearData data = stack.get(ModDataComponents.GEAR.get());
-        if (data == null) return;
-
-        lines.add(Component.translatable(data.tier().translationKey()).withStyle(data.tier().color()));
-        lines.add(Component.translatable("tooltip.smmorpg.item_level", data.itemLevel())
-                .withStyle(ChatFormatting.DARK_GRAY));
-
-        for (RolledAffix r : data.affixes()) {
-            ChatFormatting color = switch (r.type().alignment()) {
-                case HOLY -> ChatFormatting.YELLOW;
-                case CURSED -> ChatFormatting.DARK_RED;
-                case NEUTRAL -> ChatFormatting.GRAY;
-            };
-            lines.add(Component.translatable(r.type().translationKey(), r.percent()).withStyle(color));
-        }
-
-        if (data.cursed()) {
-            lines.add(Component.translatable("tooltip.smmorpg.cursed_warning",
-                    String.format("%.1f", data.lifeCostPerHit())).withStyle(ChatFormatting.DARK_RED));
-        }
-        if (data.powerOf(Affix.UNDEAD_BANE) > 0) {
-            lines.add(Component.translatable("tooltip.smmorpg.holy_blessing").withStyle(ChatFormatting.GOLD));
-        }
-    }
 }

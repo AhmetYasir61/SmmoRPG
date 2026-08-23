@@ -1,20 +1,22 @@
 package com.smmorpg.npc;
 
-import com.smmorpg.core.ModAttachments;
-import com.smmorpg.movement.MovementSystem;
 import com.smmorpg.training.Difficulty;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * The behaviour that makes a training opponent worth fighting.
+ * The layer that makes a training opponent worth fighting.
  *
- * <p>This is a decision layer on top of whatever mob it is attached to, not a new entity
- * type: it reads distance, the target's recovery frames and its own style, then drives
- * movement and attacks directly. It uses the same {@link MovementSystem} the player does,
- * so a bot can wall-kick, dash and air-jump exactly the way you can — there is no separate
- * set of moves that only the AI is allowed.
+ * <p>Epic Fight already gives every mob a real moveset and the combat goals to use it, so
+ * this deliberately does not swing anything. What it adds is the part Epic Fight leaves to
+ * the mob's own AI: <em>where</em> to stand and <em>when</em> to press. A counter-fighter
+ * hangs at the edge of your reach and waits for a whiff; a flanker never fights from where
+ * you last saw it; a skirmisher only closes while you are recovering.
+ *
+ * <p>Attacks are handed to Epic Fight by keeping the mob in range and aimed. That is what
+ * keeps a bot honest: its wind-ups are the same animations yours are, so they are readable,
+ * and its damage lands on the frame yours would.
  */
 public class CombatBotBrain {
 
@@ -23,7 +25,6 @@ public class CombatBotBrain {
     private final net.minecraft.util.RandomSource rng;
 
     private int reactionTimer;
-    private int commitTimer;
     private int circleDirection = 1;
     private int repositionTimer;
 
@@ -40,83 +41,41 @@ public class CombatBotBrain {
     public void tick(Mob self, LivingEntity target) {
         if (target == null || !target.isAlive()) return;
 
-        MovementSystem.tick(self);
-
         if (reactionTimer > 0) { reactionTimer--; return; }
         reactionTimer = difficulty.reactionTicks();
 
-        double dist = self.distanceTo(target);
-        float aggression = Math.min(0.99F, style.aggression() * difficulty.aggression() * 1.4F);
-        float acrobatics = Math.min(1.0F, style.acrobatics() * difficulty.acrobatics() * 1.5F);
-
+        self.setTarget(target);
         self.getLookControl().setLookAt(target, 60.0F, 60.0F);
 
-        // --- decide the approach ---
-        if (dist > style.preferredRange() * 1.4D) {
-            close(self, target, acrobatics);
-        } else if (dist < style.preferredRange() * 0.55D && rng.nextFloat() > aggression) {
-            disengage(self, target, acrobatics);
-        } else {
-            circle(self, target, acrobatics);
-        }
+        double dist = self.distanceTo(target);
+        double preferred = style.preferredRange();
+        float aggression = Math.min(0.99F, style.aggression() * difficulty.aggression() * 1.4F);
 
-        // --- decide the attack ---
-        if (commitTimer > 0) { commitTimer--; return; }
-
+        // The one read that matters: a target mid-swing is a target that cannot answer.
         boolean targetRecovering = target.swinging && target.swingTime > 2;
-        float attackChance = aggression * (targetRecovering ? 1.6F : 1.0F);
-        if (dist <= style.preferredRange() * 1.1D && rng.nextFloat() < attackChance) {
-            // The bot runs the same moveset the player does, so its wind-up is readable and
-            // its damage lands on the same frame yours would. Nothing here is AI-only.
-            var animation = com.smmorpg.anim.AnimationHooks.of(self);
-            boolean heavy = rng.nextFloat() < 0.28F;
-            var clip = animation.attack(heavy);
-            if (clip != null) {
-                self.swing(net.minecraft.world.InteractionHand.MAIN_HAND);
-                com.smmorpg.network.Net.broadcastAnimation(self, clip.id(), 2.0F);
-                commitTimer = (int) clip.durationTicks();
-            }
-        }
+        if (targetRecovering) aggression = Math.min(0.99F, aggression * 1.6F);
 
-        // --- decide whether to guard ---
-        if (rng.nextFloat() < difficulty.parryChance() * style.patience()) {
-            self.getData(ModAttachments.COMBAT.get()).openParryWindow(4);
+        if (dist > preferred * 1.4D) {
+            close(self, target);
+        } else if (dist < preferred * 0.55D && rng.nextFloat() > aggression) {
+            disengage(self, target);
+        } else {
+            circle(self, target);
         }
     }
 
-    /** Closes distance, using vertical movement when the style and difficulty allow it. */
-    private void close(Mob self, LivingEntity target, float acrobatics) {
-        Vec3 to = target.position().subtract(self.position());
+    private void close(Mob self, LivingEntity target) {
         self.getNavigation().moveTo(target, difficulty.speedMultiplier());
-
-        if (rng.nextFloat() < acrobatics * 0.5F) {
-            // A dash straight down the approach line; this is what makes a high-difficulty
-            // opponent cover ten blocks before you have finished a swing.
-            MovementSystem.tryDash(self, 1.0F, 0.0F, !self.onGround());
-        }
-        if (!self.onGround() && rng.nextFloat() < acrobatics * 0.4F) {
-            if (!MovementSystem.tryWallKick(self)) MovementSystem.tryAirJump(self);
-        }
-        if (to.y > 1.5D && rng.nextFloat() < acrobatics * 0.6F) {
-            // Target is above: go up the wall rather than around.
-            MovementSystem.tryWallRun(self);
-            MovementSystem.tryAirJump(self);
-        }
     }
 
-    /** Backs off, preferring a dash out over walking backwards. */
-    private void disengage(Mob self, LivingEntity target, float acrobatics) {
-        if (rng.nextFloat() < acrobatics) {
-            MovementSystem.tryDash(self, -1.0F, rng.nextBoolean() ? 1.0F : -1.0F, !self.onGround());
-            return;
-        }
+    private void disengage(Mob self, LivingEntity target) {
         Vec3 away = self.position().subtract(target.position()).normalize().scale(4.0D);
         self.getNavigation().moveTo(self.getX() + away.x, self.getY(), self.getZ() + away.z,
                 difficulty.speedMultiplier());
     }
 
-    /** Strafes around the target, changing direction on its own schedule. */
-    private void circle(Mob self, LivingEntity target, float acrobatics) {
+    /** Strafes around the target, changing direction on its own schedule rather than yours. */
+    private void circle(Mob self, LivingEntity target) {
         if (--repositionTimer <= 0) {
             repositionTimer = 20 + rng.nextInt(30);
             circleDirection = rng.nextBoolean() ? 1 : -1;
@@ -125,9 +84,5 @@ public class CombatBotBrain {
         Vec3 side = new Vec3(-to.z, 0.0D, to.x).scale(circleDirection * 2.5D);
         Vec3 goal = self.position().add(side);
         self.getNavigation().moveTo(goal.x, goal.y, goal.z, difficulty.speedMultiplier());
-
-        if (rng.nextFloat() < acrobatics * 0.25F) {
-            MovementSystem.tryDash(self, 0.2F, circleDirection, !self.onGround());
-        }
     }
 }

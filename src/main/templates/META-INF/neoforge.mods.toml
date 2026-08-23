@@ -9,9 +9,6 @@ displayName="${mod_name}"
 authors="${mod_authors}"
 description='''${mod_description}'''
 
-[[mixins]]
-config="smmorpg.mixins.json"
-
 [[dependencies.${mod_id}]]
     modId="neoforge"
     type="required"
@@ -24,4 +21,60 @@ config="smmorpg.mixins.json"
     type="required"
     versionRange="[${minecraft_version},1.22)"
     ordering="NONE"
+    side="BOTH"
+
+# Epic Fight owns combat: animations, movesets, colliders, skills, battle mode and the
+# mob patches. SmmoRPG is the RPG and gore layer on top of it and cannot run without it.
+[[dependencies.${mod_id}]]
+    modId="epicfight"
+    type="required"
+    versionRange="[21.17,)"
+    ordering="AFTER"
+    side="BOTH"
+
+# ParCool owns traversal — wall runs, wall jumps, rolls, vaults.
+[[dependencies.${mod_id}]]
+    modId="parcool"
+    type="optional"
+    versionRange="[3.4.2,)"
+    ordering="AFTER"
+    side="BOTH"
+
+# Bridges ParCool's movement into Epic Fight's combat states.
+[[dependencies.${mod_id}]]
+    modId="epicparcool"
+    type="optional"
+    versionRange="[21,)"
+    ordering="AFTER"
+    side="BOTH"
+
+# RealCamera owns the first-person body and where the camera sits inside it.
+[[dependencies.${mod_id}]]
+    modId="realcamera"
+    type="optional"
+    versionRange="[0.7,)"
+    ordering="AFTER"
+    side="CLIENT"
+
+# Lock-on targeting.
+[[dependencies.${mod_id}]]
+    modId="betterlockon"
+    type="optional"
+    versionRange="[2,)"
+    ordering="AFTER"
+    side="CLIENT"
+
+# Weapon packs. Their weapons roll SmmoRPG affixes like any other.
+[[dependencies.${mod_id}]]
+    modId="wom"
+    type="optional"
+    versionRange="[2,)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="p1nero_bow"
+    type="optional"
+    versionRange="[21,)"
+    ordering="AFTER"
     side="BOTH"

@@ -18,3 +18,7 @@ bin/
 # Generated impact sounds — produced by tools/generate_impact_sounds.py, not committed
 src/main/resources/assets/smmorpg/sounds/*.ogg
 src/main/resources/assets/smmorpg/sounds/*.wav
+
+# Third-party mod jars this one builds on. Most are All Rights Reserved and cannot be
+# redistributed; see README for the list and where each one comes from.
+libs/

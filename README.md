@@ -1,13 +1,72 @@
-# SmmoRPG — Ultra Realistic Fighting
+# SmmoRPG — RPG and Gore Layer for Epic Fight
 
-A single NeoForge mod (Minecraft 1.21.1, Java 21) that turns Minecraft into an FPS-first
-melee MMORPG: Sekiro-style classes, level and loot progression, holy and cursed gear,
-locational wounds that come from where the blade actually went, 60 impact sounds, camera
-shake and recoil you can feel, a training arena that scales to absurdity, and an operator
-studio for retuning the whole feel while the server is running.
+A NeoForge mod for Minecraft 1.21.1 that turns an Epic Fight setup into an MMORPG: classes
+chosen on first join, levels and stats, loot with holy and cursed affixes that roll onto
+*any* weapon, a training arena that scales to absurdity — and, underneath all of it, wounds.
+Cuts that land where the blade actually met the body, bleed, and slowly close.
 
-**No external mods. No third-party libraries.** Everything is built on Minecraft, NeoForge
-and the JDK. The only "library" the mod uses is its own.
+**SmmoRPG does not implement combat.** It sits on top of mods that already do it better:
+
+| Mod | What it owns here |
+|---|---|
+| **Epic Fight** (required) | Animations, movesets, colliders, skills, battle mode, mob combat |
+| **ParCool** | Traversal — wall runs, wall jumps, rolls, vaults |
+| **Epic Parcool** | Bridges ParCool's movement into Epic Fight's combat states |
+| **Real Camera** | The first-person body and where the camera sits inside it |
+| **Better Lock On** | Lock-on targeting |
+| **Weapons of Miracles** | Weapons, which roll SmmoRPG affixes like anything else |
+| **P1nero's Epic Fight Bow** | Bow animations |
+
+What SmmoRPG adds on top:
+
+- **Locational wounds.** Epic Fight knows exactly where its collider met the target;
+  SmmoRPG turns that point into a cut on that body part, at that angle, of that depth.
+- **60 impact sounds**, chosen by what the blade met and where — 8 materials × 7 body
+  locations, plus parry, whiff, decapitate and dismember.
+- **Bleeding, dismemberment, and wounds that close gradually**, so a regenerating mob
+  visibly knits itself back together instead of snapping from shredded to clean.
+- **Classes, levels, stats** and a skill tree.
+- **Loot with rarity and holy/cursed affixes**, rolled onto any weapon in the game.
+- **A training arena** at 1%–100000% difficulty with divine bands past 100%.
+- **Camera shake and recoil** for hits, landings and sprinting.
+- Server-pushed content, an auto-update flow, and a server browser.
+
+---
+
+## Installing
+
+Put these in `mods/` alongside SmmoRPG. Epic Fight is required; the rest are optional but
+the mod is designed around all of them:
+
+```
+epicfight            21.17.3.1      (required)
+parcool              3.4.3.1
+epicparcool          21.0.0
+realcamera           0.7.8-beta     (+ cloth_config, optional but recommended)
+betterlockon         2.0.8
+wom                  2.0.176
+p1nero_bow           21.16.1.0
+```
+
+## Licensing — read this before distributing
+
+Epic Fight's code is **GPL-3.0**. SmmoRPG links against it, so a distributed build of the
+two together is a combined work and is expected to be GPL-3.0 as well. This mod is
+therefore licensed **GPL-3.0**, not MIT as it was before it depended on Epic Fight.
+
+ParCool is LGPL-3.0, which linking does not affect. Real Camera is MIT. Better Lock On,
+Weapons of Miracles, Epic Parcool and P1nero's Bow are **All Rights Reserved** — they are
+dependencies you install, and none of them may be redistributed inside a pack or a jar
+without their authors' permission. That is also why `libs/` is not committed.
+
+## Building
+
+The seven jars above go in `libs/`. They are `compileOnly` — never shaded into the output —
+and declared as real mod dependencies in `neoforge.mods.toml`.
+
+```bash
+gradle build          # jar lands in build/libs/
+```
 
 ---
 
@@ -88,20 +147,6 @@ The 60 are: every combination of 8 impact materials × 7 body locations (56), pl
 whiff, decapitate and dismember. A katana skimming a chainmail shoulder and the same katana
 splitting a bare skull are genuinely different sounds.
 
-### Verifying the mixins before you ship
-
-A mixin whose target signature has drifted does not fail at build time — it fails on the
-loading screen, which is the worst place to find out. `tools/verify_mixins.py` reads the
-targets straight out of the mixin sources and checks each one against the Minecraft jar the
-mod was compiled against:
-
-```bash
-gradle build && python3 tools/verify_mixins.py
-```
-
-It exits non-zero if anything is missing, so it can gate a release. Run it after any
-Minecraft or NeoForge version bump.
-
 ### Languages
 
 36 locales ship in `assets/smmorpg/lang/`. There is **no in-mod language menu on purpose**:
@@ -121,55 +166,20 @@ partial translation is still a valid, shippable file.
 
 ## What is in here
 
-### Animation — the thing that makes combat feel like combat
+### Wounds — the cut lands where the blade did
 
-Every attack is a real keyframed clip on the vanilla humanoid rig: `anim/Animations.java`
-holds 21 of them, authored as joint tracks in radians. The shape of an attack is always the
-same three beats — wind-up, strike, recovery — and the timing is what separates the weapons.
-A dagger's wind-up is two ticks; a kanabo's is nine. That difference is the entire reason
-the two feel different to hold.
+`integration/EpicFightBridge.java` listens to Epic Fight's `DealDamageEvent.Post` and reads
+`EpicFightDamageSource.getInitialPosition()` — the contact point of the collider that
+actually connected. `HitboxResolver.at` decides which body part that point fell inside and
+where on it, and the wound is opened there.
 
-**Damage happens when the blade arrives, not when you click.** Vanilla resolves an attack
-on the button press, which is why vanilla combat has no weight — the wind-up is decoration
-and the hit is already over before the arm has moved. Here each clip carries its own damage
-window, `AttackSweeper` sweeps the blade's swept volume against nearby entities for exactly
-as long as that window is open, and vanilla's click-attack is cancelled outright in battle
-mode. A heavy weapon can genuinely be walked out of. A fast one genuinely lands first.
+That is the whole point: cut a thigh low and you get a low gash across the thigh; follow
+through on a shoulder and you get one at the angle you actually swung. Nothing is authored,
+and because the position comes from the system that really swung the weapon, retuning an
+Epic Fight animation moves the cuts with it for free.
 
-**Movesets** (`anim/Moveset.java`) are why swapping weapons changes everything rather than a
-damage number. Each weapon class owns a combo chain, and chaining is just walking down it:
-an attack pressed inside the previous clip's cancel window advances the index, one pressed
-too early is buffered and replayed the moment it can be. Katanas run a three-hit chain
-ending in an iai draw; long swords run four; daggers alternate hands; polearms thrust then
-sweep with the butt end; two-handers have almost no light chain but their heavies land like
-a truck.
-
-**The hitbox follows the animation.** `AnimatedCollider` rebuilds the animated arm as a
-transform and hangs the weapon off the end of it, in the vanilla rig's own rotation order.
-That result feeds the blade trace, so retiming or reshaping a swing moves its hitbox with
-it — there is nothing to keep in sync by hand.
-
-**Mobs use all of it.** The joints are the vanilla humanoid ones, so one clip plays on a
-player, a zombie and a piglin without a per-entity skeleton. Every mob in the world animates
-its swings, and the training bots run the same movesets you do — their wind-ups are readable
-and their damage lands on the frame yours would. Nothing is AI-only.
-
-**Battle mode** (`R`) switches between an over-the-shoulder combat stance and plain
-first-person for mining, the way the genre expects.
-
-### Combat — the cut is never pre-planned
-
-`combat/BladeTrace.java` samples the weapon edge's base and tip every tick while a swing is
-live, forming a swept ribbon through the world. When that ribbon crosses a body part, the
-crossing itself supplies the wound's position, its direction, its length and its depth.
-
-That is the whole point: cut a thigh low and you get a low, shallow gash across the thigh;
-follow through on a shoulder and you get a long, deep one at the angle you actually swung.
-Neither is authored anywhere. Change the animation in the studio panel and the cuts change
-with it, for free.
-
-`HitboxResolver` remains as a fallback for blows with no tracked swing (a projectile, a mob
-without a swing state, a dropped tick) so no hit is ever left without a location.
+When a blow has no collider behind it — a projectile, a skill — the bridge falls back to a
+ray from the attacker's eyes, so no hit is ever left without a location.
 
 ### Wounds, blood and healing
 
@@ -184,16 +194,6 @@ without a swing state, a dropped tick) so no hit is ever left without a location
 The decals are drawn at high resolution over otherwise vanilla-looking models — the world
 stays ordinary, the cuts are crisp.
 
-### FPS first, and the outside rig agrees
-
-`PoseState` is authored **once**, on the owning client, from raw input. It drives the local
-first-person body *and* is sent to every other client to drive the third-person rig. There
-is no second animation set that only other people see, so what you feel and what they see
-cannot drift apart.
-
-`FirstPersonBodyRenderer` draws your real model in first person — the same model everyone
-else sees, not a floating pair of hands.
-
 ### Feel
 
 - `CameraShake` — two detuned oscillators plus noise, trauma-squared so light hits are
@@ -201,13 +201,6 @@ else sees, not a floating pair of hands.
 - Hit-stop freezes the frame briefly on a solid connect.
 - Sprinting, landing and being hit all feed the same shake channel, so the whole game reads
   through one physical language.
-
-### Movement
-
-Wall kicks off **any** solid face (including a tree trunk), air jumps, directional dashes
-and wall runs. Uncapped for now and priced only by cooldowns and contact conditions — a
-stamina cost is deliberately left out until the feel is settled. Requests come from the
-client, but the server re-checks every condition before granting them.
 
 ### Training arena
 
@@ -232,13 +225,6 @@ and acrobatics all scale, and higher bands field more of them at once.
 model JSON and texture PNG. `ContentSync` ships it to every client on join and again the
 moment the registry changes, so a weapon added to a live server appears in players' hands
 with nobody reinstalling anything. Textures are uploaded as dynamic textures at runtime.
-
-### Animation studio (operators only)
-
-`F9` opens it if you have permission level 2. Every slider edits one field of one animation
-profile, sends it to the server, and the server broadcasts it — visible on the next frame
-for everyone. Duration, strike timing, arm swing, body twist, lean, recovery easing and
-camera kick.
 
 ### Auto-update
 
@@ -288,16 +274,11 @@ be written later without touching internals.
 
 | Key | Action |
 |---|---|
-| Left Alt | Parry |
-| F5 | Toggle FPS / TPS |
+
 | K | Character screen |
 | N | Skill tree |
-| Left Ctrl | Dash |
-| R | Battle / mining mode |
-| Left click | Light attack (advances the combo) |
-| Shift + right click | Heavy attack |
-| F9 | Animation studio (operators) |
-| Space (airborne) | Wall kick, or air jump if nothing to kick off |
+
+| T | Training arena |
 
 ---
 

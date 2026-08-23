@@ -33,8 +33,6 @@ ITEM_KEYS = ["katana", "odachi", "dao", "jian", "dagger", "tanto", "spear", "nag
 SKILL_KEYS = ["deep_cut", "bleed_mastery", "executioner", "combo_flow", "wide_parry",
               "iron_posture", "deflect_riposte", "wall_kick", "air_step", "shadow_dash",
               "wall_run", "field_surgery", "thick_skin", "second_wind"]
-ANIM_KEYS = ["slash_down", "slash_rising", "slash_horizontal", "thrust", "parry", "guard",
-             "stagger", "draw_bow", "sprint", "dash", "wall_kick", "air_jump", "land_heavy"]
 TIER_KEYS = ["novice", "adept", "master", "ascendant", "divine", "celestial", "absolute"]
 
 # Locales that get a hand-written translation. Anything not listed falls back to en_us,
@@ -75,8 +73,6 @@ def build(locale):
         d[f"affix.smmorpg.{k}"] = t("affixes", k)
     for k in SKILL_KEYS:
         d[f"skill.smmorpg.{k}"] = t("skills", k)
-    for k in ANIM_KEYS:
-        d[f"studio.smmorpg.anim.{k}"] = t("anims", k)
     for k in TIER_KEYS:
         d[f"training.smmorpg.tier.{k}"] = t("tiers", k)
     for k in ["offense", "defense", "movement", "survival"]:
@@ -113,8 +109,6 @@ UI_KEYS = {
     "stat_agility": "stat.smmorpg.agility",
     "stat_vitality": "stat.smmorpg.vitality",
     "stat_spirit": "stat.smmorpg.spirit",
-    "hud_stagger": "hud.smmorpg.stagger",
-    "hud_parry": "hud.smmorpg.parry_window",
     "hud_severed": "hud.smmorpg.severed",
     "msg_level_up": "msg.smmorpg.level_up",
     "msg_holy_drop": "msg.smmorpg.holy_drop",
@@ -129,14 +123,9 @@ UI_KEYS = {
     "attr_bleed": "attribute.smmorpg.bleed_resistance",
     "attr_posture": "attribute.smmorpg.posture",
     "attr_regen": "attribute.smmorpg.wound_regeneration",
-    "key_parry": "key.smmorpg.parry",
-    "key_view": "key.smmorpg.toggle_view",
     "key_character": "key.smmorpg.character",
-    "key_sheathe": "key.smmorpg.sheathe",
-    "key_dash": "key.smmorpg.dash",
     "key_skills": "key.smmorpg.skills",
-    "key_studio": "key.smmorpg.studio",
-    "key_battle_mode": "key.smmorpg.battle_mode",
+    "key_training": "key.smmorpg.training",
     "training_title": "training.smmorpg.title",
     "training_button": "training.smmorpg.button",
     "training_button_short": "training.smmorpg.button_short",
@@ -155,9 +144,6 @@ UI_KEYS = {
     "servers_empty": "servers.smmorpg.empty",
     "servers_error": "servers.smmorpg.error",
     "servers_no_directory": "servers.smmorpg.no_directory",
-    "studio_title": "studio.smmorpg.title",
-    "studio_editing": "studio.smmorpg.editing",
-    "studio_live": "studio.smmorpg.live_note",
     "update_title": "update.smmorpg.title",
     "update_now": "update.smmorpg.update_now",
     "update_later": "update.smmorpg.later",

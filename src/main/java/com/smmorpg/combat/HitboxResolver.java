@@ -80,6 +80,25 @@ public final class HitboxResolver {
         return new Result(best, bestPoint, u, v, swingAngle);
     }
 
+    /**
+     * Resolves a location from a point that is already known to be on the body — Epic
+     * Fight's collider contact position. No ray is needed: the point is the answer, and
+     * all that is left is deciding which part it fell inside.
+     */
+    public static Result at(LivingEntity target, Vec3 point) {
+        HitLocation best = null;
+        for (Map.Entry<HitLocation, AABB> e : partBoxes(target).entrySet()) {
+            if (e.getValue().contains(point)) { best = e.getKey(); break; }
+        }
+        // A contact point can sit a hair outside every box; the nearest part is then right.
+        if (best == null) best = nearestPart(target, point);
+
+        AABB part = partBoxes(target).get(best);
+        float u = clamp01((float) ((point.x - part.minX) / Math.max(1.0E-4D, part.getXsize())));
+        float v = clamp01((float) ((point.y - part.minY) / Math.max(1.0E-4D, part.getYsize())));
+        return new Result(best, point, u, v, 0.0F);
+    }
+
     private static HitLocation nearestPart(LivingEntity target, Vec3 point) {
         HitLocation best = HitLocation.TORSO;
         double bestDist = Double.MAX_VALUE;

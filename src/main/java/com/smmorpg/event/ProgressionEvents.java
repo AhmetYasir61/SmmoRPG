@@ -17,7 +17,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -25,18 +31,35 @@ import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /** Levelling, stat application and the level-scaled loot drop. */
 @EventBusSubscriber(modid = SmmoRPG.MOD_ID)
 public final class ProgressionEvents {
 
-    /** Weapons and accessories that can drop, rolled fresh every time. */
-    private static final List<java.util.function.Supplier<Item>> DROP_POOL = List.of(
-            ModItems.KATANA::get, ModItems.ODACHI::get, ModItems.DAO::get, ModItems.JIAN::get,
-            ModItems.DAGGER::get, ModItems.TANTO::get, ModItems.SPEAR::get, ModItems.NAGINATA::get,
-            ModItems.KANABO::get, ModItems.YUMI::get,
-            ModItems.RING::get, ModItems.AMULET::get, ModItems.OMAMORI::get, ModItems.TALISMAN::get);
+    /**
+     * What a kill can drop.
+     *
+     * <p>Deliberately not a fixed list of this mod's own items. Affixes are stamped onto a
+     * data component, so anything that swings — a vanilla sword, a Weapons of Miracles
+     * blade, an Epic Fight weapon from any pack — can carry them. The pool is built at
+     * runtime from every registered weapon, which means installing another weapon mod
+     * widens the loot table without a line of code here.
+     */
+    private static List<Item> dropPool(RandomSource rng) {
+        List<Item> pool = new ArrayList<>(ModItems.ALL.size());
+        for (var holder : ModItems.ALL) pool.add(holder.get());
+
+        // Anything the game considers a weapon is fair game to roll affixes onto.
+        for (Item item : BuiltInRegistries.ITEM) {
+            if (item instanceof SwordItem || item instanceof AxeItem || item instanceof TridentItem
+                    || item instanceof BowItem || item instanceof CrossbowItem) {
+                pool.add(item);
+            }
+        }
+        return pool;
+    }
 
     @SubscribeEvent
     public static void onKill(LivingDeathEvent event) {
@@ -72,7 +95,8 @@ public final class ProgressionEvents {
 
         float luck = (float) killer.getAttributeValue(Attributes.LUCK) + progress.spirit() * 0.02F;
         GearData data = LootRoller.rollGear(rng, progress.level(), luck);
-        ItemStack stack = new ItemStack(DROP_POOL.get(rng.nextInt(DROP_POOL.size())).get());
+        List<Item> pool = dropPool(rng);
+        ItemStack stack = new ItemStack(pool.get(rng.nextInt(pool.size())));
         LootRoller.apply(stack, data);
 
         dead.spawnAtLocation(stack);

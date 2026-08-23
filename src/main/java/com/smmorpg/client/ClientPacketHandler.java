@@ -1,10 +1,8 @@
 package com.smmorpg.client;
 
 import com.smmorpg.client.camera.CameraShake;
-import com.smmorpg.client.render.PoseState;
 import com.smmorpg.combat.HitLocation;
 import com.smmorpg.network.S2CImpactFeedback;
-import com.smmorpg.network.S2CPoseSync;
 import com.smmorpg.network.S2CProgressSync;
 import com.smmorpg.network.S2CWoundSync;
 import net.minecraft.client.Minecraft;
@@ -21,38 +19,8 @@ public final class ClientPacketHandler {
         ClientState.progress = payload.progress();
     }
 
-    public static void onPoseSync(S2CPoseSync payload) {
-        Minecraft mc = Minecraft.getInstance();
-        // The local player already drives its own pose from raw input; taking the server
-        // echo back would add a round-trip of latency to your own arms.
-        if (mc.player != null && payload.entityId() == mc.player.getId()) return;
-
-        PoseState pose = ClientState.pose(payload.entityId());
-        pose.set(payload.animation(), payload.frame(), payload.aimPitch(),
-                payload.leanX(), payload.leanZ(), payload.aiming(), payload.blocking());
-    }
-
     public static void onSkillSync(com.smmorpg.network.S2CSkillSync payload) {
         ClientState.skills = payload.data();
-    }
-
-    public static void onAnimationSync(com.smmorpg.network.S2CAnimationSync payload) {
-        // A studio edit lands here; the very next frame already animates with the new values.
-        payload.profiles().forEach(com.smmorpg.studio.AnimationLibrary::put);
-    }
-
-    public static void onPlayAnimation(com.smmorpg.network.S2CPlayAnimation payload) {
-        Minecraft mc = Minecraft.getInstance();
-        if (mc.level == null) return;
-        var entity = mc.level.getEntity(payload.entityId());
-        if (!(entity instanceof net.minecraft.world.entity.LivingEntity living)) return;
-
-        // The local player already started this clip on the input frame; replaying it here
-        // would restart the swing a round-trip late and visibly stutter it.
-        if (mc.player != null && payload.entityId() == mc.player.getId()) return;
-
-        com.smmorpg.anim.AnimationHooks.of(living)
-                .play(payload.clipId(), payload.blendTicks());
     }
 
     public static void onImpact(S2CImpactFeedback payload) {

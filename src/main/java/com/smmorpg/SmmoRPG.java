@@ -44,6 +44,12 @@ public class SmmoRPG {
 
         container.registerConfig(ModConfig.Type.COMMON, CombatConfig.SPEC);
 
+        // Epic Fight is a hard dependency, so it is always here — but registering from a
+        // FMLCommonSetupEvent rather than the constructor means its own registries have
+        // finished building before we hook them.
+        modBus.addListener(net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent.class,
+                event -> event.enqueueWork(com.smmorpg.integration.EpicFightBridge::register));
+
         LOGGER.info("SmmoRPG loaded: {} impact sounds indexed.", ModSounds.impactSoundCount());
     }
 

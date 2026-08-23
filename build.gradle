@@ -38,6 +38,19 @@ repositories {
     maven { url = 'https://maven.blamejared.com' }
 }
 
+/*
+ * The mods this one is built on top of live in libs/ rather than in a repository.
+ * Most of them are All-Rights-Reserved and cannot be redistributed, so they are not
+ * committed — see README for the list and where to get each one.
+ *
+ * compileOnly, not implementation: they must never be shaded into our jar. They are
+ * declared as real mod dependencies in neoforge.mods.toml and loaded by NeoForge.
+ */
+dependencies {
+    compileOnly fileTree(dir: 'libs', include: ['*.jar'])
+    additionalRuntimeClasspath fileTree(dir: 'libs', include: ['*.jar'])
+}
+
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
     var replaceProperties = [
         minecraft_version: minecraft_version, neo_version: neo_version,
