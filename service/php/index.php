@@ -38,6 +38,14 @@ const API_KEY = 'CHANGE-ME-to-a-long-random-string';
  */
 const DATA_DIR = __DIR__ . '/../../smmorpg_data';
 
+/**
+ * How long a server stays listed after its last heartbeat, in seconds.
+ *
+ * Long enough to survive a restart or a slow tick, short enough that a server that has
+ * actually gone away disappears from the list rather than sending players at nothing.
+ */
+const SERVER_TTL = 120;
+
 // ---------------------------------------------------------------------------
 // plumbing
 // ---------------------------------------------------------------------------
@@ -140,6 +148,72 @@ function writeAtomic(string $path, string $contents): void
 }
 
 // ---------------------------------------------------------------------------
+// server directory
+// ---------------------------------------------------------------------------
+
+function serverFile(): string
+{
+    return DATA_DIR . '/servers.json';
+}
+
+/** Every server that has checked in recently, oldest entries dropped. */
+function liveServers(): array
+{
+    $file = serverFile();
+    if (!is_file($file)) {
+        return [];
+    }
+
+    $all = json_decode((string) file_get_contents($file), true);
+    if (!is_array($all)) {
+        return [];
+    }
+
+    $now = time();
+    $live = [];
+    foreach ($all as $server) {
+        if (!is_array($server) || ($now - (int) ($server['seen'] ?? 0)) > SERVER_TTL) {
+            continue;
+        }
+        // 'seen' is bookkeeping; the client has no use for it.
+        unset($server['seen']);
+        $live[] = $server;
+    }
+
+    usort($live, fn($a, $b) => ($b['players'] ?? 0) <=> ($a['players'] ?? 0));
+    return $live;
+}
+
+/** Records or refreshes one server's entry, keyed by its address. */
+function heartbeat(array $body): void
+{
+    $file = serverFile();
+    $all = is_file($file) ? json_decode((string) file_get_contents($file), true) : [];
+    if (!is_array($all)) {
+        $all = [];
+    }
+
+    $address = (string) $body['address'];
+
+    // Only the fields the list actually shows are stored. Echoing back whatever a server
+    // sent would let one of them put arbitrary text on every player's screen.
+    $all[$address] = [
+        'address' => $address,
+        'name' => mb_substr((string) ($body['name'] ?? $address), 0, 48),
+        'players' => max(0, (int) ($body['players'] ?? 0)),
+        'max_players' => max(0, (int) ($body['max_players'] ?? 0)),
+        'version' => mb_substr((string) ($body['version'] ?? ''), 0, 24),
+        'seen' => time(),
+    ];
+
+    // Drop anything long dead so the file cannot grow without bound.
+    $cutoff = time() - SERVER_TTL * 10;
+    $all = array_filter($all, fn($s) => is_array($s) && (int) ($s['seen'] ?? 0) >= $cutoff);
+
+    writeAtomic($file, json_encode($all, JSON_UNESCAPED_SLASHES));
+}
+
+// ---------------------------------------------------------------------------
 // routing
 // ---------------------------------------------------------------------------
 
@@ -171,6 +245,35 @@ if (($segments[0] ?? '') === 'whoami') {
         'authorized' => authorised(),
         'key_configured' => API_KEY !== 'CHANGE-ME-to-a-long-random-string',
     ]);
+}
+
+/*
+ * The public server list.
+ *
+ * Unauthenticated on purpose. A client reads this from the title screen, before it has
+ * joined anything and therefore before it could have been given a key — and shipping a key
+ * to every client to read a list of public addresses would be giving away the account
+ * service to protect nothing.
+ *
+ * Writes are a different matter and are handled below, behind the key.
+ */
+if (($segments[0] ?? '') === 'servers' && $method === 'GET' && !isset($segments[1])) {
+    respond(200, ['servers' => liveServers()]);
+}
+
+if (($segments[0] ?? '') === 'servers' && ($segments[1] ?? '') === 'heartbeat') {
+    if (!authorised()) {
+        respond(401, ['error' => 'unauthorised']);
+    }
+    if ($method !== 'POST') {
+        respond(405, ['error' => 'method not allowed']);
+    }
+    $body = json_decode((string) file_get_contents('php://input'), true);
+    if (!is_array($body) || empty($body['address'])) {
+        respond(400, ['error' => 'bad body']);
+    }
+    heartbeat($body);
+    respond(200, ['ok' => true]);
 }
 
 if (!authorised()) {

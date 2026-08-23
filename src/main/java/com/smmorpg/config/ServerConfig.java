@@ -21,6 +21,11 @@ public final class ServerConfig {
     public final ModConfigSpec.ConfigValue<String> backendApiKey;
     public final ModConfigSpec.IntValue syncIntervalSeconds;
 
+    // --- directory listing ---
+    public final ModConfigSpec.ConfigValue<String> publicAddress;
+    public final ModConfigSpec.ConfigValue<String> serverName;
+    public final ModConfigSpec.IntValue heartbeatSeconds;
+
     // --- ranked play ---
     public final ModConfigSpec.BooleanValue rankedEnabled;
     public final ModConfigSpec.IntValue queueWidenSeconds;
@@ -51,6 +56,19 @@ public final class ServerConfig {
         syncIntervalSeconds = b.comment("How often to push dirty accounts and retry the",
                         "offline queue.")
                 .defineInRange("syncIntervalSeconds", 30, 5, 3600);
+        b.pop();
+
+        b.push("directory");
+        publicAddress = b.comment("How players reach this server, e.g. play.example.com:25565",
+                        "Empty means the server is not listed. A server cannot work this out",
+                        "for itself — behind NAT, a proxy or a shared host it sees an address",
+                        "that is right for it and useless to everyone else.")
+                .define("publicAddress", "");
+        serverName = b.comment("Name shown in the in-game server list. Defaults to the address.")
+                .define("serverName", "");
+        heartbeatSeconds = b.comment("How often to tell the directory this server is alive.",
+                        "Entries expire after two minutes, so anything under that works.")
+                .defineInRange("heartbeatSeconds", 45, 10, 110);
         b.pop();
 
         b.push("ranked");

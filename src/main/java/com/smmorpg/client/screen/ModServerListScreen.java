@@ -30,8 +30,9 @@ import java.util.List;
  */
 public class ModServerListScreen extends Screen {
 
-    /** Directory endpoint. Empty by default: nothing is contacted until one is set. */
-    public static volatile String directoryUrl = "";
+    /** Directory endpoint. Built into the mod, so a client needs no configuration at all. */
+    public static volatile String directoryUrl =
+            com.smmorpg.backend.BackendEndpoints.SERVER_DIRECTORY_URL;
 
     private record Entry(String name, String address, int players, int maxPlayers, String version) {}
 
@@ -77,7 +78,12 @@ public class ModServerListScreen extends Screen {
                 .thenAccept(response -> Minecraft.getInstance().execute(() -> {
                     try {
                         entries.clear();
-                        JsonArray array = JsonParser.parseString(response.body()).getAsJsonArray();
+                        // The service answers {"servers":[...]}; a bare array is accepted
+                        // too so a hand-written directory file still works.
+                        var root = JsonParser.parseString(response.body());
+                        JsonArray array = root.isJsonArray()
+                                ? root.getAsJsonArray()
+                                : root.getAsJsonObject().getAsJsonArray("servers");
                         for (var element : array) {
                             JsonObject o = element.getAsJsonObject();
                             entries.add(new Entry(

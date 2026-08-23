@@ -105,6 +105,37 @@ It answers with booleans only — it never echoes the key, so it is safe to past
 In game, as an operator: `/smmorpg status` reports whether the service is reachable and how
 many writes are still queued.
 
+## The in-game server list
+
+`GET /servers` is **public** — no key. A client reads it from the title screen, before it
+has joined anything and therefore before anyone could have handed it a key. Shipping a key
+to every client to read a list of public addresses would give away the account service to
+protect nothing.
+
+`POST /servers/heartbeat` **is** keyed, and that is what actually fills the list. Each game
+server announces itself every 45 seconds; entries expire after two minutes. A list servers
+are added to by hand goes stale the first time one moves or dies, and then sends players at
+an address with nothing behind it.
+
+For a server to appear, it needs to know how the outside world reaches it — which it cannot
+work out for itself behind NAT, a proxy or a shared host:
+
+```toml
+[directory]
+    publicAddress = "play.example.com:25565"
+    serverName = "PokeWing SmmoRPG"
+    heartbeatSeconds = 45
+```
+
+Leave `publicAddress` empty and the server simply is not listed. The log says so on startup
+rather than leaving you guessing.
+
+Check it:
+
+```bash
+curl https://your-domain.tld/servers
+```
+
 ## What this does and does not do
 
 It stores one JSON file per player, writes atomically so an interrupted save cannot corrupt

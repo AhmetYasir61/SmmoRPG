@@ -30,6 +30,14 @@ public final class ServerLifecycle {
     @SubscribeEvent
     public static void onStarted(ServerStartedEvent event) {
         AccountService.start(event.getServer());
+        // Announce immediately rather than waiting out the first interval, so a restarted
+        // server reappears in the list in seconds instead of a minute.
+        ServerHeartbeat.send(event.getServer());
+
+        if (BackendClient.configured() && !ServerHeartbeat.configured()) {
+            SmmoRPG.LOGGER.warn("Not listing in the server directory: set publicAddress "
+                    + "in smmorpg-server.toml to appear in the in-game server list.");
+        }
     }
 
     @SubscribeEvent
@@ -48,6 +56,9 @@ public final class ServerLifecycle {
 
         int syncTicks = ServerConfig.CFG.syncIntervalSeconds.get() * 20;
         if (tick % syncTicks == 0) AccountService.syncTick();
+
+        int beatTicks = ServerConfig.CFG.heartbeatSeconds.get() * 20;
+        if (tick % beatTicks == 0) ServerHeartbeat.send(event.getServer());
 
         int tebexTicks = ServerConfig.CFG.tebexPollSeconds.get() * 20;
         if (TebexService.configured() && tick % tebexTicks == 0) {
