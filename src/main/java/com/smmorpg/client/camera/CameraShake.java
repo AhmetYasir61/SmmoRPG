@@ -25,17 +25,24 @@ public final class CameraShake {
 
     private CameraShake() {}
 
-    /** Adds trauma. Repeated hits stack, but saturate rather than doubling. */
+    /**
+     * Adds trauma. Repeated hits stack, but saturate rather than doubling, and the decay is
+     * fast: a shake that outlasts the blow that caused it reads as a broken camera.
+     */
     public static void addTrauma(float amount) {
-        trauma = Math.min(1.0F, trauma + amount * 0.45F);
-        traumaDecay = 1.4F + amount * 0.3F;
+        trauma = Math.min(1.0F, trauma + amount * 0.30F);
+        traumaDecay = 2.6F + amount * 0.4F;
         seed = RNG.nextFloat() * 100.0F;
     }
 
-    /** Directed kick. Positive pitch is upward, the way a swing or a bowstring throws the view. */
+    /**
+     * Directed kick. Positive pitch is upward, the way a swing or a bowstring throws the
+     * view. Recoil is deliberately left stronger than the shake, because a kick that
+     * settles back where it started is readable in a way that a wobble is not.
+     */
     public static void addRecoil(float strength) {
-        recoilPitchVel -= strength * 3.2F;
-        recoilYawVel += (RNG.nextFloat() - 0.5F) * strength * 2.4F;
+        recoilPitchVel -= strength * 1.6F;
+        recoilYawVel += (RNG.nextFloat() - 0.5F) * strength * 1.1F;
     }
 
     public static void setHitStop(int ticks) { hitStopTicks = Math.max(hitStopTicks, ticks); }
@@ -62,21 +69,28 @@ public final class CameraShake {
         return trauma * trauma * CombatConfig.CFG.cameraShakeScale.get().floatValue();
     }
 
+    // Degrees at full trauma. Roll is kept well under pitch and yaw on purpose: the eye
+    // tolerates the view turning far better than it tolerates the horizon tilting, and
+    // roll is what makes a shaking camera feel sickening rather than forceful.
+    private static final float PITCH_DEGREES = 1.8F;
+    private static final float YAW_DEGREES = 1.4F;
+    private static final float ROLL_DEGREES = 1.0F;
+
     public static float pitchOffset(float time) {
-        return osc(time, 13.7F, 0.0F) * shakeAmount() * 4.5F + recoilPitch;
+        return osc(time, 13.7F, 0.0F) * shakeAmount() * PITCH_DEGREES + recoilPitch;
     }
 
     public static float yawOffset(float time) {
-        return osc(time, 11.3F, 31.0F) * shakeAmount() * 3.8F + recoilYaw;
+        return osc(time, 11.3F, 31.0F) * shakeAmount() * YAW_DEGREES + recoilYaw;
     }
 
     public static float rollOffset(float time) {
-        return osc(time, 9.1F, 67.0F) * shakeAmount() * 6.0F;
+        return osc(time, 9.1F, 67.0F) * shakeAmount() * ROLL_DEGREES;
     }
 
     /** Small positional kick, so heavy blows push the head as well as turn it. */
     public static float positionalOffset(float time) {
-        return osc(time, 17.4F, 13.0F) * shakeAmount() * 0.06F;
+        return osc(time, 17.4F, 13.0F) * shakeAmount() * 0.018F;
     }
 
     private static float osc(float time, float freq, float phase) {

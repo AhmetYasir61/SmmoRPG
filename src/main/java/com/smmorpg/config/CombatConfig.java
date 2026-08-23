@@ -41,7 +41,8 @@ public final class CombatConfig {
 
     private CombatConfig(ModConfigSpec.Builder b) {
         b.push("feedback");
-        cameraShakeScale = b.comment("0 disables shake, 1 is realistic, >1 is cinematic.")
+        cameraShakeScale = b.comment("0 disables shake entirely. 1 is the tuned default;",
+                        "2 is heavy, 4 is cinematic and hard to aim through.")
                 .defineInRange("cameraShakeScale", 1.0D, 0.0D, 4.0D);
         recoilScale = b.defineInRange("recoilScale", 1.0D, 0.0D, 4.0D);
         hitStopScale = b.comment("Freeze-frame on a solid connect, in the style of a fighting game.")

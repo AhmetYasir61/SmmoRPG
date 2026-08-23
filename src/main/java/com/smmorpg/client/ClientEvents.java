@@ -64,14 +64,16 @@ public final class ClientEvents {
     private static void applyMotionFeedback(LocalPlayer player) {
         double speed = player.getDeltaMovement().horizontalDistance();
 
-        if (player.isSprinting() && player.onGround() && player.tickCount % 6 == 0) {
-            // A footfall every few ticks rather than a constant wobble.
-            CameraShake.addTrauma((float) Math.min(0.09D, speed * 0.32D));
+        if (player.isSprinting() && player.onGround() && player.tickCount % 8 == 0) {
+            // A footfall you notice, not a running wobble. Sprinting is the one thing that
+            // never stops, so it gets the smallest share of the shake budget by far.
+            CameraShake.addTrauma((float) Math.min(0.025D, speed * 0.10D));
         }
-        if (player.onGround() && lastFallDistance > 1.5F) {
-            // Landing hits proportionally to the drop, and hard landings really land.
-            CameraShake.addTrauma(Math.min(0.85F, lastFallDistance * 0.07F));
-            CameraShake.addRecoil(Math.min(1.2F, lastFallDistance * 0.05F));
+        if (player.onGround() && lastFallDistance > 2.5F) {
+            // Only a real drop registers, and it registers mostly as a kick rather than a
+            // wobble — a landing pushes you down, it does not rattle you.
+            CameraShake.addTrauma(Math.min(0.35F, lastFallDistance * 0.025F));
+            CameraShake.addRecoil(Math.min(0.9F, lastFallDistance * 0.045F));
         }
         lastFallDistance = player.fallDistance;
     }
