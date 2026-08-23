@@ -48,6 +48,92 @@ wom                  2.0.176
 p1nero_bow           21.16.1.0
 ```
 
+## Online: accounts, ranked play and the store
+
+One jar ships to everyone. What makes an install a ranked online server rather than a
+singleplayer game is `config/smmorpg-server.toml` and nothing else — and because NeoForge
+never sends a SERVER config to a client, that is also the only safe place for credentials.
+
+**Clients configure nothing.** A client never contacts the account service at all: it asks
+the server it is playing on, and the answer comes back as a packet. One secret, in one
+place, held by the operator. The public service address is compiled into the mod
+(`BackendEndpoints`), so installing the modpack is the whole setup; the config only exists
+to point a server at a different service. The API key is deliberately *not* compiled in —
+a secret inside a downloadable jar can be read out of the file in about ten seconds.
+
+### Nothing is lost when the service is down
+
+Every account write goes through an on-disk queue before it goes anywhere else:
+
+1. The write is appended to `pending-writes.json` in the world folder and flushed immediately.
+2. It is only dropped once the service has acknowledged it.
+3. A server restarted mid-outage picks the queue back up on the next boot and keeps trying.
+
+Alongside it, `accounts.json` is a full local mirror of every account the server has touched.
+If the service is unreachable at boot, play continues from the mirror and the queue catches
+the service up later. Reads never block on the network, so a player logging in during an
+outage plays normally rather than staring at a loading screen.
+
+Writes carry an id and are expected to be **idempotent** on the service's side — replaying
+one that already landed has to be a no-op rather than a second grant.
+
+### Ranked
+
+Elo with two adjustments a game needs that chess does not: K falls as a player settles, so a
+newcomer finds their level in a handful of matches and a Grandmaster's rating does not swing
+on one bad night; and there is a floor, so a losing streak cannot bury someone below the
+point where the ladder still has opponents for them.
+
+Queues widen the longer you wait — a strict rating gap gives perfect matches and infinite
+queues, no gap gives instant matches nobody enjoys. Widening makes the trade-off something
+the player feels rather than a number an operator guessed once.
+
+Modes are `duel` (1v1), `doubles` (2v2) and `friendly` (unrated). In 2v2 a side loses only
+when every member is down, which is what makes it a team fight rather than two duels sharing
+a floor. Leaving mid-match forfeits — a ladder where quitting before you lose costs nothing
+is a ladder nobody trusts.
+
+```
+/smmorpg queue duel      /smmorpg queue doubles     /smmorpg queue friendly
+/smmorpg leave           /smmorpg rank              /smmorpg status   (operators)
+```
+
+### The store
+
+Real-money purchases go through **Tebex**. The mod never sees a card number, a billing
+address or a payment token: checkout happens on your Tebex store in the player's browser,
+and the server only asks Tebex which purchases are due, delivers them, and tells Tebex they
+were delivered. That acknowledgement is per-command rather than batched, which is what stops
+a network hiccup from granting the same package twice.
+
+Tebex commands are **not** run as console commands. Only package types the mod understands
+are honoured (`smmorpg:coins`, `smmorpg:premium`); anything else is logged and left
+undelivered. Executing arbitrary commands handed over the network is a remote code execution
+waiting to happen.
+
+Set `tebexSecret` and `tebexStoreUrl` in the server config.
+
+### Inventory, vault and wear
+
+Loot stays on the ground until you **crouch** to take it. Walking through a room should not
+fill your bag with things you never chose.
+
+The vault stores damage explicitly, so a blade put away at half durability comes back at
+half durability — otherwise repairing anything would be pointless. Anvil repairs keep rolled
+affixes, which vanilla would discard.
+
+## What is built and what is not
+
+Built and working: accounts, the offline queue and local mirror, Elo, ranks, queues, 1v1 and
+2v2 match flow with forfeits and timeouts, coin rewards, the Tebex delivery pipeline, manual
+pickup, durability and repair rules, and the server↔client account sync.
+
+**Not built yet:** the main-menu screens for the market, the vault, the leaderboard and the
+queue. The systems underneath them all work and are reachable by command today; the screens
+are a display layer on top of flows that already run, which is a much smaller piece of work
+than building both at once. Also still to come: the vault's trash and deposit slots as an
+actual container UI, and kit loadouts drawn from the vault.
+
 ## Settings this pack holds for you
 
 SmmoRPG pins a couple of its dependencies' settings on every world join, because they are

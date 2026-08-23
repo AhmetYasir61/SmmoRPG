@@ -12,6 +12,9 @@ public final class ClientState {
 
     public static PlayerProgress progress = PlayerProgress.EMPTY;
     public static com.smmorpg.skill.SkillData skills = com.smmorpg.skill.SkillData.EMPTY;
+    /** The player's account as the server last reported it. Never fetched by the client. */
+    public static com.smmorpg.account.PlayerAccount account =
+            com.smmorpg.account.PlayerAccount.fresh("", "");
 
     /** Wounds for every entity in render range, keyed by entity id. */
     private static final Map<Integer, WoundData> WOUNDS = new HashMap<>();
@@ -30,5 +33,6 @@ public final class ClientState {
         WOUNDS.clear();
         progress = PlayerProgress.EMPTY;
         skills = com.smmorpg.skill.SkillData.EMPTY;
+        account = com.smmorpg.account.PlayerAccount.fresh("", "");
     }
 }

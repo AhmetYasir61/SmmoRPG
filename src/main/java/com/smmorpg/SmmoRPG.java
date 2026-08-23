@@ -43,6 +43,8 @@ public class SmmoRPG {
         ModCreativeTabs.REGISTRY.register(modBus);
 
         container.registerConfig(ModConfig.Type.COMMON, CombatConfig.SPEC);
+        // SERVER, not COMMON: this one holds credentials and NeoForge keeps it off clients.
+        container.registerConfig(ModConfig.Type.SERVER, com.smmorpg.config.ServerConfig.SPEC);
 
         // Epic Fight is a hard dependency, so it is always here — but registering from a
         // FMLCommonSetupEvent rather than the constructor means its own registries have

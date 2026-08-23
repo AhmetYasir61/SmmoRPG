@@ -46,6 +46,10 @@ public final class Net {
         r.playToClient(S2CSkillSync.TYPE, S2CSkillSync.CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() ->
                         com.smmorpg.client.ClientPacketHandler.onSkillSync(payload)));
+        r.playToClient(S2CAccountSync.TYPE, S2CAccountSync.CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() ->
+                        com.smmorpg.client.ClientPacketHandler.onAccountSync(payload)));
+
         r.playToClient(com.smmorpg.sync.ContentSync.Payload.TYPE,
                 com.smmorpg.sync.ContentSync.Payload.CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() ->

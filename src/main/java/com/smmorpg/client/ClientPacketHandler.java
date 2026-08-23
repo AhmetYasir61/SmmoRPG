@@ -19,6 +19,10 @@ public final class ClientPacketHandler {
         ClientState.progress = payload.progress();
     }
 
+    public static void onAccountSync(com.smmorpg.network.S2CAccountSync payload) {
+        ClientState.account = payload.account();
+    }
+
     public static void onSkillSync(com.smmorpg.network.S2CSkillSync payload) {
         ClientState.skills = payload.data();
     }

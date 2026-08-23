@@ -38,6 +38,9 @@ MOB_KEYS = ["conscript", "soldier", "raider", "marauder", "bone_archer", "legion
             "warden_of_ash", "iron_colossus", "revenant_lord", "shade", "hollow_king",
             "wither_sovereign", "deep_warden", "titan_of_iron", "god_slayer", "elder_dragon",
             "world_ender", "first_warden", "eternal_sovereign"]
+RANK_KEYS = ["unranked", "iron", "bronze", "silver", "gold", "platinum", "diamond",
+             "master", "grandmaster", "sovereign"]
+MODE_KEYS = ["duel", "doubles", "friendly"]
 MOB_TIER_KEYS = ["mortal", "veteran", "champion", "ascendant", "divine", "primordial"]
 TIER_KEYS = ["novice", "adept", "master", "ascendant", "divine", "celestial", "absolute"]
 
@@ -85,6 +88,10 @@ def build(locale):
         d[f"mob.smmorpg.{k}"] = t("mobs", k)
     for k in MOB_TIER_KEYS:
         d[f"tier.smmorpg.{k}"] = t("mob_tiers", k)
+    for k in RANK_KEYS:
+        d[f"rank.smmorpg.{k}"] = t("ranks", k)
+    for k in MODE_KEYS:
+        d[f"mode.smmorpg.{k}"] = t("modes", k)
     for k in ["offense", "defense", "movement", "survival"]:
         d[f"skill.smmorpg.category.{k}"] = t("categories", k)
 
@@ -171,6 +178,19 @@ UI_KEYS = {
     "update_pending_button": "update.smmorpg.pending_button",
     "lord_prefix": "mob.smmorpg.lord_prefix",
     "msg_lord_born": "msg.smmorpg.lord_born",
+    "match_found": "match.smmorpg.found",
+    "match_win": "match.smmorpg.win",
+    "match_loss": "match.smmorpg.loss",
+    "match_draw": "match.smmorpg.draw",
+    "match_promoted": "match.smmorpg.promoted",
+    "match_demoted": "match.smmorpg.demoted",
+    "match_queued": "match.smmorpg.queued",
+    "match_left": "match.smmorpg.left",
+    "match_disabled": "match.smmorpg.disabled",
+    "match_already": "match.smmorpg.already_in_match",
+    "match_record": "match.smmorpg.record",
+    "match_to_next": "match.smmorpg.to_next",
+    "market_delivered": "market.smmorpg.delivered",
 }
 
 

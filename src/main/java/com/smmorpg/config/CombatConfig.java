@@ -39,6 +39,10 @@ public final class CombatConfig {
     // --- textures ---
     public final ModConfigSpec.IntValue decalResolution;
 
+    // --- inventory ---
+    public final ModConfigSpec.BooleanValue manualPickup;
+    public final ModConfigSpec.BooleanValue preserveGearOnRepair;
+
     // --- monsters ---
     public final ModConfigSpec.BooleanValue enableDevouring;
     public final ModConfigSpec.BooleanValue levelWorldMobs;
@@ -79,6 +83,15 @@ public final class CombatConfig {
         holyChance = b.defineInRange("holyChance", 0.045D, 0.0D, 1.0D);
         cursedChance = b.defineInRange("cursedChance", 0.055D, 0.0D, 1.0D);
         maxAffixesPerItem = b.defineInRange("maxAffixesPerItem", 4, 0, 8);
+        b.pop();
+
+        b.push("inventory");
+        manualPickup = b.comment("Loot stays on the ground until you crouch to take it.",
+                        "Walking through a room should not fill your bag with things you",
+                        "never chose.")
+                .define("manualPickup", true);
+        preserveGearOnRepair = b.comment("Keep rolled affixes through an anvil repair.")
+                .define("preserveGearOnRepair", true);
         b.pop();
 
         b.push("monsters");

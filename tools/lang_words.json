@@ -200,7 +200,20 @@
    "update_pending_button": "SmmoRPG update available",
    "key_training": "Training Arena",
    "lord_prefix": "Lord %s",
-   "msg_lord_born": "%s has devoured its way to lordship."
+   "msg_lord_born": "%s has devoured its way to lordship.",
+   "match_found": "Match found: %s",
+   "match_win": "Victory  %s Elo  (now %s)",
+   "match_loss": "Defeat  %s Elo  (now %s)",
+   "match_draw": "Draw  %s Elo  (now %s)",
+   "match_promoted": "Promoted to %s",
+   "match_demoted": "Demoted to %s",
+   "match_queued": "Queued for %s (%s waiting)",
+   "match_left": "Left the queue",
+   "match_disabled": "Ranked play is off on this server",
+   "match_already": "You are already in a match",
+   "match_record": "%s wins, %s losses (%s)",
+   "match_to_next": "%s Elo to the next rank",
+   "market_delivered": "Your purchase has been delivered."
   },
   "mobs": {
    "conscript": "Conscript",
@@ -236,6 +249,23 @@
    "ascendant": "Ascendant",
    "divine": "Divine",
    "primordial": "Primordial"
+  },
+  "ranks": {
+   "unranked": "Unranked",
+   "iron": "Iron",
+   "bronze": "Bronze",
+   "silver": "Silver",
+   "gold": "Gold",
+   "platinum": "Platinum",
+   "diamond": "Diamond",
+   "master": "Master",
+   "grandmaster": "Grandmaster",
+   "sovereign": "Sovereign"
+  },
+  "modes": {
+   "duel": "1v1 Duel",
+   "doubles": "2v2 Doubles",
+   "friendly": "Friendly"
   }
  },
  "tr_tr": {
@@ -439,7 +469,20 @@
    "update_pending_button": "SmmoRPG güncellemesi var",
    "key_training": "Eğitim Alanı",
    "lord_prefix": "Lord %s",
-   "msg_lord_born": "%s yiye yiye lordluğa ulaştı."
+   "msg_lord_born": "%s yiye yiye lordluğa ulaştı.",
+   "match_found": "Maç bulundu: %s",
+   "match_win": "Zafer  %s Elo  (şimdi %s)",
+   "match_loss": "Yenilgi  %s Elo  (şimdi %s)",
+   "match_draw": "Berabere  %s Elo  (şimdi %s)",
+   "match_promoted": "%s rütbesine yükseldin",
+   "match_demoted": "%s rütbesine düştün",
+   "match_queued": "%s kuyruğuna girildi (%s bekliyor)",
+   "match_left": "Kuyruktan çıkıldı",
+   "match_disabled": "Bu sunucuda dereceli oyun kapalı",
+   "match_already": "Zaten bir maçtasın",
+   "match_record": "%s galibiyet, %s mağlubiyet (%s)",
+   "match_to_next": "Sonraki rütbeye %s Elo",
+   "market_delivered": "Satın alımın teslim edildi."
   },
   "mobs": {
    "conscript": "Acemi Er",
@@ -475,6 +518,23 @@
    "ascendant": "Yükselen",
    "divine": "İlahi",
    "primordial": "Kadim"
+  },
+  "ranks": {
+   "unranked": "Derecesiz",
+   "iron": "Demir",
+   "bronze": "Bronz",
+   "silver": "Gümüş",
+   "gold": "Altın",
+   "platinum": "Platin",
+   "diamond": "Elmas",
+   "master": "Usta",
+   "grandmaster": "Büyük Usta",
+   "sovereign": "Hükümdar"
+  },
+  "modes": {
+   "duel": "1v1 Düello",
+   "doubles": "2v2 Çiftler",
+   "friendly": "Dostluk Maçı"
   }
  },
  "de_de": {
