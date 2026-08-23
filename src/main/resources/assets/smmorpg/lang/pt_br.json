@@ -296,5 +296,13 @@
   "hub.smmorpg.queue_needs_server": "Join a server to queue.",
   "hub.smmorpg.ladder": "Leaderboard",
   "hub.smmorpg.ladder_empty": "No ladder data yet.",
-  "hub.smmorpg.play_note": "Training runs locally and needs no server."
+  "hub.smmorpg.play_note": "Training runs locally and needs no server.",
+  "menu.smmorpg.settings": "Opções",
+  "menu.smmorpg.play": "JOGAR",
+  "menu.smmorpg.quit": "Sair",
+  "menu.smmorpg.quit_confirm": "Fechar o jogo?",
+  "menu.smmorpg.inventory": "INVENTÁRIO",
+  "menu.smmorpg.trash": "Lixo — o que cair aqui se perde",
+  "menu.smmorpg.deposit": "Depósito — envia uma pilha ao cofre",
+  "menu.smmorpg.loadout": "Equipamento %s"
 }

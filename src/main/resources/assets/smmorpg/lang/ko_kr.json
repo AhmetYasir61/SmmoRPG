@@ -296,5 +296,13 @@
   "hub.smmorpg.queue_needs_server": "Join a server to queue.",
   "hub.smmorpg.ladder": "Leaderboard",
   "hub.smmorpg.ladder_empty": "No ladder data yet.",
-  "hub.smmorpg.play_note": "Training runs locally and needs no server."
+  "hub.smmorpg.play_note": "Training runs locally and needs no server.",
+  "menu.smmorpg.settings": "설정",
+  "menu.smmorpg.play": "플레이",
+  "menu.smmorpg.quit": "종료",
+  "menu.smmorpg.quit_confirm": "게임을 종료할까요?",
+  "menu.smmorpg.inventory": "인벤토리",
+  "menu.smmorpg.trash": "버리기 — 넣으면 되돌릴 수 없습니다",
+  "menu.smmorpg.deposit": "보관 — 창고로 한 묶음씩 보냅니다",
+  "menu.smmorpg.loadout": "장비 %s"
 }

@@ -39,6 +39,9 @@ public final class CombatConfig {
     // --- textures ---
     public final ModConfigSpec.IntValue decalResolution;
 
+    // --- interface ---
+    public final ModConfigSpec.BooleanValue customMainMenu;
+
     // --- inventory ---
     public final ModConfigSpec.BooleanValue manualPickup;
     public final ModConfigSpec.BooleanValue preserveGearOnRepair;
@@ -83,6 +86,12 @@ public final class CombatConfig {
         holyChance = b.defineInRange("holyChance", 0.045D, 0.0D, 1.0D);
         cursedChance = b.defineInRange("cursedChance", 0.055D, 0.0D, 1.0D);
         maxAffixesPerItem = b.defineInRange("maxAffixesPerItem", 4, 0, 8);
+        b.pop();
+
+        b.push("interface");
+        customMainMenu = b.comment("Replace the vanilla title screen with SmmoRPG's own.",
+                        "Off leaves Minecraft's menu exactly as it was.")
+                .define("customMainMenu", true);
         b.pop();
 
         b.push("inventory");

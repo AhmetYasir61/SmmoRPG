@@ -128,6 +128,35 @@ Built and working: accounts, the offline queue and local mirror, Elo, ranks, que
 2v2 match flow with forfeits and timeouts, coin rewards, the Tebex delivery pipeline, manual
 pickup, durability and repair rules, and the server↔client account sync.
 
+### The main menu
+
+The vanilla title screen is replaced by the mod's own front page, laid out to the sketch it
+was designed from:
+
+- **Settings** in the top-left corner, **Quit** in the top-right.
+- The **menu stack** down the left — Profile, Vault, Store, Ranked — each opening the hub
+  straight onto that tab.
+- **PLAY** and a square **T** for the training arena beneath them.
+- The **logo** across the top.
+- The **character** in the middle, drawn from your own skin, with the server browser and
+  loadout arrows under it.
+- The **inventory** column down the right: a scrolling grid of what the vault holds, with a
+  **trash** slot and a **deposit** slot kept deliberately apart from the grid. A destructive
+  slot that looks like an ordinary slot is a slot people lose things to.
+
+Everything is positioned as a fraction of the window rather than in fixed pixels, so it
+holds together at whatever resolution you play at. `customMainMenu = false` in the config
+puts Minecraft's own menu back.
+
+The character is drawn from the skin texture rather than by rendering an entity: an entity
+needs a level to live in, and at the title screen there is none. It is a front-facing figure
+built from the skin's own UV regions, second layer included, so a skin whose detail lives in
+the hat or jacket still reads correctly. A rotating model is possible later, once there is a
+level to put a dummy in.
+
+Mojang's attribution line is kept, small, in the bottom corner. Stripping it out of something
+that gets distributed is not a corner worth cutting.
+
 ### The hub
 
 A full page on the title screen, before you have loaded anything: **Profile**, **Vault**,

@@ -214,6 +214,14 @@ UI_KEYS = {
     "hub_ladder": "hub.smmorpg.ladder",
     "hub_ladder_empty": "hub.smmorpg.ladder_empty",
     "hub_play_note": "hub.smmorpg.play_note",
+    "menu_settings": "menu.smmorpg.settings",
+    "menu_play": "menu.smmorpg.play",
+    "menu_quit": "menu.smmorpg.quit",
+    "menu_quit_confirm": "menu.smmorpg.quit_confirm",
+    "menu_inventory": "menu.smmorpg.inventory",
+    "menu_trash": "menu.smmorpg.trash",
+    "menu_deposit": "menu.smmorpg.deposit",
+    "menu_loadout": "menu.smmorpg.loadout",
 }
 
 

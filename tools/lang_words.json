@@ -236,7 +236,15 @@
    "hub_queue_needs_server": "Join a server to queue.",
    "hub_ladder": "Leaderboard",
    "hub_ladder_empty": "No ladder data yet.",
-   "hub_play_note": "Training runs locally and needs no server."
+   "hub_play_note": "Training runs locally and needs no server.",
+   "menu_settings": "Settings",
+   "menu_play": "PLAY",
+   "menu_quit": "Quit",
+   "menu_quit_confirm": "Close the game?",
+   "menu_inventory": "INVENTORY",
+   "menu_trash": "Trash — dropped here, gone for good",
+   "menu_deposit": "Deposit — sends one stack to the vault",
+   "menu_loadout": "Loadout %s"
   },
   "mobs": {
    "conscript": "Conscript",
@@ -528,7 +536,15 @@
    "hub_queue_needs_server": "Kuyruğa girmek için bir sunucuya bağlan.",
    "hub_ladder": "Sıralama",
    "hub_ladder_empty": "Henüz sıralama verisi yok.",
-   "hub_play_note": "Eğitim yerel çalışır, sunucu gerekmez."
+   "hub_play_note": "Eğitim yerel çalışır, sunucu gerekmez.",
+   "menu_settings": "Ayarlar",
+   "menu_play": "OYNA",
+   "menu_quit": "Çıkış",
+   "menu_quit_confirm": "Oyun kapatılsın mı?",
+   "menu_inventory": "ENVANTER",
+   "menu_trash": "Çöp — buraya atılan geri gelmez",
+   "menu_deposit": "Depo — kasaya birer birer gönderir",
+   "menu_loadout": "Kuşanım %s"
   },
   "mobs": {
    "conscript": "Acemi Er",
@@ -705,7 +721,15 @@
    "update_pending_button": "SmmoRPG-Update verfügbar",
    "key_training": "Trainingsarena",
    "lord_prefix": "Lord %s",
-   "msg_lord_born": "%s hat sich zur Lordschaft gefressen."
+   "msg_lord_born": "%s hat sich zur Lordschaft gefressen.",
+   "menu_settings": "Einstellungen",
+   "menu_play": "SPIELEN",
+   "menu_quit": "Beenden",
+   "menu_quit_confirm": "Spiel schließen?",
+   "menu_inventory": "INVENTAR",
+   "menu_trash": "Müll — hier abgelegt, für immer weg",
+   "menu_deposit": "Einlagern — schickt einen Stapel ins Lager",
+   "menu_loadout": "Ausrüstung %s"
   },
   "mob_tiers": {
    "mortal": "Sterblich",
@@ -838,7 +862,15 @@
    "update_pending_button": "Mise à jour SmmoRPG disponible",
    "key_training": "Arène d'entraînement",
    "lord_prefix": "Seigneur %s",
-   "msg_lord_born": "%s a dévoré son chemin jusqu'à la seigneurie."
+   "msg_lord_born": "%s a dévoré son chemin jusqu'à la seigneurie.",
+   "menu_settings": "Options",
+   "menu_play": "JOUER",
+   "menu_quit": "Quitter",
+   "menu_quit_confirm": "Fermer le jeu ?",
+   "menu_inventory": "INVENTAIRE",
+   "menu_trash": "Corbeille — déposé ici, perdu à jamais",
+   "menu_deposit": "Dépôt — envoie une pile au coffre",
+   "menu_loadout": "Équipement %s"
   },
   "mob_tiers": {
    "mortal": "Mortel",
@@ -971,7 +1003,15 @@
    "update_pending_button": "Actualización de SmmoRPG disponible",
    "key_training": "Arena de entrenamiento",
    "lord_prefix": "Señor %s",
-   "msg_lord_born": "%s ha devorado su camino hasta el señorío."
+   "msg_lord_born": "%s ha devorado su camino hasta el señorío.",
+   "menu_settings": "Opciones",
+   "menu_play": "JUGAR",
+   "menu_quit": "Salir",
+   "menu_quit_confirm": "¿Cerrar el juego?",
+   "menu_inventory": "INVENTARIO",
+   "menu_trash": "Basura — lo que caiga aquí se pierde",
+   "menu_deposit": "Depósito — envía una pila a la bóveda",
+   "menu_loadout": "Equipo %s"
   },
   "mob_tiers": {
    "mortal": "Mortal",
@@ -1104,7 +1144,15 @@
    "update_pending_button": "Aggiornamento SmmoRPG disponibile",
    "key_training": "Arena di addestramento",
    "lord_prefix": "Signore %s",
-   "msg_lord_born": "%s ha divorato la sua strada fino al dominio."
+   "msg_lord_born": "%s ha divorato la sua strada fino al dominio.",
+   "menu_settings": "Opzioni",
+   "menu_play": "GIOCA",
+   "menu_quit": "Esci",
+   "menu_quit_confirm": "Chiudere il gioco?",
+   "menu_inventory": "INVENTARIO",
+   "menu_trash": "Cestino — qui dentro è perso per sempre",
+   "menu_deposit": "Deposito — manda una pila al caveau",
+   "menu_loadout": "Equipaggiamento %s"
   },
   "mob_tiers": {
    "mortal": "Mortale",
@@ -1237,7 +1285,15 @@
    "update_pending_button": "Atualização do SmmoRPG disponível",
    "key_training": "Arena de treino",
    "lord_prefix": "Lorde %s",
-   "msg_lord_born": "%s devorou seu caminho até o senhorio."
+   "msg_lord_born": "%s devorou seu caminho até o senhorio.",
+   "menu_settings": "Opções",
+   "menu_play": "JOGAR",
+   "menu_quit": "Sair",
+   "menu_quit_confirm": "Fechar o jogo?",
+   "menu_inventory": "INVENTÁRIO",
+   "menu_trash": "Lixo — o que cair aqui se perde",
+   "menu_deposit": "Depósito — envia uma pilha ao cofre",
+   "menu_loadout": "Equipamento %s"
   },
   "mob_tiers": {
    "mortal": "Mortal",
@@ -1370,7 +1426,15 @@
    "update_pending_button": "Доступно обновление SmmoRPG",
    "key_training": "Тренировочная арена",
    "lord_prefix": "Лорд %s",
-   "msg_lord_born": "%s прожрал себе путь к власти."
+   "msg_lord_born": "%s прожрал себе путь к власти.",
+   "menu_settings": "Настройки",
+   "menu_play": "ИГРАТЬ",
+   "menu_quit": "Выход",
+   "menu_quit_confirm": "Закрыть игру?",
+   "menu_inventory": "ИНВЕНТАРЬ",
+   "menu_trash": "Мусор — выброшенное сюда не вернуть",
+   "menu_deposit": "Хранилище — отправляет стак в сейф",
+   "menu_loadout": "Набор %s"
   },
   "mob_tiers": {
    "mortal": "Смертный",
@@ -1503,7 +1567,15 @@
    "update_pending_button": "SmmoRPG の更新があります",
    "key_training": "修練場",
    "lord_prefix": "君主 %s",
-   "msg_lord_born": "%s は喰らい尽くして君主となった。"
+   "msg_lord_born": "%s は喰らい尽くして君主となった。",
+   "menu_settings": "設定",
+   "menu_play": "プレイ",
+   "menu_quit": "終了",
+   "menu_quit_confirm": "ゲームを終了しますか？",
+   "menu_inventory": "所持品",
+   "menu_trash": "廃棄 — 入れたものは戻らない",
+   "menu_deposit": "預入 — 一組ずつ金庫へ送る",
+   "menu_loadout": "装備 %s"
   },
   "mob_tiers": {
    "mortal": "人の域",
@@ -1636,7 +1708,15 @@
    "update_pending_button": "SmmoRPG 有可用更新",
    "key_training": "试炼场",
    "lord_prefix": "领主 %s",
-   "msg_lord_born": "%s 吞噬同类，登上领主之位。"
+   "msg_lord_born": "%s 吞噬同类，登上领主之位。",
+   "menu_settings": "设置",
+   "menu_play": "开始游戏",
+   "menu_quit": "退出",
+   "menu_quit_confirm": "关闭游戏？",
+   "menu_inventory": "背包",
+   "menu_trash": "丢弃 — 放进去就找不回来了",
+   "menu_deposit": "存入 — 每次向仓库发送一组",
+   "menu_loadout": "配装 %s"
   },
   "mob_tiers": {
    "mortal": "凡人",
@@ -1769,7 +1849,15 @@
    "update_pending_button": "SmmoRPG 업데이트 있음",
    "key_training": "수련장",
    "lord_prefix": "군주 %s",
-   "msg_lord_born": "%s 이(가) 동족을 삼키며 군주가 되었다."
+   "msg_lord_born": "%s 이(가) 동족을 삼키며 군주가 되었다.",
+   "menu_settings": "설정",
+   "menu_play": "플레이",
+   "menu_quit": "종료",
+   "menu_quit_confirm": "게임을 종료할까요?",
+   "menu_inventory": "인벤토리",
+   "menu_trash": "버리기 — 넣으면 되돌릴 수 없습니다",
+   "menu_deposit": "보관 — 창고로 한 묶음씩 보냅니다",
+   "menu_loadout": "장비 %s"
   },
   "mob_tiers": {
    "mortal": "필멸",
@@ -1902,7 +1990,15 @@
    "update_pending_button": "Dostępna aktualizacja SmmoRPG",
    "key_training": "Arena treningowa",
    "lord_prefix": "Władca %s",
-   "msg_lord_born": "%s pożarł sobie drogę do władzy."
+   "msg_lord_born": "%s pożarł sobie drogę do władzy.",
+   "menu_settings": "Ustawienia",
+   "menu_play": "GRAJ",
+   "menu_quit": "Wyjdź",
+   "menu_quit_confirm": "Zamknąć grę?",
+   "menu_inventory": "EKWIPUNEK",
+   "menu_trash": "Kosz — co tu wpadnie, przepada",
+   "menu_deposit": "Depozyt — wysyła stos do skarbca",
+   "menu_loadout": "Zestaw %s"
   },
   "mob_tiers": {
    "mortal": "Śmiertelnik",
@@ -2035,7 +2131,15 @@
    "update_pending_button": "Доступне оновлення SmmoRPG",
    "key_training": "Тренувальна арена",
    "lord_prefix": "Лорд %s",
-   "msg_lord_born": "%s прожер собі шлях до влади."
+   "msg_lord_born": "%s прожер собі шлях до влади.",
+   "menu_settings": "Налаштування",
+   "menu_play": "ГРАТИ",
+   "menu_quit": "Вихід",
+   "menu_quit_confirm": "Закрити гру?",
+   "menu_inventory": "ІНВЕНТАР",
+   "menu_trash": "Смітник — викинуте сюди не повернути",
+   "menu_deposit": "Сховище — надсилає стак до сейфа",
+   "menu_loadout": "Набір %s"
   },
   "mob_tiers": {
    "mortal": "Смертний",
@@ -2168,7 +2272,15 @@
    "update_pending_button": "SmmoRPG-update beschikbaar",
    "key_training": "Trainingsarena",
    "lord_prefix": "Heer %s",
-   "msg_lord_born": "%s heeft zich een weg gevreten naar de heerschappij."
+   "msg_lord_born": "%s heeft zich een weg gevreten naar de heerschappij.",
+   "menu_settings": "Instellingen",
+   "menu_play": "SPELEN",
+   "menu_quit": "Afsluiten",
+   "menu_quit_confirm": "Spel sluiten?",
+   "menu_inventory": "INVENTARIS",
+   "menu_trash": "Prullenbak — hierin is voorgoed weg",
+   "menu_deposit": "Opslag — stuurt één stapel naar de kluis",
+   "menu_loadout": "Uitrusting %s"
   },
   "mob_tiers": {
    "mortal": "Sterfelijk",

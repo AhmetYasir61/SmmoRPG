@@ -296,5 +296,13 @@
   "hub.smmorpg.queue_needs_server": "Kuyruğa girmek için bir sunucuya bağlan.",
   "hub.smmorpg.ladder": "Sıralama",
   "hub.smmorpg.ladder_empty": "Henüz sıralama verisi yok.",
-  "hub.smmorpg.play_note": "Eğitim yerel çalışır, sunucu gerekmez."
+  "hub.smmorpg.play_note": "Eğitim yerel çalışır, sunucu gerekmez.",
+  "menu.smmorpg.settings": "Ayarlar",
+  "menu.smmorpg.play": "OYNA",
+  "menu.smmorpg.quit": "Çıkış",
+  "menu.smmorpg.quit_confirm": "Oyun kapatılsın mı?",
+  "menu.smmorpg.inventory": "ENVANTER",
+  "menu.smmorpg.trash": "Çöp — buraya atılan geri gelmez",
+  "menu.smmorpg.deposit": "Depo — kasaya birer birer gönderir",
+  "menu.smmorpg.loadout": "Kuşanım %s"
 }

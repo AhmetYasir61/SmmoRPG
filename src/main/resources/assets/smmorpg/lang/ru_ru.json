@@ -296,5 +296,13 @@
   "hub.smmorpg.queue_needs_server": "Join a server to queue.",
   "hub.smmorpg.ladder": "Leaderboard",
   "hub.smmorpg.ladder_empty": "No ladder data yet.",
-  "hub.smmorpg.play_note": "Training runs locally and needs no server."
+  "hub.smmorpg.play_note": "Training runs locally and needs no server.",
+  "menu.smmorpg.settings": "Настройки",
+  "menu.smmorpg.play": "ИГРАТЬ",
+  "menu.smmorpg.quit": "Выход",
+  "menu.smmorpg.quit_confirm": "Закрыть игру?",
+  "menu.smmorpg.inventory": "ИНВЕНТАРЬ",
+  "menu.smmorpg.trash": "Мусор — выброшенное сюда не вернуть",
+  "menu.smmorpg.deposit": "Хранилище — отправляет стак в сейф",
+  "menu.smmorpg.loadout": "Набор %s"
 }

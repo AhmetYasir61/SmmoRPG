@@ -296,5 +296,13 @@
   "hub.smmorpg.queue_needs_server": "Join a server to queue.",
   "hub.smmorpg.ladder": "Leaderboard",
   "hub.smmorpg.ladder_empty": "No ladder data yet.",
-  "hub.smmorpg.play_note": "Training runs locally and needs no server."
+  "hub.smmorpg.play_note": "Training runs locally and needs no server.",
+  "menu.smmorpg.settings": "Instellingen",
+  "menu.smmorpg.play": "SPELEN",
+  "menu.smmorpg.quit": "Afsluiten",
+  "menu.smmorpg.quit_confirm": "Spel sluiten?",
+  "menu.smmorpg.inventory": "INVENTARIS",
+  "menu.smmorpg.trash": "Prullenbak — hierin is voorgoed weg",
+  "menu.smmorpg.deposit": "Opslag — stuurt één stapel naar de kluis",
+  "menu.smmorpg.loadout": "Uitrusting %s"
 }

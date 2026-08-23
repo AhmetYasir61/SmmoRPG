@@ -5,6 +5,7 @@ import com.smmorpg.client.screen.ModServerListScreen;
 import com.smmorpg.client.screen.TrainingScreen;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.TitleScreen;
+import com.smmorpg.config.CombatConfig;
 import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
 import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
@@ -13,19 +14,33 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 
 /**
- * Adds the mod's entry points to the vanilla menus: a square Training button beside
- * Singleplayer, and a server browser beside Multiplayer.
+ * Puts the mod's own front page in front of the vanilla title screen, and adds an update
+ * entry to the pause menu.
+ *
+ * <p>The swap happens in {@code ScreenEvent.Opening} rather than by adding widgets to the
+ * vanilla screen: the sketch this was built from replaces the page rather than decorating
+ * it, and a screen you have replaced is one you no longer have to keep in sync.
  */
 @EventBusSubscriber(modid = SmmoRPG.MOD_ID, value = Dist.CLIENT)
 public final class MenuIntegration {
 
     private MenuIntegration() {}
 
+    /** Swaps the vanilla title screen for ours the first time it is opened. */
+    @SubscribeEvent
+    public static void onScreenOpening(ScreenEvent.Opening event) {
+        if (!CombatConfig.CFG.customMainMenu.get()) return;
+        if (!(event.getNewScreen() instanceof TitleScreen)) return;
+        // Our own screen falls back to the vanilla one on close, so this must not catch it
+        // on the way back or the two would bounce off each other forever.
+        if (event.getCurrentScreen() instanceof com.smmorpg.client.menu.MainMenuScreen) return;
+
+        event.setNewScreen(new com.smmorpg.client.menu.MainMenuScreen());
+    }
+
     @SubscribeEvent
     public static void onScreenInit(ScreenEvent.Init.Post event) {
-        if (event.getScreen() instanceof TitleScreen title) {
-            addTitleButtons(event, title);
-        } else if (event.getScreen() instanceof net.minecraft.client.gui.screens.PauseScreen pause) {
+        if (event.getScreen() instanceof net.minecraft.client.gui.screens.PauseScreen pause) {
             // Only appears when there is actually something to apply, so the pause menu
             // stays clean the rest of the time.
             com.smmorpg.update.UpdateService.pending().ifPresent(manifest ->
@@ -44,44 +59,4 @@ public final class MenuIntegration {
         }
     }
 
-    private static void addTitleButtons(ScreenEvent.Init.Post event, TitleScreen title) {
-        // Find the Singleplayer button so the square Training button sits right beside it.
-        int anchorX = title.width / 2 - 100;
-        int anchorY = title.height / 4 + 48;
-
-        for (var child : title.children()) {
-            if (child instanceof Button button
-                    && button.getMessage().getString()
-                        .equals(Component.translatable("menu.singleplayer").getString())) {
-                anchorX = button.getX();
-                anchorY = button.getY();
-                break;
-            }
-        }
-
-        // The hub is the mod's front door, so it gets a full-width button in the stack
-        // rather than a square icon off to the side.
-        event.addListener(Button.builder(Component.translatable("hub.smmorpg.title"),
-                        b -> net.minecraft.client.Minecraft.getInstance()
-                                .setScreen(new com.smmorpg.client.menu.HubScreen(title)))
-                .bounds(anchorX, anchorY + 72, 200, 20)
-                .build());
-
-        // A square button, deliberately the same height as the row it sits on.
-        event.addListener(Button.builder(Component.translatable("training.smmorpg.button_short"),
-                        b -> net.minecraft.client.Minecraft.getInstance()
-                                .setScreen(new TrainingScreen()))
-                .bounds(anchorX + 204, anchorY, 20, 20)
-                .tooltip(net.minecraft.client.gui.components.Tooltip.create(
-                        Component.translatable("training.smmorpg.button_tooltip")))
-                .build());
-
-        event.addListener(Button.builder(Component.translatable("servers.smmorpg.button"),
-                        b -> net.minecraft.client.Minecraft.getInstance()
-                                .setScreen(new ModServerListScreen(title)))
-                .bounds(anchorX + 204, anchorY + 24, 20, 20)
-                .tooltip(net.minecraft.client.gui.components.Tooltip.create(
-                        Component.translatable("servers.smmorpg.button_tooltip")))
-                .build());
-    }
 }

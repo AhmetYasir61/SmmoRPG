@@ -296,5 +296,13 @@
   "hub.smmorpg.queue_needs_server": "Join a server to queue.",
   "hub.smmorpg.ladder": "Leaderboard",
   "hub.smmorpg.ladder_empty": "No ladder data yet.",
-  "hub.smmorpg.play_note": "Training runs locally and needs no server."
+  "hub.smmorpg.play_note": "Training runs locally and needs no server.",
+  "menu.smmorpg.settings": "設定",
+  "menu.smmorpg.play": "プレイ",
+  "menu.smmorpg.quit": "終了",
+  "menu.smmorpg.quit_confirm": "ゲームを終了しますか？",
+  "menu.smmorpg.inventory": "所持品",
+  "menu.smmorpg.trash": "廃棄 — 入れたものは戻らない",
+  "menu.smmorpg.deposit": "預入 — 一組ずつ金庫へ送る",
+  "menu.smmorpg.loadout": "装備 %s"
 }

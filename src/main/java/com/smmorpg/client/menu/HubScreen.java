@@ -37,8 +37,14 @@ public class HubScreen extends Screen {
     private int active;
 
     public HubScreen(Screen parent) {
+        this(parent, 0);
+    }
+
+    /** Opens straight onto a tab, so the front page's menu buttons land where they say. */
+    public HubScreen(Screen parent, int tab) {
         super(Component.translatable("hub.smmorpg.title"));
         this.parent = parent;
+        this.active = Math.max(0, Math.min(tab, 4));
     }
 
     public Screen parent() { return parent; }
