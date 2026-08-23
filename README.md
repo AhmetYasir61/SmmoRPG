@@ -48,6 +48,25 @@ wom                  2.0.176
 p1nero_bow           21.16.1.0
 ```
 
+## Settings this pack holds for you
+
+SmmoRPG pins a couple of its dependencies' settings on every world join, because they are
+pack-level decisions rather than taste:
+
+- **Epic Fight's compute shader is turned off.** Epic Fight can skin its armatures on the
+  GPU; on drivers where that misbehaves you get a mangled or invisible model rather than a
+  crash, which is a miserable thing to diagnose.
+- **Real Camera is kept on, and kept from switching itself off** while you sneak, swim or
+  crawl. A first-person body that vanishes when you crouch is worse than none at all,
+  because it teaches you not to trust what you are looking at.
+
+Camera offsets, bind targets and smoothing are **not** touched — Real Camera's author tuned
+those and this pack has no better numbers to put in their place. Nor is the classic/binding
+mode choice, which stays yours.
+
+All of it is under `[compatibility]` in `config/smmorpg-common.toml`, and
+`enforceModSettings = false` stops SmmoRPG touching another mod's settings entirely.
+
 ## Licensing — read this before distributing
 
 Epic Fight's code is **GPL-3.0**. SmmoRPG links against it, so a distributed build of the

@@ -39,6 +39,11 @@ public final class CombatConfig {
     // --- textures ---
     public final ModConfigSpec.IntValue decalResolution;
 
+    // --- compatibility ---
+    public final ModConfigSpec.BooleanValue enforceModSettings;
+    public final ModConfigSpec.BooleanValue disableEpicFightComputeShader;
+    public final ModConfigSpec.BooleanValue pinRealCamera;
+
     private CombatConfig(ModConfigSpec.Builder b) {
         b.push("feedback");
         cameraShakeScale = b.comment("0 disables shake entirely. 1 is the tuned default;",
@@ -69,6 +74,21 @@ public final class CombatConfig {
         holyChance = b.defineInRange("holyChance", 0.045D, 0.0D, 1.0D);
         cursedChance = b.defineInRange("cursedChance", 0.055D, 0.0D, 1.0D);
         maxAffixesPerItem = b.defineInRange("maxAffixesPerItem", 4, 0, 8);
+        b.pop();
+
+        b.push("compatibility");
+        enforceModSettings = b.comment("Master switch for everything in this section.",
+                        "Off means SmmoRPG never touches another mod's settings.")
+                .define("enforceModSettings", true);
+        disableEpicFightComputeShader = b.comment(
+                        "Epic Fight skins its armatures on the GPU when this is on.",
+                        "On drivers where it misbehaves the result is a mangled or invisible",
+                        "model rather than a crash, which is miserable to diagnose.")
+                .define("disableEpicFightComputeShader", true);
+        pinRealCamera = b.comment("Keeps Real Camera enabled and stops it switching itself off",
+                        "while sneaking, swimming or crawling. Camera offsets and bind",
+                        "targets are left exactly as Real Camera ships them.")
+                .define("pinRealCamera", true);
         b.pop();
 
         b.push("textures");
