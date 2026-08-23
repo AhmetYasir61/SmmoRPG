@@ -31,8 +31,9 @@ public final class AccountService {
     private AccountService() {}
 
     public static void start(MinecraftServer server) {
-        BackendClient.baseUrl = BackendEndpoints.resolveBaseUrl(ServerConfig.CFG.backendUrl.get());
         BackendClient.apiKey = ServerConfig.CFG.backendApiKey.get();
+        BackendClient.baseUrl = BackendEndpoints.resolveBaseUrl(
+                ServerConfig.CFG.backendUrl.get(), BackendClient.apiKey);
 
         Path dir = server.getWorldPath(net.minecraft.world.level.storage.LevelResource.ROOT)
                 .resolve("smmorpg");

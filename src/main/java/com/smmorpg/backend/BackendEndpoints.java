@@ -15,13 +15,28 @@ package com.smmorpg.backend;
  */
 public final class BackendEndpoints {
 
-    /** The network's account service. A server may override it in its own config. */
-    public static final String DEFAULT_BASE_URL = "https://api.smmorpg.net";
+    /**
+     * The network's account service.
+     *
+     * <p>Empty until there is one to point at. A built-in address that does not answer is
+     * worse than none: every server would spend its startup and its sync ticks talking to
+     * a host that will never reply, and the logs would fill with failures that look like a
+     * bug in the server rather than a service that does not exist yet.
+     */
+    public static final String DEFAULT_BASE_URL = "";
 
     private BackendEndpoints() {}
 
-    /** The config value if the operator set one, otherwise the built-in address. */
-    public static String resolveBaseUrl(String configured) {
-        return configured == null || configured.isBlank() ? DEFAULT_BASE_URL : configured.trim();
+    /**
+     * The address to use, or empty for local-only.
+     *
+     * <p>The key is what decides whether a server is part of a network, not the URL. A
+     * server with no key cannot authenticate against the service anyway, so contacting it
+     * would only produce 401s — staying local is both correct and quieter.
+     */
+    public static String resolveBaseUrl(String configuredUrl, String configuredKey) {
+        if (configuredKey == null || configuredKey.isBlank()) return "";
+        if (configuredUrl != null && !configuredUrl.isBlank()) return configuredUrl.trim();
+        return DEFAULT_BASE_URL;
     }
 }

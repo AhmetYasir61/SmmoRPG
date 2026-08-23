@@ -35,15 +35,18 @@ public final class ServerConfig {
 
     private ServerConfig(ModConfigSpec.Builder b) {
         b.push("account_service");
-        backendUrl = b.comment("Base URL of the account service.",
-                        "Leave empty to use the network's built-in address; set it only to",
-                        "point a server at your own service instead.")
+        backendUrl = b.comment("Base URL of your account service, e.g. https://api.example.com",
+                        "Only used when backendApiKey is also set. Leave both empty and the",
+                        "server keeps every account on disk and never contacts anything.",
+                        "See ACCOUNT_SERVICE.md for the three endpoints it has to answer.")
                 .define("backendUrl", "");
-        backendApiKey = b.comment("Shared secret sent as a bearer token.",
+        backendApiKey = b.comment("Shared secret sent as 'Authorization: Bearer <key>'.",
+                        "Any long random string; it only has to match what your service checks.",
                         "This is the one thing that cannot be built into the mod: a secret",
                         "inside a downloadable jar is not a secret. It stays here, in the",
                         "SERVER config, which NeoForge never sends to a client.",
-                        "Empty means this server is unranked and runs entirely locally.")
+                        "EMPTY IS A VALID SETUP: the server then runs entirely locally,",
+                        "keeps accounts in the world folder, and contacts nothing.")
                 .define("backendApiKey", "");
         syncIntervalSeconds = b.comment("How often to push dirty accounts and retry the",
                         "offline queue.")

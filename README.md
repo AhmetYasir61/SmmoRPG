@@ -61,6 +61,11 @@ place, held by the operator. The public service address is compiled into the mod
 to point a server at a different service. The API key is deliberately *not* compiled in —
 a secret inside a downloadable jar can be read out of the file in about ten seconds.
 
+The service itself is **not included** — the mod ships with no backend and no built-in
+address. `ACCOUNT_SERVICE.md` is the full contract: three endpoints, one JSON shape, and a
+working reference implementation in about thirty lines. Leaving both config values empty is a
+complete supported setup; accounts then live in the world folder and nothing is contacted.
+
 ### Nothing is lost when the service is down
 
 Every account write goes through an on-disk queue before it goes anywhere else:
