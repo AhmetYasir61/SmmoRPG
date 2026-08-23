@@ -1,0 +1,23 @@
+# SmmoRPG account service — Apache configuration for shared hosting.
+
+RewriteEngine On
+
+# Apache under CGI/FastCGI drops the Authorization header before PHP ever sees it, which
+# would make every authenticated request look unauthenticated. This passes it through.
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# Everything that is not a real file goes to index.php, so /accounts/<uuid> works as a
+# path rather than needing a query string.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
+
+# Nothing here is meant to be downloaded. Data lives outside the web root, but if it ever
+# ends up here by accident this stops it being served.
+<FilesMatch "\.(json|log|tmp|bak)$">
+    Require all denied
+</FilesMatch>
+
+# No directory listings.
+Options -Indexes

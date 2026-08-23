@@ -76,6 +76,14 @@ Vault entries: `item` is a namespaced item id, `damage` is the durability alread
 (optional, 0), `gear` is the mod's rolled-affix blob as a JSON string (optional, `""`).
 Treat `gear` as opaque — store and return it byte for byte, never parse or rewrite it.
 
+## Shared hosting? Use the PHP version
+
+Apache runs PHP, not Node. On Hostinger, cPanel or Plesk, `service/php/` has a complete
+implementation of everything below, plus the `.htaccess` needed to make path routing and
+the Authorization header work. See `service/php/README.md`.
+
+The Node version below is for a host where you can actually run a Node process.
+
 ## Minimal reference implementation
 
 ```js
