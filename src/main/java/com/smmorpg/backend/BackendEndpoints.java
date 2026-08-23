@@ -46,7 +46,22 @@ public final class BackendEndpoints {
      */
     public static String resolveBaseUrl(String configuredUrl, String configuredKey) {
         if (configuredKey == null || configuredKey.isBlank()) return "";
-        if (configuredUrl != null && !configuredUrl.isBlank()) return configuredUrl.trim();
+        if (configuredUrl != null && !configuredUrl.isBlank()) return trimTrailingSlashes(configuredUrl.trim());
         return DEFAULT_BASE_URL;
+    }
+
+    /**
+     * Drops trailing slashes from a base URL.
+     *
+     * <p>Every path in this package is written with a leading slash, so a base URL that
+     * also ends in one produces {@code //servers/heartbeat} — which most web servers
+     * answer with a 404 rather than treating as the same route. Typing the address with
+     * a trailing slash is the natural thing to do, so it is fixed here instead of being
+     * left as a trap in the config file.
+     */
+    private static String trimTrailingSlashes(String url) {
+        int end = url.length();
+        while (end > 0 && url.charAt(end - 1) == '/') end--;
+        return url.substring(0, end);
     }
 }
