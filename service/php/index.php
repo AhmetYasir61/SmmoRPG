@@ -73,10 +73,30 @@ function bearerToken(): string
     return str_starts_with($header, 'Bearer ') ? substr($header, 7) : '';
 }
 
+/**
+ * The fallback key header.
+ *
+ * Some hosts strip Authorization no matter what the .htaccess says — it is special-cased
+ * by the server for security reasons and not every plan lets you override that. An ordinary
+ * custom header is passed through untouched everywhere, so the mod sends the key both ways
+ * and either one is accepted. Deliberately not a query parameter: those end up in access
+ * logs, and a secret in a log file is a secret you have given away.
+ */
+function apiKeyHeader(): string
+{
+    $value = $_SERVER['HTTP_X_API_KEY'] ?? '';
+
+    if ($value === '' && function_exists('apache_request_headers')) {
+        $headers = apache_request_headers();
+        $value = $headers['X-Api-Key'] ?? $headers['x-api-key'] ?? '';
+    }
+    return (string) $value;
+}
+
 /** Constant-time comparison, so the key cannot be guessed a character at a time. */
 function authorised(): bool
 {
-    return hash_equals(API_KEY, bearerToken());
+    return hash_equals(API_KEY, bearerToken()) || hash_equals(API_KEY, apiKeyHeader());
 }
 
 /** The path segments after this script, e.g. ["accounts", "<uuid>"]. */
@@ -135,6 +155,22 @@ $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 // "misconfigured".
 if (($segments[0] ?? '') === 'health') {
     respond(200, ['ok' => true]);
+}
+
+/*
+ * Diagnostics for exactly one problem: "I sent the key and still got 401."
+ *
+ * It reports which headers actually survived the trip and whether either matched — as
+ * booleans only. It never echoes a key, so it is safe to leave reachable and safe to paste
+ * into a support thread.
+ */
+if (($segments[0] ?? '') === 'whoami') {
+    respond(200, [
+        'authorization_header_arrived' => bearerToken() !== '',
+        'x_api_key_header_arrived' => apiKeyHeader() !== '',
+        'authorized' => authorised(),
+        'key_configured' => API_KEY !== 'CHANGE-ME-to-a-long-random-string',
+    ]);
 }
 
 if (!authorised()) {

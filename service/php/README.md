@@ -68,9 +68,39 @@ curl -H "Authorization: Bearer YOUR-KEY" \
      https://your-domain.tld/PmmoRPG_Api/accounts/00000000-0000-0000-0000-000000000000
 ```
 
-If the third one still says `unauthorised`, the host is stripping the Authorization header
-and the `.htaccess` did not take. Check that `.htaccess` uploaded (it starts with a dot and
-some file managers hide it) and that the host allows `RewriteEngine`.
+### If you sent the key and still got `unauthorised`
+
+Note first that the **second** command above is *supposed* to return `unauthorised` — it
+sends no key. Only the third one proves anything.
+
+If the third one fails too, ask the service what actually arrived:
+
+```bash
+curl -H "Authorization: Bearer YOUR-KEY" \
+     -H "X-Api-Key: YOUR-KEY" \
+     https://your-domain.tld/PmmoRPG_Api/whoami
+```
+
+It answers with booleans only — it never echoes the key, so it is safe to paste anywhere:
+
+```json
+{
+  "authorization_header_arrived": false,
+  "x_api_key_header_arrived": true,
+  "authorized": true,
+  "key_configured": true
+}
+```
+
+- `key_configured: false` — you did not replace `CHANGE-ME-to-a-long-random-string`.
+- both headers `false` — the host strips custom headers too, or the request never reached
+  `index.php` at all. Check that `.htaccess` uploaded (it starts with a dot and some file
+  managers hide it) and that the plan allows `RewriteEngine`.
+- `authorization_header_arrived: false` but `x_api_key_header_arrived: true` — normal on
+  shared hosting, and nothing to fix. The mod sends the key both ways for exactly this
+  reason, and the service accepts either.
+- both `true` but `authorized: false` — the strings differ. Almost always a trailing space
+  or a smart quote from copying out of a chat window.
 
 In game, as an operator: `/smmorpg status` reports whether the service is reachable and how
 many writes are still queued.

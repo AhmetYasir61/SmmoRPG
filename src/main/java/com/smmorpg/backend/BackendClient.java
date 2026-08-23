@@ -58,7 +58,14 @@ public final class BackendClient {
                         URI.create(baseUrl + (path.startsWith("/") ? path : "/" + path)))
                 .timeout(Duration.ofSeconds(10))
                 .header("Accept", "application/json");
-        if (!apiKey.isBlank()) builder.header("Authorization", "Bearer " + apiKey);
+        if (!apiKey.isBlank()) {
+            builder.header("Authorization", "Bearer " + apiKey);
+            // Sent twice on purpose. Apache and other CGI hosts special-case Authorization
+            // and strip it before the script ever sees it, and not every hosting plan lets
+            // you override that. An ordinary custom header always survives, so the service
+            // can accept either one and neither host configuration breaks the setup.
+            builder.header("X-Api-Key", apiKey);
+        }
         return builder;
     }
 
