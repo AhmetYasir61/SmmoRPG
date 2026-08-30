@@ -189,6 +189,8 @@ UI_KEYS = {
     "match_to_next": "match.smmorpg.to_next",
     "market_delivered": "market.smmorpg.delivered",
     "kit_granted": "kit.smmorpg.granted",
+    "menu_carried": "menu.smmorpg.carried",
+    "menu_in_game_only": "menu.smmorpg.in_game_only",
     "training_level": "training.smmorpg.level",
     "training_wave_size": "training.smmorpg.wave_size",
     "training_camp_hint": "training.smmorpg.camp_hint",

@@ -37,6 +37,7 @@ public final class ClientEvents {
         }
 
         CameraShake.tick();
+        com.smmorpg.client.menu.InventorySnapshot.capture(player);
 
         // First join with no class yet: open the selection screen and keep it open.
         if (!ClientState.progress.classChosen() && mc.screen == null && mc.level != null) {

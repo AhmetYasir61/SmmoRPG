@@ -254,7 +254,9 @@
    "training_next_level": "Next: level %s at %s%%",
    "training_camp": "Wave cleared. Camp. Speak to the master for level %s (%s%%).",
    "training_wave": "Level %s — %s%% — %s",
-   "training_master": "Training Master"
+   "training_master": "Training Master",
+   "menu_carried": "Carried: %s stacks",
+   "menu_in_game_only": "Works in game — open your inventory with E"
   },
   "mobs": {
    "conscript": "Conscript",
@@ -564,7 +566,9 @@
    "training_next_level": "Sonraki: seviye %s, %%%s",
    "training_camp": "Dalga temizlendi. Kamp. Seviye %s (%%%s) için ustaya konuş.",
    "training_wave": "Seviye %s — %%%s — %s",
-   "training_master": "Antrenman Ustası"
+   "training_master": "Antrenman Ustası",
+   "menu_carried": "Taşınan: %s yığın",
+   "menu_in_game_only": "Oyun içinde çalışır — envanteri E ile aç"
   },
   "mobs": {
    "conscript": "Acemi Er",

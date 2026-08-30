@@ -314,5 +314,7 @@
   "training.smmorpg.next_level": "Sonraki: seviye %s, %%%s",
   "training.smmorpg.camp": "Dalga temizlendi. Kamp. Seviye %s (%%%s) için ustaya konuş.",
   "training.smmorpg.wave": "Seviye %s — %%%s — %s",
-  "training.smmorpg.master": "Antrenman Ustası"
+  "training.smmorpg.master": "Antrenman Ustası",
+  "menu.smmorpg.carried": "Taşınan: %s yığın",
+  "menu.smmorpg.in_game_only": "Oyun içinde çalışır — envanteri E ile aç"
 }

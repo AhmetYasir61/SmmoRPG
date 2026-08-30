@@ -16,11 +16,15 @@ import java.util.function.Consumer;
 /**
  * The inventory column on the right of the front page.
  *
+ * <p>This is your own inventory, armour included — the bag you last put down, drawn from
+ * the client's cache, because the title screen exists before there is a world to ask.
+ *
  * <p>Two slots sit apart from the grid, as marked on the sketch: a trash slot and a vault
- * slot. Anything dropped on the vault slot goes to storage one stack at a time; anything
- * dropped on the trash is gone. Keeping them off the grid rather than in a corner of it is
- * deliberate — a destructive slot that looks like an ordinary slot is a slot people lose
- * things to.
+ * slot. Off the grid rather than in a corner of it, deliberately — a destructive slot that
+ * looks like an ordinary slot is a slot people lose things to. Both are inert here and say
+ * so when you hover them: moving an item is something only a server can actually do, so
+ * the working pair live in the inventory you open with E in game. Showing them greyed
+ * rather than hiding them keeps the two screens recognisably the same layout.
  */
 public class MenuInventoryPanel {
 
@@ -61,8 +65,8 @@ public class MenuInventoryPanel {
 
     public void render(GuiGraphics g, int mouseX, int mouseY) {
         var mc = Minecraft.getInstance();
-        PlayerAccount account = ProfileCache.get();
-        List<VaultItem> items = account.vault();
+        InventorySnapshot snapshot = InventorySnapshot.get();
+        List<ItemStack> items = snapshot.mainStacks();
 
         g.drawString(mc.font, Component.translatable("menu.smmorpg.inventory"),
                 x, y - 12, 0xFFD760, false);
@@ -86,7 +90,9 @@ public class MenuInventoryPanel {
 
             if (index >= items.size()) continue;
 
-            ItemStack stack = items.get(index).toStack();
+            ItemStack stack = items.get(index);
+            if (stack.isEmpty()) continue;
+
             g.renderItem(stack, sx + 2, sy + 2);
             g.renderItemDecorations(mc.font, stack, sx + 2, sy + 2);
             drawWear(g, stack, sx + 2, sy + 2);
@@ -97,10 +103,49 @@ public class MenuInventoryPanel {
         }
 
         drawScrollbar(g, gridH, maxScroll);
+
+        ItemStack worn = drawWorn(g, mc, snapshot, mouseX, mouseY);
+        if (!worn.isEmpty()) hovered = worn;
+
         drawSpecialSlots(g, mc, mouseX, mouseY);
-        drawDetail(g, mc, gridH, items);
+        drawDetail(g, mc, gridH, items.size());
 
         if (!hovered.isEmpty()) g.renderTooltip(mc.font, hovered, mouseX, mouseY);
+    }
+
+    /**
+     * The armour column, plus the off hand under it.
+     *
+     * <p>Worn gear is half of what you are carrying and all of what keeps you alive, so a
+     * front page that showed the bag and not the armour would be showing half a character.
+     */
+    private ItemStack drawWorn(GuiGraphics g, Minecraft mc, InventorySnapshot snapshot,
+                               int mouseX, int mouseY) {
+        int slotX = x + width + 6;
+        int gridH = rows * SLOT;
+
+        g.fill(slotX, y, slotX + SLOT, y + gridH, MainMenuScreen.panelColour());
+
+        List<ItemStack> worn = new java.util.ArrayList<>(snapshot.armourStacks());
+        worn.addAll(snapshot.offhandStacks());
+
+        ItemStack hovered = ItemStack.EMPTY;
+        for (int i = 0; i < worn.size() && (i + 1) * SLOT <= gridH; i++) {
+            int sy = y + i * SLOT;
+            g.fill(slotX + 1, sy + 1, slotX + SLOT - 1, sy + SLOT - 1, 0xFF1B1B22);
+
+            ItemStack stack = worn.get(i);
+            if (stack.isEmpty()) continue;
+
+            g.renderItem(stack, slotX + 2, sy + 2);
+            g.renderItemDecorations(mc.font, stack, slotX + 2, sy + 2);
+            drawWear(g, stack, slotX + 2, sy + 2);
+
+            if (mouseX >= slotX && mouseX < slotX + SLOT && mouseY >= sy && mouseY < sy + SLOT) {
+                hovered = stack;
+            }
+        }
+        return hovered;
     }
 
     private void drawScrollbar(GuiGraphics g, int gridH, int maxScroll) {
@@ -117,9 +162,9 @@ public class MenuInventoryPanel {
     private void drawSpecialSlots(GuiGraphics g, Minecraft mc, int mouseX, int mouseY) {
         int slotX = x - SLOT - 6;
 
-        drawMarker(g, mc, slotX, y, "✕", 0xFFE04040,
+        drawMarker(g, mc, slotX, y, "✕", 0xFF7A4040,
                 Component.translatable("menu.smmorpg.trash"), mouseX, mouseY);
-        drawMarker(g, mc, slotX, y + SLOT + 4, "◍", 0xFF56D364,
+        drawMarker(g, mc, slotX, y + SLOT + 4, "◍", 0xFF3F7A4D,
                 Component.translatable("menu.smmorpg.deposit"), mouseX, mouseY);
     }
 
@@ -131,19 +176,26 @@ public class MenuInventoryPanel {
         g.drawCenteredString(mc.font, glyph, sx + SLOT / 2, sy + 6, colour);
 
         if (mouseX >= sx && mouseX < sx + SLOT && mouseY >= sy && mouseY < sy + SLOT) {
-            g.renderTooltip(mc.font, tooltip, mouseX, mouseY);
+            g.renderTooltip(mc.font, List.of(tooltip.getVisualOrderText(),
+                            Component.translatable("menu.smmorpg.in_game_only")
+                                    .getVisualOrderText()),
+                    mouseX, mouseY);
         }
     }
 
-    private void drawDetail(GuiGraphics g, Minecraft mc, int gridH, List<VaultItem> items) {
+    private void drawDetail(GuiGraphics g, Minecraft mc, int gridH, int carried) {
         int panelY = y + gridH + 8;
         int panelH = height - gridH - 8;
         if (panelH <= 20) return;
 
         g.fill(x, panelY, x + width, panelY + panelH, MainMenuScreen.panelColour());
 
-        g.drawString(mc.font, Component.translatable("hub.smmorpg.vault_count", items.size()),
+        PlayerAccount account = ProfileCache.get();
+        g.drawString(mc.font, Component.translatable("menu.smmorpg.carried", carried),
                 x + 6, panelY + 6, MainMenuScreen.dimText(), false);
+        g.drawString(mc.font,
+                Component.translatable("hub.smmorpg.vault_count", account.vault().size()),
+                x + 6, panelY + 34, MainMenuScreen.dimText(), false);
 
         g.drawString(mc.font, Component.translatable("menu.smmorpg.loadout", loadout + 1),
                 x + 6, panelY + 20, 0xFFD760, false);

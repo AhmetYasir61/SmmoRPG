@@ -314,5 +314,7 @@
   "training.smmorpg.next_level": "Next: level %s at %s%%",
   "training.smmorpg.camp": "Wave cleared. Camp. Speak to the master for level %s (%s%%).",
   "training.smmorpg.wave": "Level %s — %s%% — %s",
-  "training.smmorpg.master": "Training Master"
+  "training.smmorpg.master": "Training Master",
+  "menu.smmorpg.carried": "Carried: %s stacks",
+  "menu.smmorpg.in_game_only": "Works in game — open your inventory with E"
 }

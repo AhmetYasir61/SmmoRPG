@@ -46,6 +46,10 @@ public final class Net {
                         com.smmorpg.vault.VaultOpener.open(sp);
                     }
                 }));
+        r.playToServer(C2SCarriedAction.TYPE, C2SCarriedAction.CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> {
+                    if (ctx.player() instanceof ServerPlayer sp) carriedAction(sp, payload);
+                }));
         r.playToServer(C2SLearnSkill.TYPE, C2SLearnSkill.CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> learnSkill(ctx.player(), payload)));
 
@@ -107,6 +111,30 @@ public final class Net {
         if (next == data) return;                 // not affordable, capped, or missing a parent
         player.setData(ModAttachments.SKILLS.get(), next);
         if (player instanceof ServerPlayer sp) sendTo(sp, new S2CSkillSync(next));
+    }
+
+    /**
+     * Sends what the player is holding on the cursor to the vault, or destroys it.
+     *
+     * <p>Reading the carried stack from the open menu rather than from the packet is what
+     * makes this safe: the only thing a client can ask for is "the thing I already picked
+     * up", which the server watched them pick up.
+     */
+    private static void carriedAction(ServerPlayer player, C2SCarriedAction payload) {
+        var menu = player.containerMenu;
+        if (menu == null) return;
+
+        net.minecraft.world.item.ItemStack carried = menu.getCarried();
+        if (carried.isEmpty()) return;
+
+        if (payload.action() == C2SCarriedAction.Action.DEPOSIT) {
+            var account = com.smmorpg.backend.AccountService.of(player);
+            com.smmorpg.backend.AccountService.put(
+                    account.deposit(com.smmorpg.account.VaultItem.of(carried)));
+        }
+
+        menu.setCarried(net.minecraft.world.item.ItemStack.EMPTY);
+        menu.broadcastChanges();
     }
 
     // --- helpers ---
