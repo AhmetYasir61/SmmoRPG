@@ -10,6 +10,8 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -77,5 +79,46 @@ public final class CombatHud {
             g.drawString(mc.font, Component.translatable("hud.smmorpg.severed", wounds.severed().size()),
                     barX, barY - 30, 0xFFE04040);
         }
+
+        drawArena(g, mc, w);
+    }
+
+    /**
+     * The arena strip along the top: what level you are fighting at, how much of the wave
+     * is left, and what is in your purse.
+     *
+     * <p>The purse is up here rather than only in the shop because it is what decides
+     * whether you fight one more wave before spending — a number you first see standing in
+     * front of the merchant is a number that arrives too late to plan around.
+     */
+    private static void drawArena(GuiGraphics g, Minecraft mc, int w) {
+        var arena = ClientState.arena;
+        if (!arena.active() || mc.player == null) return;
+
+        int y = 6;
+        g.drawCenteredString(mc.font, Component.translatable("hud.smmorpg.arena_level",
+                arena.level(), arena.percent()), w / 2, y, 0xFFFFD760);
+
+        if (arena.resting()) {
+            g.drawCenteredString(mc.font, Component.translatable("hud.smmorpg.arena_camp"),
+                    w / 2, y + 12, 0xFF9DE7FF);
+        } else {
+            g.drawCenteredString(mc.font, Component.translatable("hud.smmorpg.arena_wave",
+                    arena.kills(), arena.needed()), w / 2, y + 12, 0xFFCCCCCC);
+
+            int barW = 120;
+            int barX2 = w / 2 - barW / 2;
+            float done = arena.needed() <= 0 ? 0.0F
+                    : Math.min(1.0F, (float) arena.kills() / arena.needed());
+            g.fill(barX2, y + 24, barX2 + barW, y + 27, 0xB0101010);
+            g.fill(barX2, y + 24, barX2 + (int) (barW * done), y + 27, 0xFFD9B44A);
+        }
+
+        int purse = 0;
+        for (ItemStack stack : mc.player.getInventory().items) {
+            if (stack.is(Items.EMERALD)) purse += stack.getCount();
+        }
+        g.renderItem(new ItemStack(Items.EMERALD), w / 2 + 70, y + 4);
+        g.drawString(mc.font, String.valueOf(purse), w / 2 + 88, y + 8, 0xFF7FE0A0, false);
     }
 }

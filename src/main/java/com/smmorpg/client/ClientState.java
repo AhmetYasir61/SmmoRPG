@@ -11,6 +11,10 @@ public final class ClientState {
     private ClientState() {}
 
     public static PlayerProgress progress = PlayerProgress.EMPTY;
+    /** The arena HUD's whole state. Replaced wholesale by the server every half second. */
+    public static com.smmorpg.network.S2CArenaStatus arena =
+            com.smmorpg.network.S2CArenaStatus.INACTIVE;
+
     /** How far this player has climbed in the training arena. Server-owned; never set here. */
     public static int trainingLevel = 0;
 

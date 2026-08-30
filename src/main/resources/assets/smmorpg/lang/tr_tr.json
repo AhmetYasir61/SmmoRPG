@@ -316,5 +316,21 @@
   "training.smmorpg.wave": "Seviye %s — %%%s — %s",
   "training.smmorpg.master": "Antrenman Ustası",
   "menu.smmorpg.carried": "Taşınan: %s yığın",
-  "menu.smmorpg.in_game_only": "Oyun içinde çalışır — envanteri E ile aç"
+  "menu.smmorpg.in_game_only": "Oyun içinde çalışır — envanteri E ile aç",
+  "training.smmorpg.smith": "Demirci",
+  "training.smmorpg.craftsman": "Ustabaşı",
+  "training.smmorpg.merchant": "Tüccar",
+  "camp.smmorpg.need_emeralds": "Bu %s zümrüt. Sende %s var.",
+  "camp.smmorpg.smith.nothing": "Demirci boş eline bakıp bekliyor.",
+  "camp.smmorpg.smith.already": "Onarılacak bir şey yok.",
+  "camp.smmorpg.smith.done": "%s onarıldı, %s zümrüt.",
+  "camp.smmorpg.craftsman.nothing": "Ustabaşının çalışacak bir şeye ihtiyacı var.",
+  "camp.smmorpg.craftsman.full": "Bunun verecek bir şeyi kalmamış.",
+  "camp.smmorpg.craftsman.done": "%s geliştirildi, %s zümrüt.",
+  "shop.smmorpg.reroll": "Yeni stok — %s zümrüt",
+  "shop.smmorpg.purse": "zümrüt",
+  "container.smmorpg.shop": "Tüccar",
+  "hud.smmorpg.arena_level": "Seviye %s — %%%s",
+  "hud.smmorpg.arena_wave": "%s / %s",
+  "hud.smmorpg.arena_camp": "Kamp — devam için ustaya konuş"
 }

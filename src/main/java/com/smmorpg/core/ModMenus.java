@@ -22,4 +22,14 @@ public final class ModMenus {
      */
     public static final Supplier<MenuType<VaultMenu>> VAULT = REGISTRY.register(
             "vault", () -> IMenuTypeExtension.create(VaultMenu::new));
+
+    /**
+     * The camp merchant's shelf.
+     *
+     * <p>Carries its goods as extra data rather than as a container, because the shelf is
+     * not something the client is allowed to reach into — it is a picture of what is for
+     * sale, and every actual exchange goes through a menu button the server rules on.
+     */
+    public static final Supplier<MenuType<com.smmorpg.shop.ShopMenu>> SHOP = REGISTRY.register(
+            "shop", () -> IMenuTypeExtension.create(com.smmorpg.shop.ShopMenu::new));
 }

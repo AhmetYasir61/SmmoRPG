@@ -190,6 +190,21 @@ recoverable right up until you walk away. Every take and deposit is written to t
 straight away and the window is redrawn from what the account then says, so two open vaults
 can never disagree.
 
+## The camp
+
+Clearing a wave drops the arena into a camp, and four people are standing on the floor of
+it. The master starts the next wave — nothing continues until you say so, which is what
+lets you stop at the level you have actually mastered. The blacksmith mends what you are
+holding. The craftsman fills one more of the affix slots your weapon's rarity already has,
+which is why a legendary is worth keeping and a common is not worth pouring emeralds into.
+The merchant keeps eight things on a shelf, rolled from everything the mod can make, and
+will sweep the shelf for a price that rises each time you ask.
+
+All four are paid in emeralds, which only the arena's dead leave behind and only while a
+session is running. That is deliberate: every repair and every upgrade is bought with a
+wave you have already won, so a bad wave costs you the next repair. Nothing else spawns
+inside the arena — a camp you have to defend is not a camp.
+
 **Not built yet:** kit loadouts drawn from the vault, and buying with coins from the store
 page (the currency and the delivery pipeline both work; the purchase button needs a
 packet). Real-money purchases already work end to end through Tebex.

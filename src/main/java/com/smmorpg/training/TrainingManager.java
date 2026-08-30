@@ -46,9 +46,21 @@ public final class TrainingManager {
     public static void stop(ServerPlayer player) {
         TrainingSession session = SESSIONS.remove(player.getUUID());
         if (session != null && player.level() instanceof ServerLevel level) session.end(level);
+        if (session != null) {
+            com.smmorpg.network.Net.sendTo(player, com.smmorpg.network.S2CArenaStatus.INACTIVE);
+        }
+    }
+
+    private static void sendStatus(ServerPlayer player, TrainingSession session) {
+        com.smmorpg.network.Net.sendTo(player, new com.smmorpg.network.S2CArenaStatus(
+                true, session.level(), session.difficulty().percent(),
+                session.killsThisWave(), session.killsNeeded(), session.resting()));
     }
 
     public static TrainingSession of(ServerPlayer player) { return SESSIONS.get(player.getUUID()); }
+
+    /** Every live session, for the rules that have to know where the arenas are. */
+    public static java.util.Collection<TrainingSession> sessions() { return SESSIONS.values(); }
 
     /**
      * Dying in the arena is meant to cost you the fight, not the session. A player who
@@ -79,6 +91,9 @@ public final class TrainingManager {
                 continue;
             }
             session.tick(level, player);
+
+            // Half a second is often enough for a kill counter and cheap enough to ignore.
+            if (player.tickCount % 10 == 0) sendStatus(player, session);
         }
         com.smmorpg.sync.ContentSync.broadcastIfChanged(event.getServer());
     }

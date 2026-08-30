@@ -56,6 +56,9 @@ public final class Net {
         r.playToClient(S2CSkillSync.TYPE, S2CSkillSync.CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() ->
                         com.smmorpg.client.ClientPacketHandler.onSkillSync(payload)));
+        r.playToClient(S2CArenaStatus.TYPE, S2CArenaStatus.CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() ->
+                        com.smmorpg.client.ClientState.arena = payload));
         r.playToClient(S2CTrainingLevel.TYPE, S2CTrainingLevel.CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() ->
                         com.smmorpg.client.ClientState.trainingLevel = payload.level()));

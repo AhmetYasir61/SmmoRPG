@@ -46,9 +46,13 @@ public class TrainingSession {
     private int killsThisWave = 0;
     private int kills = 0;
 
-    /** True between waves: no spawns, and a training master waiting to be spoken to. */
+    /** True between waves: no spawns, and the camp staff waiting to be spoken to. */
     private boolean resting;
-    private Mob master;
+    private Map<CampNpc.Role, Mob> staff = new java.util.EnumMap<>(CampNpc.Role.class);
+
+    /** The merchant's shelf, rolled once per camp and rerolled for a rising price. */
+    private com.smmorpg.shop.ShopStock stock = com.smmorpg.shop.ShopStock.EMPTY;
+    private int rerolls;
 
     public TrainingSession(UUID owner, int level, Vec3 centre) {
         this.owner = owner;
@@ -124,7 +128,9 @@ public class TrainingSession {
         player.setData(com.smmorpg.core.ModAttachments.WOUNDS.get(),
                 com.smmorpg.wound.WoundData.EMPTY);
 
-        master = TrainingMaster.spawn(world, centre, owner);
+        staff = CampNpc.spawnCamp(world, centre, owner);
+        stock = CampShop.roll(world.random, level);
+        rerolls = 0;
 
         player.sendSystemMessage(net.minecraft.network.chat.Component.translatable(
                 "training.smmorpg.camp", level + 1,
@@ -133,10 +139,38 @@ public class TrainingSession {
     }
 
     private void tickCamp(ServerLevel world, ServerPlayer player) {
-        // The master is the only way onward, so it is put back if anything removes it.
-        if (master == null || !master.isAlive() || master.isRemoved()) {
-            master = TrainingMaster.spawn(world, centre, owner);
+        // The camp is the only way onward, so anyone missing from it is put back.
+        for (CampNpc.Role role : CampNpc.Role.values()) {
+            Mob npc = staff.get(role);
+            if (npc == null || !npc.isAlive() || npc.isRemoved()) {
+                Mob replacement = CampNpc.spawn(world, centre, owner, role);
+                if (replacement != null) staff.put(role, replacement);
+            }
         }
+    }
+
+    // --- the merchant ---
+
+    public com.smmorpg.shop.ShopStock shopStock(ServerPlayer player) {
+        if (stock.goods().isEmpty() && player.level() instanceof ServerLevel world) {
+            stock = CampShop.roll(world.random, level);
+        }
+        return stock;
+    }
+
+    public int rerollCost() { return CampShop.rerollCost(rerolls, level); }
+
+    public com.smmorpg.shop.ShopStock rerollShop(ServerPlayer player) {
+        if (player.level() instanceof ServerLevel world) {
+            stock = CampShop.roll(world.random, level);
+            rerolls++;
+        }
+        return stock;
+    }
+
+    public com.smmorpg.shop.ShopStock markSold(int index) {
+        stock = stock.sold(index);
+        return stock;
     }
 
     /** Called when the player clicks the master: one level harder, camp struck. */
@@ -149,10 +183,7 @@ public class TrainingSession {
         player.setData(com.smmorpg.core.ModAttachments.TRAINING_LEVEL.get(), level);
         com.smmorpg.network.Net.sendTo(player, new com.smmorpg.network.S2CTrainingLevel(level));
 
-        if (master != null) {
-            master.discard();
-            master = null;
-        }
+        clearCamp();
 
         Difficulty next = difficulty();
         player.sendSystemMessage(net.minecraft.network.chat.Component.translatable(
@@ -230,10 +261,15 @@ public class TrainingSession {
     public void end(ServerLevel world) {
         for (Mob mob : new ArrayList<>(bots.keySet())) mob.discard();
         bots.clear();
-        if (master != null) {
-            master.discard();
-            master = null;
+        clearCamp();
+    }
+
+    /** Sends the camp away. Called when the next wave starts and when the session ends. */
+    private void clearCamp() {
+        for (Mob npc : staff.values()) {
+            if (npc != null) npc.discard();
         }
+        staff.clear();
     }
 
     public List<Mob> opponents() { return new ArrayList<>(bots.keySet()); }

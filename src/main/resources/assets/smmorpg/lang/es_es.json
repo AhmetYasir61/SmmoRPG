@@ -316,5 +316,21 @@
   "training.smmorpg.wave": "Level %s — %s%% — %s",
   "training.smmorpg.master": "Training Master",
   "menu.smmorpg.carried": "Carried: %s stacks",
-  "menu.smmorpg.in_game_only": "Works in game — open your inventory with E"
+  "menu.smmorpg.in_game_only": "Works in game — open your inventory with E",
+  "training.smmorpg.smith": "Blacksmith",
+  "training.smmorpg.craftsman": "Craftsman",
+  "training.smmorpg.merchant": "Merchant",
+  "camp.smmorpg.need_emeralds": "That costs %s emeralds. You have %s.",
+  "camp.smmorpg.smith.nothing": "The smith looks at your empty hand and waits.",
+  "camp.smmorpg.smith.already": "Nothing to mend.",
+  "camp.smmorpg.smith.done": "Repaired %s for %s emeralds.",
+  "camp.smmorpg.craftsman.nothing": "The craftsman needs something to work on.",
+  "camp.smmorpg.craftsman.full": "This one has nothing left to give.",
+  "camp.smmorpg.craftsman.done": "Improved %s for %s emeralds.",
+  "shop.smmorpg.reroll": "New stock — %s emeralds",
+  "shop.smmorpg.purse": "emeralds",
+  "container.smmorpg.shop": "Merchant",
+  "hud.smmorpg.arena_level": "Level %s — %s%%",
+  "hud.smmorpg.arena_wave": "%s / %s",
+  "hud.smmorpg.arena_camp": "Camp — speak to the master to go deeper"
 }

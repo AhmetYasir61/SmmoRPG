@@ -16,5 +16,6 @@ public final class ModScreens {
     @SubscribeEvent
     public static void register(RegisterMenuScreensEvent event) {
         event.register(ModMenus.VAULT.get(), VaultScreen::new);
+        event.register(ModMenus.SHOP.get(), ShopScreen::new);
     }
 }
