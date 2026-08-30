@@ -346,5 +346,20 @@
   "party.smmorpg.pressure": "Zindan %%%s ile karşılık veriyor.",
   "party.smmorpg.left": "Gruptan ayrıldın.",
   "training.smmorpg.life_lost": "Bu kayıtta %s can kaldı.",
-  "training.smmorpg.fell_back": "Canın bitti. %s, %s hücresindeki önceki kaydına, o günkü eşyalarınla döndün."
+  "training.smmorpg.fell_back": "Canın bitti. %s, %s hücresindeki önceki kaydına, o günkü eşyalarınla döndün.",
+  "coop.smmorpg.title": "Birlikte oyna",
+  "coop.smmorpg.button": "Arkadaşlarınla oyna",
+  "coop.smmorpg.host": "Bu dünyayı arkadaşlarına aç",
+  "coop.smmorpg.stop_hosting": "Paylaşımı durdur",
+  "coop.smmorpg.hosting": "Açık. Arkadaşlarına kodu ver.",
+  "coop.smmorpg.stopped": "Artık paylaşılmıyor.",
+  "coop.smmorpg.host_failed": "Relay'e ulaşılamadı.",
+  "coop.smmorpg.need_world": "Önce bir dünya aç, sonra paylaş.",
+  "coop.smmorpg.your_code": "Kodun",
+  "coop.smmorpg.join_prompt": "Ya da bir arkadaşının kodunu yaz",
+  "coop.smmorpg.code_hint": "KOD",
+  "coop.smmorpg.join": "Katıl",
+  "coop.smmorpg.bad_code": "Bu bir kod değil.",
+  "coop.smmorpg.join_failed": "Yerel kapı açılamadı.",
+  "coop.smmorpg.no_relay": "Bu sürümde relay tanımlı değil."
 }

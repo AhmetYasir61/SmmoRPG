@@ -346,5 +346,20 @@
   "party.smmorpg.pressure": "The dungeon is answering with +%s%%.",
   "party.smmorpg.left": "You left the party.",
   "training.smmorpg.life_lost": "%s lives left on this save.",
-  "training.smmorpg.fell_back": "Out of lives. Back to your earlier save at cell %s, %s, with what you had then."
+  "training.smmorpg.fell_back": "Out of lives. Back to your earlier save at cell %s, %s, with what you had then.",
+  "coop.smmorpg.title": "Play together",
+  "coop.smmorpg.button": "Play with friends",
+  "coop.smmorpg.host": "Open this world to friends",
+  "coop.smmorpg.stop_hosting": "Stop sharing",
+  "coop.smmorpg.hosting": "Open. Give your friends the code.",
+  "coop.smmorpg.stopped": "No longer sharing.",
+  "coop.smmorpg.host_failed": "Could not reach the relay.",
+  "coop.smmorpg.need_world": "Open a world first, then share it.",
+  "coop.smmorpg.your_code": "Your code",
+  "coop.smmorpg.join_prompt": "Or type a friend's code",
+  "coop.smmorpg.code_hint": "CODE",
+  "coop.smmorpg.join": "Join",
+  "coop.smmorpg.bad_code": "That is not a code.",
+  "coop.smmorpg.join_failed": "Could not open a local door.",
+  "coop.smmorpg.no_relay": "No relay is configured in this build."
 }

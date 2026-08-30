@@ -216,6 +216,19 @@ runs have room without the labyrinth having a ceiling you can be pinned against.
 
 ## Co-op
 
+Two halves. **Getting into the same world** is the co-op relay: pause, **Play with
+friends**, read out the six-character code. Your world is published to `127.0.0.1` only —
+nothing ever listens on your public address — and the mod dials out to a relay and holds
+one connection open. A friend types the code, their mod opens a door on their own loopback
+address, and the relay staples the two sockets together. It needs no port forwarding and
+works behind carrier-grade NAT, where forwarding is not an option at all. The relay never
+reads the game protocol and holds no account data; see `service/relay/README.md` to run
+one.
+
+**Being a party once you are there** is the commands below. They work the same whether the
+world is a friend's laptop or a dedicated server, because by then everyone is on the same
+one.
+
 Sixteen, not four. `/smmorpg invite <player>`, `/smmorpg accept`, `/smmorpg party`,
 `/smmorpg disband`. Accepting drops you next to the person who invited you.
 
