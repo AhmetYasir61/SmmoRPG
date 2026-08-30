@@ -229,11 +229,8 @@
   "training.smmorpg.button": "修練",
   "training.smmorpg.button_short": "修",
   "training.smmorpg.button_tooltip": "修練場に入る",
-  "training.smmorpg.difficulty": "難度: %s%%",
-  "training.smmorpg.exact": "数値入力",
   "training.smmorpg.enter": "入る",
-  "training.smmorpg.band": "神域段階 %s",
-  "training.smmorpg.started": "Training started at %s%% (%s)",
+  "training.smmorpg.started": "Training started — level %s, %s%% (%s)",
   "training.smmorpg.opponent": "Opponent %s%%",
   "servers.smmorpg.title": "SmmoRPG サーバー",
   "servers.smmorpg.button": "S",
@@ -309,5 +306,13 @@
   "container.smmorpg.vault.deposit": "Deposit",
   "container.smmorpg.vault.trash": "Trash",
   "container.smmorpg.vault.page": "Page %s / %s",
-  "key.smmorpg.vault": "Vault"
+  "key.smmorpg.vault": "Vault",
+  "kit.smmorpg.granted": "Your kit is topped up.",
+  "training.smmorpg.level": "Level %s — %s%% power",
+  "training.smmorpg.wave_size": "This wave: %s opponents",
+  "training.smmorpg.camp_hint": "Clear the wave, then speak to the training master to go deeper.",
+  "training.smmorpg.next_level": "Next: level %s at %s%%",
+  "training.smmorpg.camp": "Wave cleared. Camp. Speak to the master for level %s (%s%%).",
+  "training.smmorpg.wave": "Level %s — %s%% — %s",
+  "training.smmorpg.master": "Training Master"
 }

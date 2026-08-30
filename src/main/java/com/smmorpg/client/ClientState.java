@@ -11,6 +11,9 @@ public final class ClientState {
     private ClientState() {}
 
     public static PlayerProgress progress = PlayerProgress.EMPTY;
+    /** How far this player has climbed in the training arena. Server-owned; never set here. */
+    public static int trainingLevel = 0;
+
     public static com.smmorpg.skill.SkillData skills = com.smmorpg.skill.SkillData.EMPTY;
     /** The player's account as the server last reported it. Never fetched by the client. */
     public static com.smmorpg.account.PlayerAccount account =

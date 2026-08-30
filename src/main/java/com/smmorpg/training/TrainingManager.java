@@ -20,14 +20,26 @@ public final class TrainingManager {
 
     private TrainingManager() {}
 
-    public static TrainingSession start(ServerPlayer player, int difficultyPercent) {
+    /**
+     * Starts a session at whatever level the player has already earned.
+     *
+     * <p>There is no difficulty argument on purpose. The percentage is the record of what
+     * they have beaten, so the only thing that can raise it is beating the next wave.
+     */
+    public static TrainingSession start(ServerPlayer player) {
         stop(player);
-        TrainingSession session = new TrainingSession(player.getUUID(),
-                new Difficulty(difficultyPercent), player.position());
+        int level = player.getData(com.smmorpg.core.ModAttachments.TRAINING_LEVEL.get());
+        TrainingSession session = new TrainingSession(player.getUUID(), level, player.position());
         SESSIONS.put(player.getUUID(), session);
+
+        // Nobody fights a divine-tier arena with their fists. The kit tops up what is
+        // missing rather than replacing what the player brought, so walking in with your
+        // own gear still means walking in with your own gear.
+        com.smmorpg.kit.StarterKit.grant(player);
+        Difficulty difficulty = session.difficulty();
         player.sendSystemMessage(net.minecraft.network.chat.Component.translatable(
-                "training.smmorpg.started", difficultyPercent,
-                net.minecraft.network.chat.Component.translatable(session.difficulty().tierKey())));
+                "training.smmorpg.started", level, difficulty.percent(),
+                net.minecraft.network.chat.Component.translatable(difficulty.tierKey())));
         return session;
     }
 
@@ -37,6 +49,19 @@ public final class TrainingManager {
     }
 
     public static TrainingSession of(ServerPlayer player) { return SESSIONS.get(player.getUUID()); }
+
+    /**
+     * Dying in the arena is meant to cost you the fight, not the session. A player who
+     * respawns mid-session and finds themselves empty-handed has to walk out and come
+     * back in just to be armed again.
+     */
+    @SubscribeEvent
+    public static void onRespawn(net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerRespawnEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player
+                && SESSIONS.containsKey(player.getUUID())) {
+            com.smmorpg.kit.StarterKit.grant(player);
+        }
+    }
 
     @SubscribeEvent
     public static void onServerTick(ServerTickEvent.Post event) {

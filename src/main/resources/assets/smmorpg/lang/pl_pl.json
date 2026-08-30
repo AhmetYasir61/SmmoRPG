@@ -229,11 +229,8 @@
   "training.smmorpg.button": "Trening",
   "training.smmorpg.button_short": "T",
   "training.smmorpg.button_tooltip": "Wejdź na arenę treningową",
-  "training.smmorpg.difficulty": "Trudność: %s%%",
-  "training.smmorpg.exact": "Dokładna wartość",
   "training.smmorpg.enter": "Wejdź",
-  "training.smmorpg.band": "Boski próg %s",
-  "training.smmorpg.started": "Training started at %s%% (%s)",
+  "training.smmorpg.started": "Training started — level %s, %s%% (%s)",
   "training.smmorpg.opponent": "Opponent %s%%",
   "servers.smmorpg.title": "Serwery SmmoRPG",
   "servers.smmorpg.button": "S",
@@ -309,5 +306,13 @@
   "container.smmorpg.vault.deposit": "Deposit",
   "container.smmorpg.vault.trash": "Trash",
   "container.smmorpg.vault.page": "Page %s / %s",
-  "key.smmorpg.vault": "Vault"
+  "key.smmorpg.vault": "Vault",
+  "kit.smmorpg.granted": "Your kit is topped up.",
+  "training.smmorpg.level": "Level %s — %s%% power",
+  "training.smmorpg.wave_size": "This wave: %s opponents",
+  "training.smmorpg.camp_hint": "Clear the wave, then speak to the training master to go deeper.",
+  "training.smmorpg.next_level": "Next: level %s at %s%%",
+  "training.smmorpg.camp": "Wave cleared. Camp. Speak to the master for level %s (%s%%).",
+  "training.smmorpg.wave": "Level %s — %s%% — %s",
+  "training.smmorpg.master": "Training Master"
 }

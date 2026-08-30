@@ -52,6 +52,9 @@ public final class Net {
         r.playToClient(S2CSkillSync.TYPE, S2CSkillSync.CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() ->
                         com.smmorpg.client.ClientPacketHandler.onSkillSync(payload)));
+        r.playToClient(S2CTrainingLevel.TYPE, S2CTrainingLevel.CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() ->
+                        com.smmorpg.client.ClientState.trainingLevel = payload.level()));
         r.playToClient(S2CAccountSync.TYPE, S2CAccountSync.CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() ->
                         com.smmorpg.client.ClientPacketHandler.onAccountSync(payload)));
@@ -71,7 +74,13 @@ public final class Net {
         PlayerProgress next = progress.withClass(PlayerClass.byKey(payload.classKey()));
         player.setData(ModAttachments.PROGRESS.get(), next);
         com.smmorpg.event.ProgressionEvents.applyClassStats(player, next);
-        if (player instanceof ServerPlayer sp) sendTo(sp, new S2CProgressSync(next));
+        if (player instanceof ServerPlayer sp) {
+            // Picking a path is the moment you become that class, so it is also the moment
+            // you get its weapon; making players find one first would leave the first
+            // minutes of every character playing identically.
+            com.smmorpg.kit.StarterKit.grant(sp);
+            sendTo(sp, new S2CProgressSync(next));
+        }
     }
 
     private static void spendPoint(net.minecraft.world.entity.player.Player player, C2SSpendPoint payload) {
@@ -84,7 +93,7 @@ public final class Net {
     private static void startTraining(net.minecraft.world.entity.player.Player player,
                                       C2SStartTraining payload) {
         if (player instanceof ServerPlayer sp) {
-            com.smmorpg.training.TrainingManager.start(sp, payload.difficultyPercent());
+            com.smmorpg.training.TrainingManager.start(sp);
         }
     }
 

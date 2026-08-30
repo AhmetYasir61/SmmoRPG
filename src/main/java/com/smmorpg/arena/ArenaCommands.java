@@ -41,6 +41,7 @@ public final class ArenaCommands {
 
         root.then(Commands.literal("leave").executes(ctx -> leave(ctx.getSource())));
         root.then(Commands.literal("vault").executes(ctx -> vault(ctx.getSource())));
+        root.then(Commands.literal("kit").executes(ctx -> kit(ctx.getSource())));
         root.then(Commands.literal("rank").executes(ctx -> rank(ctx.getSource())));
         root.then(Commands.literal("status")
                 .requires(source -> source.hasPermission(2))
@@ -77,6 +78,15 @@ public final class ArenaCommands {
 
     private static int vault(CommandSourceStack source) throws com.mojang.brigadier.exceptions.CommandSyntaxException {
         com.smmorpg.vault.VaultOpener.open(source.getPlayerOrException());
+        return 1;
+    }
+
+    /** Re-issues whatever the player's class kit is missing — after a death, usually. */
+    private static int kit(CommandSourceStack source) throws com.mojang.brigadier.exceptions.CommandSyntaxException {
+        ServerPlayer player = source.getPlayerOrException();
+        com.smmorpg.kit.StarterKit.grant(player);
+        source.sendSuccess(() -> Component.translatable("kit.smmorpg.granted")
+                .withStyle(ChatFormatting.GREEN), false);
         return 1;
     }
 

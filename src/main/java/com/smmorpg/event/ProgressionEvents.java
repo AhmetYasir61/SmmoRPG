@@ -148,6 +148,8 @@ public final class ProgressionEvents {
         PlayerProgress progress = sp.getData(ModAttachments.PROGRESS.get());
         applyClassStats(sp, progress);
         Net.sendTo(sp, new S2CProgressSync(progress));
+        Net.sendTo(sp, new com.smmorpg.network.S2CTrainingLevel(
+                sp.getData(ModAttachments.TRAINING_LEVEL.get())));
     }
 
     @SubscribeEvent

@@ -36,22 +36,22 @@ public final class TrainingLauncher {
     private static final String LEVEL_ID = "smmorpg_training";
     private static final String LEVEL_NAME = com.smmorpg.training.TrainingArena.LEVEL_NAME;
 
-    /** Difficulty waiting to be requested once we are in a world; -1 for nothing pending. */
-    private static int pendingDifficulty = -1;
+    /** True while a request is held back waiting for the arena world to finish loading. */
+    private static boolean pending;
     /** Ticks left to wait for the world before giving up on the pending request. */
     private static int pendingTimeout = 0;
 
     private TrainingLauncher() {}
 
-    public static void enter(int difficultyPercent) {
+    public static void enter() {
         Minecraft mc = Minecraft.getInstance();
 
         if (ClientNet.connected()) {
-            ClientNet.sendToServer(new C2SStartTraining(difficultyPercent));
+            ClientNet.sendToServer(new C2SStartTraining());
             return;
         }
 
-        pendingDifficulty = difficultyPercent;
+        pending = true;
         pendingTimeout = 20 * 60;                 // a minute is plenty to load a world
         openArenaWorld(mc);
     }
@@ -62,23 +62,22 @@ public final class TrainingLauncher {
      * "the player exists and the server will listen".
      */
     public static void tick() {
-        if (pendingDifficulty < 0) return;
+        if (!pending) return;
 
         if (ClientNet.connected()) {
-            int difficulty = pendingDifficulty;
-            pendingDifficulty = -1;
-            ClientNet.sendToServer(new C2SStartTraining(difficulty));
+            pending = false;
+            ClientNet.sendToServer(new C2SStartTraining());
             return;
         }
 
         if (--pendingTimeout <= 0) {
-            pendingDifficulty = -1;
+            pending = false;
             SmmoRPG.LOGGER.warn("Gave up waiting for the training world to load.");
         }
     }
 
     /** Cancels a held request, so backing out of world loading does not fire it later. */
-    public static void cancel() { pendingDifficulty = -1; }
+    public static void cancel() { pending = false; }
 
     private static void openArenaWorld(Minecraft mc) {
         var flows = mc.createWorldOpenFlows();

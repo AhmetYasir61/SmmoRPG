@@ -229,11 +229,8 @@
   "training.smmorpg.button": "Eğitim",
   "training.smmorpg.button_short": "E",
   "training.smmorpg.button_tooltip": "Eğitim alanına gir",
-  "training.smmorpg.difficulty": "Zorluk: %%%s",
-  "training.smmorpg.exact": "Kesin değer",
   "training.smmorpg.enter": "Gir",
-  "training.smmorpg.band": "İlahi kuşak %s",
-  "training.smmorpg.started": "Eğitim %%%s ile başladı (%s)",
+  "training.smmorpg.started": "Eğitim başladı — seviye %s, %%%s (%s)",
   "training.smmorpg.opponent": "Rakip %%%s",
   "servers.smmorpg.title": "SmmoRPG Sunucuları",
   "servers.smmorpg.button": "S",
@@ -309,5 +306,13 @@
   "container.smmorpg.vault.deposit": "Yatır",
   "container.smmorpg.vault.trash": "Çöp",
   "container.smmorpg.vault.page": "Sayfa %s / %s",
-  "key.smmorpg.vault": "Kasa"
+  "key.smmorpg.vault": "Kasa",
+  "kit.smmorpg.granted": "Kitin tamamlandı.",
+  "training.smmorpg.level": "Seviye %s — %%%s güç",
+  "training.smmorpg.wave_size": "Bu dalga: %s rakip",
+  "training.smmorpg.camp_hint": "Dalgayı temizle, sonra devam etmek için antrenman ustasına konuş.",
+  "training.smmorpg.next_level": "Sonraki: seviye %s, %%%s",
+  "training.smmorpg.camp": "Dalga temizlendi. Kamp. Seviye %s (%%%s) için ustaya konuş.",
+  "training.smmorpg.wave": "Seviye %s — %%%s — %s",
+  "training.smmorpg.master": "Antrenman Ustası"
 }

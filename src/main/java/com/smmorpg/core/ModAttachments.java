@@ -41,6 +41,18 @@ public final class ModAttachments {
                     .serialize(MobData.CODEC)
                     .build());
 
+    /**
+     * How far the player has climbed in the training arena.
+     *
+     * <p>Saved and kept through death, because the level is the record of what they have
+     * already beaten. Losing a fight costs you the wave, not the climb.
+     */
+    public static final Supplier<AttachmentType<Integer>> TRAINING_LEVEL = REGISTRY.register(
+            "training_level", () -> AttachmentType.builder(() -> 0)
+                    .serialize(com.mojang.serialization.Codec.INT)
+                    .copyOnDeath()
+                    .build());
+
     /** Unlocked skills and their ranks. Persists and survives death. */
     public static final Supplier<AttachmentType<SkillData>> SKILLS = REGISTRY.register(
             "skills", () -> AttachmentType.builder(() -> SkillData.EMPTY)
