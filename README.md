@@ -190,6 +190,42 @@ recoverable right up until you walk away. Every take and deposit is written to t
 straight away and the window is redrawn from what the account then says, so two open vaults
 can never disagree.
 
+## The labyrinth
+
+The arena is a place now, not an event. One labyrinth per world, laid out from the origin
+on a grid of chunk-sized cells and written into the world a cell at a time as somebody
+walks towards it — so nothing is ever rebuilt on top of anything, and a cell you cleared
+last week has the same walls in the same places. The layout is derived from the world seed
+rather than stored: whether two neighbouring cells are joined is a hash computed the same
+way from either side, at about three in five, which is comfortably above the point where a
+grid of random connections stops being islands and becomes one connected sprawl.
+
+Cell (0,0) is the camp and is always safe. Roughly one cell in seven elsewhere is a safe
+room: lit, free of spawns, with a lodestone in the middle. Touching one out in the maze
+saves and sends you to the camp; touching the camp's own sends you back to your save.
+
+A save is a picture, not a pin. It records what you were carrying, and it comes with five
+lives. Die and you lose a life and keep your things; spend the fifth and you drop to the
+save before it, carrying exactly what you had when you set that one. Logging out mid-run
+rolls you back to your last save too, because a dungeon where quitting the instant
+something good drops is the optimal move is a broken dungeon. The way to keep something is
+to walk it to a safe cell and put it in the vault, which is not part of the run.
+
+Walls are fourteen high with twenty blocks of clearance above them, so air jumps and wall
+runs have room without the labyrinth having a ceiling you can be pinned against.
+
+## Co-op
+
+Sixteen, not four. `/smmorpg invite <player>`, `/smmorpg accept`, `/smmorpg party`,
+`/smmorpg disband`. Accepting drops you next to the person who invited you.
+
+The dungeon answers for the crowd. Every member past the strongest one adds 15% of their
+own strength to what the building has to deal with — scaling with the whole sum would make
+sixteen people exactly as hard as one and turn co-op into a formality, and scaling with
+nothing would turn it into a walk. That pressure lengthens waves, raises how many
+opponents are alive at once, and makes each of them tougher; it raises their damage at
+half that rate, because a crowd should mean a longer fight before it means a deadlier one.
+
 ## The camp
 
 Clearing a wave drops the arena into a camp, and four people are standing on the floor of

@@ -1,13 +1,12 @@
 package com.smmorpg.training;
 
 import com.smmorpg.SmmoRPG;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent;
@@ -27,9 +26,6 @@ import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 @EventBusSubscriber(modid = SmmoRPG.MOD_ID)
 public final class ArenaRules {
 
-    /** Just past the 32x32 floor, so the exclusion covers the walls too. */
-    private static final double RADIUS_SQR = 24.0D * 24.0D;
-
     private ArenaRules() {}
 
     @SubscribeEvent
@@ -40,16 +36,9 @@ public final class ArenaRules {
             return;
         }
 
-        if (insideAnyArena(event.getEntity().position())) {
+        if (event.getLevel() instanceof ServerLevel world && TrainingArena.isArenaWorld(world)) {
             event.setSpawnCancelled(true);
         }
-    }
-
-    private static boolean insideAnyArena(Vec3 pos) {
-        for (TrainingSession session : TrainingManager.sessions()) {
-            if (session.centre().distanceToSqr(pos) < RADIUS_SQR) return true;
-        }
-        return false;
     }
 
     /**
@@ -66,13 +55,10 @@ public final class ArenaRules {
         TrainingSession session = TrainingManager.of(player);
         if (session == null) return;
 
-        LivingEntity dead = event.getEntity();
-        if (!insideAnyArena(dead.position())) return;
-
         int level = session.level();
         int payout = 1 + player.getRandom().nextInt(2 + level / 2);
 
-        drop(dead, payout);
+        drop(event.getEntity(), payout);
     }
 
     private static void drop(Entity dead, int emeralds) {

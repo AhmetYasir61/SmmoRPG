@@ -1,0 +1,14 @@
+{
+  "attributes": {
+    "one_hand": {
+      "impact": 2.9,
+      "max_strikes": 1,
+      "armor_negation": 14.0
+    },
+    "two_hand": {
+      "impact": 2.4,
+      "max_strikes": 3
+    }
+  },
+  "type": "epicfight:spear"
+}

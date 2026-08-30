@@ -1,14 +1,16 @@
 package com.smmorpg.training;
 
+import com.smmorpg.SmmoRPG;
+import com.smmorpg.labyrinth.Labyrinth;
+import com.smmorpg.labyrinth.LabyrinthData;
+import com.smmorpg.mob.MobArchetype;
+import com.smmorpg.mob.MobRoster;
+import com.smmorpg.mob.MobScaling;
 import com.smmorpg.npc.CombatBotBrain;
 import com.smmorpg.npc.FightingStyle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import com.smmorpg.SmmoRPG;
-import com.smmorpg.mob.MobArchetype;
-import com.smmorpg.mob.MobRoster;
-import com.smmorpg.mob.MobScaling;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
@@ -16,72 +18,78 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 /**
- * One player's private training arena.
+ * One player's run through the labyrinth.
  *
- * <p>Runs in two phases. During a wave it spawns opponents at the level's difficulty and
- * drives their brains every tick. When the wave is cleared it drops into a rest camp:
- * nothing spawns, the player heals, and a training master stands in the middle of the
- * floor. Nothing continues until they are spoken to — so the fight only ever resumes
- * because the player decided it should, which is the difference between a gauntlet and a
- * treadmill.
+ * <p>The labyrinth itself belongs to the world and outlives every session — this is the
+ * part that belongs to the player: what level they are fighting at, how much of the wave
+ * is left, and which opponents are currently theirs.
  *
- * <p>A session is per player, so two people can be at different levels in the same world
- * without interfering.
+ * <p>Opponents spawn in the cell the player is standing in and the ones around it, never
+ * in a safe cell, and never once the wave is cleared. So a safe cell really is safe, and
+ * clearing a wave really does end the fighting rather than merely slowing it down.
  */
 public class TrainingSession {
 
+    /** How far ahead of the player the labyrinth is written into the world, in cells. */
+    private static final int BUILD_RADIUS = 2;
+
     private final UUID owner;
-    private final Vec3 centre;
-    private final Map<Mob, CombatBotBrain> bots = new HashMap<>();
+    private final Map<Mob, CombatBotBrain> bots = new java.util.HashMap<>();
+    private final Map<CampNpc.Role, Mob> staff = new EnumMap<>(CampNpc.Role.class);
 
     private int level;
-    private int respawnTimer = 0;
-    private int killsThisWave = 0;
-    private int kills = 0;
+    private int respawnTimer;
+    private int killsThisWave;
+    private int kills;
 
-    /** True between waves: no spawns, and the camp staff waiting to be spoken to. */
-    private boolean resting;
-    private Map<CampNpc.Role, Mob> staff = new java.util.EnumMap<>(CampNpc.Role.class);
+    /** Set when the wave's quota is met: nothing more spawns until the camp says so. */
+    private boolean waveCleared;
 
-    /** The merchant's shelf, rolled once per camp and rerolled for a rising price. */
+    /** How much harder this run is for the number of people in it. Recomputed each wave. */
+    private float pressure = 1.0F;
+
     private com.smmorpg.shop.ShopStock stock = com.smmorpg.shop.ShopStock.EMPTY;
     private int rerolls;
 
-    public TrainingSession(UUID owner, int level, Vec3 centre) {
+    public TrainingSession(UUID owner, int level) {
         this.owner = owner;
         this.level = level;
-        this.centre = centre;
     }
 
     public UUID owner() { return owner; }
     public Difficulty difficulty() { return TrainingLevels.difficultyFor(level); }
     public int level() { return level; }
-    public int wave() { return level; }
     public int kills() { return kills; }
     public int killsThisWave() { return killsThisWave; }
-    public int killsNeeded() { return TrainingLevels.killsFor(level); }
-    public boolean resting() { return resting; }
-    public Vec3 centre() { return centre; }
+    /** A wave grows with the party, so sixteen people do not clear it in one sweep. */
+    public int killsNeeded() {
+        return Math.round(TrainingLevels.killsFor(level) * pressure);
+    }
+    public boolean waveCleared() { return waveCleared; }
+    public float pressure() { return pressure; }
 
-    /** Lays the arena down the first time this session ticks in a world. */
-    private boolean built;
+    // --- the tick ---
 
     public void tick(ServerLevel world, ServerPlayer player) {
-        if (!built) {
-            built = true;
-            TrainingArena.build(world, centre);
+        // Recomputed rather than cached at the door: people join and leave a run, and the
+        // dungeon should notice within a wave rather than at the next session.
+        if (player.tickCount % 40 == 0) {
+            pressure = com.smmorpg.party.Party.pressure(
+                    com.smmorpg.party.PartyManager.group(player));
         }
 
-        Difficulty difficulty = difficulty();
+        Labyrinth.ensureAround(world, player.position(), BUILD_RADIUS);
+        Labyrinth.tickBuild(world);
 
-        // Retire anything that died and count it.
+        ensureCamp(world);
+
         Iterator<Map.Entry<Mob, CombatBotBrain>> it = bots.entrySet().iterator();
         while (it.hasNext()) {
             Mob mob = it.next().getKey();
@@ -92,54 +100,71 @@ public class TrainingSession {
             }
         }
 
-        if (resting) {
-            tickCamp(world, player);
-            return;
-        }
-
         for (Map.Entry<Mob, CombatBotBrain> e : bots.entrySet()) {
             e.getValue().tick(e.getKey(), player);
         }
 
-        if (killsThisWave >= killsNeeded() && bots.isEmpty()) {
-            beginRest(world, player);
+        if (!waveCleared && killsThisWave >= killsNeeded()) {
+            clearWave(player);
             return;
         }
+        if (waveCleared) return;
 
-        // Stop feeding the wave once enough have been sent; the rest of it is the player
-        // finishing what is already on the floor.
-        int spawnedOrLeft = killsThisWave + bots.size();
-        if (spawnedOrLeft < killsNeeded() && bots.size() < difficulty.simultaneousOpponents()) {
-            if (--respawnTimer <= 0) {
-                respawnTimer = Math.max(10, 60 - difficulty.band() * 2);
-                spawnOne(world, player);
-            }
+        long here = Labyrinth.cellAt(player.position());
+        if (Labyrinth.isSafe(world, here)) return;
+
+        Difficulty difficulty = difficulty();
+        int allowed = Math.round(difficulty.simultaneousOpponents() * pressure);
+        if (bots.size() >= allowed) return;
+
+        if (--respawnTimer <= 0) {
+            respawnTimer = Math.max(10, 60 - difficulty.band() * 2);
+            spawnOne(world, player, here);
         }
     }
 
-    // --- the camp between waves ---
-
-    private void beginRest(ServerLevel world, ServerPlayer player) {
-        resting = true;
-        killsThisWave = 0;
-
-        player.setHealth(player.getMaxHealth());
-        player.getFoodData().eat(20, 1.0F);
-        player.setData(com.smmorpg.core.ModAttachments.WOUNDS.get(),
-                com.smmorpg.wound.WoundData.EMPTY);
-
-        staff = CampNpc.spawnCamp(world, centre, owner);
-        stock = CampShop.roll(world.random, level);
-        rerolls = 0;
+    private void clearWave(ServerPlayer player) {
+        waveCleared = true;
+        despawnAll();
 
         player.sendSystemMessage(net.minecraft.network.chat.Component.translatable(
-                "training.smmorpg.camp", level + 1,
-                TrainingLevels.percentFor(level + 1))
+                        "training.smmorpg.wave_cleared", level + 1,
+                        TrainingLevels.percentFor(level + 1))
                 .withStyle(net.minecraft.ChatFormatting.AQUA));
     }
 
-    private void tickCamp(ServerLevel world, ServerPlayer player) {
-        // The camp is the only way onward, so anyone missing from it is put back.
+    /** Called when the player clicks the master in the camp: one level harder. */
+    public void advance(ServerPlayer player) {
+        if (!waveCleared) {
+            player.sendSystemMessage(net.minecraft.network.chat.Component.translatable(
+                            "training.smmorpg.not_yet", killsThisWave, killsNeeded())
+                    .withStyle(net.minecraft.ChatFormatting.GRAY));
+            return;
+        }
+
+        waveCleared = false;
+        killsThisWave = 0;
+        rerolls = 0;
+        stock = com.smmorpg.shop.ShopStock.EMPTY;
+
+        level = Math.min(TrainingLevels.maxLevel(), level + 1);
+        player.setData(com.smmorpg.core.ModAttachments.TRAINING_LEVEL.get(), level);
+        com.smmorpg.network.Net.sendTo(player, new com.smmorpg.network.S2CTrainingLevel(level));
+
+        Difficulty next = difficulty();
+        player.sendSystemMessage(net.minecraft.network.chat.Component.translatable(
+                        "training.smmorpg.wave", level, next.percent(),
+                        net.minecraft.network.chat.Component.translatable(next.tierKey()))
+                .withStyle(next.divine()
+                        ? net.minecraft.ChatFormatting.GOLD
+                        : net.minecraft.ChatFormatting.YELLOW));
+    }
+
+    // --- the camp ---
+
+    /** The camp is a place, not an event, so its staff are put back whenever they are gone. */
+    private void ensureCamp(ServerLevel world) {
+        Vec3 centre = Labyrinth.centreOf(world, Labyrinth.camp());
         for (CampNpc.Role role : CampNpc.Role.values()) {
             Mob npc = staff.get(role);
             if (npc == null || !npc.isAlive() || npc.isRemoved()) {
@@ -173,46 +198,32 @@ public class TrainingSession {
         return stock;
     }
 
-    /** Called when the player clicks the master: one level harder, camp struck. */
-    public void advance(ServerPlayer player) {
-        if (!resting) return;
-
-        resting = false;
-        killsThisWave = 0;
-        level = Math.min(TrainingLevels.maxLevel(), level + 1);
-        player.setData(com.smmorpg.core.ModAttachments.TRAINING_LEVEL.get(), level);
-        com.smmorpg.network.Net.sendTo(player, new com.smmorpg.network.S2CTrainingLevel(level));
-
-        clearCamp();
-
-        Difficulty next = difficulty();
-        player.sendSystemMessage(net.minecraft.network.chat.Component.translatable(
-                "training.smmorpg.wave", level, next.percent(),
-                net.minecraft.network.chat.Component.translatable(next.tierKey()))
-                .withStyle(next.divine()
-                        ? net.minecraft.ChatFormatting.GOLD
-                        : net.minecraft.ChatFormatting.YELLOW));
-    }
+    // --- opponents ---
 
     /**
-     * Spawns one opponent at the edge of the arena.
+     * Spawns one opponent in a cell near the player.
      *
-     * <p>What arrives comes from {@link MobRoster}, chosen by the difficulty band — so
-     * raising the percentage does not only inflate numbers, it changes what walks in. Low
-     * bands send soldiers and raiders; high ones send things out of a bestiary, and the
-     * top of the table is where the dragons are.
+     * <p>What arrives comes from {@link MobRoster}, chosen by the difficulty band, so
+     * climbing does not only inflate numbers — it changes what walks around the corner.
+     * How deep into the labyrinth the cell is nudges the roll further, which is what makes
+     * walking outward feel different from walking in circles.
      */
-    private void spawnOne(ServerLevel world, ServerPlayer player) {
+    private void spawnOne(ServerLevel world, ServerPlayer player, long here) {
         var rng = world.random;
+
         double angle = rng.nextDouble() * Math.PI * 2.0D;
-        double radius = 8.0D + rng.nextDouble() * 5.0D;
-        BlockPos pos = BlockPos.containing(
-                centre.x + Math.cos(angle) * radius,
-                centre.y + 1.0D,
-                centre.z + Math.sin(angle) * radius);
+        double radius = 5.0D + rng.nextDouble() * 6.0D;
+        Vec3 target = player.position().add(Math.cos(angle) * radius, 0.0D, Math.sin(angle) * radius);
+
+        long cell = Labyrinth.cellAt(target);
+        if (Labyrinth.isSafe(world, cell)) return;
+
+        BlockPos pos = BlockPos.containing(target.x, Labyrinth.floorY(world) + 1.0D, target.z);
+        if (!world.getBlockState(pos).isAir() || !world.getBlockState(pos.above()).isAir()) return;
 
         Difficulty difficulty = difficulty();
-        MobArchetype archetype = MobRoster.roll(rng, difficulty.band());
+        int band = difficulty.band() + Math.min(6, Labyrinth.depth(cell) / 8);
+        MobArchetype archetype = MobRoster.roll(rng, band);
 
         Entity spawned = archetype.type().create(world);
         if (!(spawned instanceof Mob mob)) {
@@ -229,9 +240,9 @@ public class TrainingSession {
             SmmoRPG.LOGGER.debug("finalizeSpawn refused for {}", archetype.key());
         }
 
-        int mobLevel = 1 + difficulty.band() * 4 + rng.nextInt(5);
-        MobScaling.apply(mob, archetype, mobLevel);
+        MobScaling.apply(mob, archetype, 1 + band * 4 + rng.nextInt(5));
         applyDifficulty(mob, difficulty);
+        applyPressure(mob);
 
         if (!world.addFreshEntity(mob)) {
             mob.discard();
@@ -240,7 +251,7 @@ public class TrainingSession {
         bots.put(mob, new CombatBotBrain(FightingStyle.random(rng), difficulty, rng));
     }
 
-    /** The chosen percentage on top of whatever the archetype and level already gave it. */
+    /** The level's percentage on top of whatever the archetype already gave it. */
     private void applyDifficulty(Mob mob, Difficulty difficulty) {
         var health = mob.getAttribute(Attributes.MAX_HEALTH);
         if (health != null) {
@@ -258,19 +269,56 @@ public class TrainingSession {
         if (stepHeight != null) stepHeight.setBaseValue(1.0D + difficulty.acrobatics());
     }
 
-    public void end(ServerLevel world) {
-        for (Mob mob : new ArrayList<>(bots.keySet())) mob.discard();
-        bots.clear();
-        clearCamp();
+    /**
+     * What the crowd costs.
+     *
+     * <p>Only health and damage, not speed or reach. A dungeon that answered a big group by
+     * making everything faster would punish the newest member hardest; making everything
+     * tougher spreads the weight across people who can share it.
+     */
+    private void applyPressure(Mob mob) {
+        if (pressure <= 1.0F) return;
+
+        var health = mob.getAttribute(Attributes.MAX_HEALTH);
+        if (health != null) {
+            health.setBaseValue(health.getBaseValue() * pressure);
+            mob.setHealth(mob.getMaxHealth());
+        }
+        var damage = mob.getAttribute(Attributes.ATTACK_DAMAGE);
+        if (damage != null) {
+            // Damage rises more gently than health: a crowd should mean a longer fight
+            // before it means a deadlier one.
+            damage.setBaseValue(damage.getBaseValue() * (1.0F + (pressure - 1.0F) * 0.5F));
+        }
     }
 
-    /** Sends the camp away. Called when the next wave starts and when the session ends. */
-    private void clearCamp() {
+    // --- ending ---
+
+    public void end(ServerLevel world) {
+        despawnAll();
         for (Mob npc : staff.values()) {
             if (npc != null) npc.discard();
         }
         staff.clear();
     }
 
+    /**
+     * Clears the floor.
+     *
+     * <p>Stragglers are the reason the old arena was unplayable — something left alive two
+     * hundred blocks away with no way back to it. Nothing this session spawned outlives
+     * the wave it belonged to.
+     */
+    private void despawnAll() {
+        for (Mob mob : new ArrayList<>(bots.keySet())) mob.discard();
+        bots.clear();
+    }
+
     public List<Mob> opponents() { return new ArrayList<>(bots.keySet()); }
+
+    /** Where this player resumes: their last save, or the camp if they have none. */
+    public static long resumeCell(ServerLevel world, UUID player) {
+        var save = LabyrinthData.get(world).save(player);
+        return save == null ? Labyrinth.camp() : save.cell();
+    }
 }

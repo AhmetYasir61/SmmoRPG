@@ -120,5 +120,12 @@ public final class CombatHud {
         }
         g.renderItem(new ItemStack(Items.EMERALD), w / 2 + 70, y + 4);
         g.drawString(mc.font, String.valueOf(purse), w / 2 + 88, y + 8, 0xFF7FE0A0, false);
+
+        // Lives are drawn as pips rather than a number: at a glance you want to know
+        // whether you are one death from losing the run, not the exact figure.
+        for (int i = 0; i < arena.lives(); i++) {
+            int px = w / 2 - 110 + i * 8;
+            g.fill(px, y + 6, px + 6, y + 12, 0xFFE04040);
+        }
     }
 }

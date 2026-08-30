@@ -17,10 +17,11 @@ public record S2CArenaStatus(boolean active,
                              int percent,
                              int kills,
                              int needed,
-                             boolean resting) implements CustomPacketPayload {
+                             boolean resting,
+                             int lives) implements CustomPacketPayload {
 
     public static final S2CArenaStatus INACTIVE =
-            new S2CArenaStatus(false, 0, 0, 0, 0, false);
+            new S2CArenaStatus(false, 0, 0, 0, 0, false, 0);
 
     public static final Type<S2CArenaStatus> TYPE = new Type<>(SmmoRPG.id("arena_status"));
 
@@ -32,9 +33,10 @@ public record S2CArenaStatus(boolean active,
                 buf.writeVarInt(msg.kills());
                 buf.writeVarInt(msg.needed());
                 buf.writeBoolean(msg.resting());
+                buf.writeVarInt(msg.lives());
             }, buf -> new S2CArenaStatus(
                     buf.readBoolean(), buf.readVarInt(), buf.readVarInt(),
-                    buf.readVarInt(), buf.readVarInt(), buf.readBoolean()));
+                    buf.readVarInt(), buf.readVarInt(), buf.readBoolean(), buf.readVarInt()));
 
     @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }
 }

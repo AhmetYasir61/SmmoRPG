@@ -42,6 +42,14 @@ public final class ArenaCommands {
         root.then(Commands.literal("leave").executes(ctx -> leave(ctx.getSource())));
         root.then(Commands.literal("vault").executes(ctx -> vault(ctx.getSource())));
         root.then(Commands.literal("kit").executes(ctx -> kit(ctx.getSource())));
+
+        root.then(Commands.literal("invite")
+                .then(Commands.argument("player", net.minecraft.commands.arguments.EntityArgument.player())
+                        .executes(ctx -> invite(ctx.getSource(),
+                                net.minecraft.commands.arguments.EntityArgument.getPlayer(ctx, "player")))));
+        root.then(Commands.literal("accept").executes(ctx -> accept(ctx.getSource())));
+        root.then(Commands.literal("party").executes(ctx -> party(ctx.getSource())));
+        root.then(Commands.literal("disband").executes(ctx -> disband(ctx.getSource())));
         root.then(Commands.literal("rank").executes(ctx -> rank(ctx.getSource())));
         root.then(Commands.literal("status")
                 .requires(source -> source.hasPermission(2))
@@ -87,6 +95,79 @@ public final class ArenaCommands {
         com.smmorpg.kit.StarterKit.grant(player);
         source.sendSuccess(() -> Component.translatable("kit.smmorpg.granted")
                 .withStyle(ChatFormatting.GREEN), false);
+        return 1;
+    }
+
+    // --- co-op ---
+
+    private static int invite(CommandSourceStack source, ServerPlayer target)
+            throws com.mojang.brigadier.exceptions.CommandSyntaxException {
+        ServerPlayer host = source.getPlayerOrException();
+        if (host == target) return 0;
+
+        var party = com.smmorpg.party.PartyManager.ensure(host);
+        if (party.full()) {
+            source.sendFailure(Component.translatable("party.smmorpg.full",
+                    com.smmorpg.party.Party.MAX));
+            return 0;
+        }
+
+        com.smmorpg.party.PartyManager.invite(host, target);
+
+        target.sendSystemMessage(Component.translatable("party.smmorpg.invited",
+                host.getGameProfile().getName()).withStyle(ChatFormatting.AQUA));
+        source.sendSuccess(() -> Component.translatable("party.smmorpg.invite_sent",
+                target.getGameProfile().getName()), false);
+        return 1;
+    }
+
+    private static int accept(CommandSourceStack source)
+            throws com.mojang.brigadier.exceptions.CommandSyntaxException {
+        ServerPlayer player = source.getPlayerOrException();
+
+        var party = com.smmorpg.party.PartyManager.accept(player, source.getServer());
+        if (party == null) {
+            source.sendFailure(Component.translatable("party.smmorpg.no_invite"));
+            return 0;
+        }
+
+        for (ServerPlayer member : party.online(source.getServer())) {
+            member.sendSystemMessage(Component.translatable("party.smmorpg.joined",
+                    player.getGameProfile().getName(), party.size(),
+                    com.smmorpg.party.Party.MAX).withStyle(ChatFormatting.GREEN));
+        }
+
+        // Joining a run means joining the run, so the newcomer is put in it rather than
+        // left to find the door themselves.
+        ServerPlayer leader = source.getServer().getPlayerList().getPlayer(party.leader());
+        if (leader != null && com.smmorpg.training.TrainingManager.of(leader) != null) {
+            com.smmorpg.training.TrainingManager.join(player, leader);
+        }
+        return 1;
+    }
+
+    private static int party(CommandSourceStack source)
+            throws com.mojang.brigadier.exceptions.CommandSyntaxException {
+        ServerPlayer player = source.getPlayerOrException();
+        var members = com.smmorpg.party.PartyManager.group(player);
+
+        source.sendSuccess(() -> Component.translatable("party.smmorpg.header",
+                members.size(), com.smmorpg.party.Party.MAX).withStyle(ChatFormatting.GOLD), false);
+        for (ServerPlayer member : members) {
+            source.sendSuccess(() -> Component.literal("  " + member.getGameProfile().getName())
+                    .withStyle(ChatFormatting.GRAY), false);
+        }
+        source.sendSuccess(() -> Component.translatable("party.smmorpg.pressure",
+                        Math.round((com.smmorpg.party.Party.pressure(members) - 1.0F) * 100.0F))
+                .withStyle(ChatFormatting.DARK_GRAY), false);
+        return 1;
+    }
+
+    private static int disband(CommandSourceStack source)
+            throws com.mojang.brigadier.exceptions.CommandSyntaxException {
+        ServerPlayer player = source.getPlayerOrException();
+        com.smmorpg.party.PartyManager.leave(player);
+        source.sendSuccess(() -> Component.translatable("party.smmorpg.left"), false);
         return 1;
     }
 
