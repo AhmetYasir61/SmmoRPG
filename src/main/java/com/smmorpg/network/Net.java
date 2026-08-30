@@ -40,6 +40,12 @@ public final class Net {
                 (payload, ctx) -> ctx.enqueueWork(() -> spendPoint(ctx.player(), payload)));
         r.playToServer(C2SStartTraining.TYPE, C2SStartTraining.CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> startTraining(ctx.player(), payload)));
+        r.playToServer(C2SOpenVault.TYPE, C2SOpenVault.CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> {
+                    if (ctx.player() instanceof ServerPlayer sp) {
+                        com.smmorpg.vault.VaultOpener.open(sp);
+                    }
+                }));
         r.playToServer(C2SLearnSkill.TYPE, C2SLearnSkill.CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> learnSkill(ctx.player(), payload)));
 

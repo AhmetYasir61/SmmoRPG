@@ -54,6 +54,11 @@ public final class ClientEvents {
         if (Keybinds.TRAINING.consumeClick()) {
             mc.setScreen(new com.smmorpg.client.screen.TrainingScreen());
         }
+        if (Keybinds.VAULT.consumeClick()) {
+            // The server opens the window; asking it means the vault you see is the vault
+            // the account actually holds, not a client's guess at it.
+            ClientNet.sendToServer(new com.smmorpg.network.C2SOpenVault());
+        }
     }
 
     /**

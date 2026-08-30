@@ -304,5 +304,10 @@
   "menu.smmorpg.inventory": "INVENTARIO",
   "menu.smmorpg.trash": "Cestino — qui dentro è perso per sempre",
   "menu.smmorpg.deposit": "Deposito — manda una pila al caveau",
-  "menu.smmorpg.loadout": "Equipaggiamento %s"
+  "menu.smmorpg.loadout": "Equipaggiamento %s",
+  "container.smmorpg.vault": "Vault",
+  "container.smmorpg.vault.deposit": "Deposit",
+  "container.smmorpg.vault.trash": "Trash",
+  "container.smmorpg.vault.page": "Page %s / %s",
+  "key.smmorpg.vault": "Vault"
 }

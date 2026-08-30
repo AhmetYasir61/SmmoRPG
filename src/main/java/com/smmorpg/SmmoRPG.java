@@ -41,6 +41,7 @@ public class SmmoRPG {
         ModAttachments.REGISTRY.register(modBus);
         ModDataComponents.REGISTRY.register(modBus);
         ModCreativeTabs.REGISTRY.register(modBus);
+        com.smmorpg.core.ModMenus.REGISTRY.register(modBus);
 
         container.registerConfig(ModConfig.Type.COMMON, CombatConfig.SPEC);
         // SERVER, not COMMON: this one holds credentials and NeoForge keeps it off clients.

@@ -304,5 +304,10 @@
   "menu.smmorpg.inventory": "INVENTAR",
   "menu.smmorpg.trash": "Müll — hier abgelegt, für immer weg",
   "menu.smmorpg.deposit": "Einlagern — schickt einen Stapel ins Lager",
-  "menu.smmorpg.loadout": "Ausrüstung %s"
+  "menu.smmorpg.loadout": "Ausrüstung %s",
+  "container.smmorpg.vault": "Vault",
+  "container.smmorpg.vault.deposit": "Deposit",
+  "container.smmorpg.vault.trash": "Trash",
+  "container.smmorpg.vault.page": "Page %s / %s",
+  "key.smmorpg.vault": "Vault"
 }

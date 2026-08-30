@@ -304,5 +304,10 @@
   "menu.smmorpg.inventory": "INVENTÁRIO",
   "menu.smmorpg.trash": "Lixo — o que cair aqui se perde",
   "menu.smmorpg.deposit": "Depósito — envia uma pilha ao cofre",
-  "menu.smmorpg.loadout": "Equipamento %s"
+  "menu.smmorpg.loadout": "Equipamento %s",
+  "container.smmorpg.vault": "Vault",
+  "container.smmorpg.vault.deposit": "Deposit",
+  "container.smmorpg.vault.trash": "Trash",
+  "container.smmorpg.vault.page": "Page %s / %s",
+  "key.smmorpg.vault": "Vault"
 }

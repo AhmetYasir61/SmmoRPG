@@ -182,10 +182,17 @@ to join a server rather than failing silently.
 The vault page draws wear on every slot, which is the point of a vault that preserves
 damage — you can see what came back worn and decide what to repair before taking it out.
 
-**Not built yet:** the vault's trash and deposit slots as an in-game container, kit loadouts
-drawn from the vault, and buying with coins from the store page (the currency and the
-delivery pipeline both work; the purchase button needs a packet). Real-money purchases
-already work end to end through Tebex.
+In the world, `V` (or `/smmorpg vault`) opens the vault itself. The grid is take-only and
+deposits go through a single slot, one stack at a time, because a vault you can empty your
+whole inventory into with one shift-click is a vault you will empty by accident. The trash
+slot beside it holds what you put there until you close the window, so a misclick is
+recoverable right up until you walk away. Every take and deposit is written to the account
+straight away and the window is redrawn from what the account then says, so two open vaults
+can never disagree.
+
+**Not built yet:** kit loadouts drawn from the vault, and buying with coins from the store
+page (the currency and the delivery pipeline both work; the purchase button needs a
+packet). Real-money purchases already work end to end through Tebex.
 
 ## Settings this pack holds for you
 

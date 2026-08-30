@@ -304,5 +304,10 @@
   "menu.smmorpg.inventory": "背包",
   "menu.smmorpg.trash": "丢弃 — 放进去就找不回来了",
   "menu.smmorpg.deposit": "存入 — 每次向仓库发送一组",
-  "menu.smmorpg.loadout": "配装 %s"
+  "menu.smmorpg.loadout": "配装 %s",
+  "container.smmorpg.vault": "Vault",
+  "container.smmorpg.vault.deposit": "Deposit",
+  "container.smmorpg.vault.trash": "Trash",
+  "container.smmorpg.vault.page": "Page %s / %s",
+  "key.smmorpg.vault": "Vault"
 }

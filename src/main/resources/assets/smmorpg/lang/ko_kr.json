@@ -304,5 +304,10 @@
   "menu.smmorpg.inventory": "인벤토리",
   "menu.smmorpg.trash": "버리기 — 넣으면 되돌릴 수 없습니다",
   "menu.smmorpg.deposit": "보관 — 창고로 한 묶음씩 보냅니다",
-  "menu.smmorpg.loadout": "장비 %s"
+  "menu.smmorpg.loadout": "장비 %s",
+  "container.smmorpg.vault": "Vault",
+  "container.smmorpg.vault.deposit": "Deposit",
+  "container.smmorpg.vault.trash": "Trash",
+  "container.smmorpg.vault.page": "Page %s / %s",
+  "key.smmorpg.vault": "Vault"
 }

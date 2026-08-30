@@ -304,5 +304,10 @@
   "menu.smmorpg.inventory": "ИНВЕНТАРЬ",
   "menu.smmorpg.trash": "Мусор — выброшенное сюда не вернуть",
   "menu.smmorpg.deposit": "Хранилище — отправляет стак в сейф",
-  "menu.smmorpg.loadout": "Набор %s"
+  "menu.smmorpg.loadout": "Набор %s",
+  "container.smmorpg.vault": "Vault",
+  "container.smmorpg.vault.deposit": "Deposit",
+  "container.smmorpg.vault.trash": "Trash",
+  "container.smmorpg.vault.page": "Page %s / %s",
+  "key.smmorpg.vault": "Vault"
 }

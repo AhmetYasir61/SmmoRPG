@@ -304,5 +304,10 @@
   "menu.smmorpg.inventory": "INVENTORY",
   "menu.smmorpg.trash": "Trash — dropped here, gone for good",
   "menu.smmorpg.deposit": "Deposit — sends one stack to the vault",
-  "menu.smmorpg.loadout": "Loadout %s"
+  "menu.smmorpg.loadout": "Loadout %s",
+  "container.smmorpg.vault": "Vault",
+  "container.smmorpg.vault.deposit": "Deposit",
+  "container.smmorpg.vault.trash": "Trash",
+  "container.smmorpg.vault.page": "Page %s / %s",
+  "key.smmorpg.vault": "Vault"
 }

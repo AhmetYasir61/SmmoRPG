@@ -304,5 +304,10 @@
   "menu.smmorpg.inventory": "ENVANTER",
   "menu.smmorpg.trash": "Çöp — buraya atılan geri gelmez",
   "menu.smmorpg.deposit": "Depo — kasaya birer birer gönderir",
-  "menu.smmorpg.loadout": "Kuşanım %s"
+  "menu.smmorpg.loadout": "Kuşanım %s",
+  "container.smmorpg.vault": "Kasa",
+  "container.smmorpg.vault.deposit": "Yatır",
+  "container.smmorpg.vault.trash": "Çöp",
+  "container.smmorpg.vault.page": "Sayfa %s / %s",
+  "key.smmorpg.vault": "Kasa"
 }

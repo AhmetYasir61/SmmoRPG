@@ -304,5 +304,10 @@
   "menu.smmorpg.inventory": "所持品",
   "menu.smmorpg.trash": "廃棄 — 入れたものは戻らない",
   "menu.smmorpg.deposit": "預入 — 一組ずつ金庫へ送る",
-  "menu.smmorpg.loadout": "装備 %s"
+  "menu.smmorpg.loadout": "装備 %s",
+  "container.smmorpg.vault": "Vault",
+  "container.smmorpg.vault.deposit": "Deposit",
+  "container.smmorpg.vault.trash": "Trash",
+  "container.smmorpg.vault.page": "Page %s / %s",
+  "key.smmorpg.vault": "Vault"
 }

@@ -244,7 +244,12 @@
    "menu_inventory": "INVENTORY",
    "menu_trash": "Trash — dropped here, gone for good",
    "menu_deposit": "Deposit — sends one stack to the vault",
-   "menu_loadout": "Loadout %s"
+   "menu_loadout": "Loadout %s",
+   "vault_container": "Vault",
+   "vault_deposit": "Deposit",
+   "vault_trash": "Trash",
+   "vault_page": "Page %s / %s",
+   "key_vault": "Vault"
   },
   "mobs": {
    "conscript": "Conscript",
@@ -544,7 +549,12 @@
    "menu_inventory": "ENVANTER",
    "menu_trash": "Çöp — buraya atılan geri gelmez",
    "menu_deposit": "Depo — kasaya birer birer gönderir",
-   "menu_loadout": "Kuşanım %s"
+   "menu_loadout": "Kuşanım %s",
+   "vault_container": "Kasa",
+   "vault_deposit": "Yatır",
+   "vault_trash": "Çöp",
+   "vault_page": "Sayfa %s / %s",
+   "key_vault": "Kasa"
   },
   "mobs": {
    "conscript": "Acemi Er",

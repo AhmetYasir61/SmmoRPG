@@ -40,6 +40,7 @@ public final class ArenaCommands {
         }
 
         root.then(Commands.literal("leave").executes(ctx -> leave(ctx.getSource())));
+        root.then(Commands.literal("vault").executes(ctx -> vault(ctx.getSource())));
         root.then(Commands.literal("rank").executes(ctx -> rank(ctx.getSource())));
         root.then(Commands.literal("status")
                 .requires(source -> source.hasPermission(2))
@@ -71,6 +72,11 @@ public final class ArenaCommands {
         ServerPlayer player = source.getPlayerOrException();
         MatchQueue.leaveAll(player);
         source.sendSuccess(() -> Component.translatable("match.smmorpg.left"), false);
+        return 1;
+    }
+
+    private static int vault(CommandSourceStack source) throws com.mojang.brigadier.exceptions.CommandSyntaxException {
+        com.smmorpg.vault.VaultOpener.open(source.getPlayerOrException());
         return 1;
     }
 

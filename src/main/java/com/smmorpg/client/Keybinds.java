@@ -21,10 +21,14 @@ public final class Keybinds {
     public static final KeyMapping TRAINING = new KeyMapping(
             "key.smmorpg.training", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_T, CATEGORY);
 
+    public static final KeyMapping VAULT = new KeyMapping(
+            "key.smmorpg.vault", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_V, CATEGORY);
+
     @SubscribeEvent
     public static void register(RegisterKeyMappingsEvent event) {
         event.register(SKILLS);
         event.register(TRAINING);
         event.register(OPEN_CHARACTER);
+        event.register(VAULT);
     }
 }
